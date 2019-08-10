@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Seanuts.Http\Seanuts.Http.csproj" />
+    <ProjectReference Include="..\Seanuts.Sockets\Seanuts.Sockets.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Ruben Labruyere</Authors>
+    <Description>Seanuts.WebSockets is a dotnet core WebSocket library</Description>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/TheBoneJarmer/Seanuts</RepositoryUrl>
+    <RepositoryType></RepositoryType>
+    <PackageTags>websockets, C#, dotnet, core, sockets, .net, .net core, dotnet core, dotnet standard, websocket, socket, web, standard</PackageTags>
+    <PackageReleaseNotes>Feel free to use this package any way you like. A reference to my name is always welcome but not required.</PackageReleaseNotes>
+    <Copyright />
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+</Project>
