@@ -25,9 +25,13 @@ namespace Seanuts
     }
     public class GLFWException : Exception
     {
-        public GLFWException(string message) : base(message)
-        {
+        public int Code { get; private set; }
+        public string Description { get; private set; }
 
+        public GLFWException(int code, string description) : base(code + ":" + description)
+        {
+            this.Code = code;
+            this.Description = description;
         }
     }
 }

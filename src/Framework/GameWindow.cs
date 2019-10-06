@@ -89,7 +89,7 @@ namespace Seanuts.Framework
             // Init GLFW
             if (GLFW.glfwInit() == 0)
             {
-                throw new GLFWException("Unable to initialize");
+                throw new GLFWException(-1, "Unable to initialize");
             }
 
             // Create the window
@@ -99,7 +99,7 @@ namespace Seanuts.Framework
             if (Handle == IntPtr.Zero)
             {
                 GLFW.glfwTerminate();
-                throw new Exception("Unable to create window");
+                throw new GLFWException(-1, "Unable to create window");
             }
 
             // Make the window's context the current one
@@ -188,7 +188,7 @@ namespace Seanuts.Framework
         /* GENERAL FUNCTIONS */
         private void OnErrorFunction(int errorCode, string description)
         {
-            throw new Exception(errorCode + ": " + description);
+            throw new GLFWException(errorCode, description);
         }
         private void OnResizeFunction(IntPtr windowHandle, int width, int height)
         {
