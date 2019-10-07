@@ -25,7 +25,14 @@ namespace Seanuts.Framework.Input
         }
         public static bool KeyDown(int code)
         {
-            return KeyState[code] > 0;
+            if (KeyState[code] > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         public static bool KeyPressed(int code)
         {

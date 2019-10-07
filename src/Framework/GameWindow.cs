@@ -10,13 +10,20 @@ namespace Seanuts.Framework
 {
     public class GameWindow
     {
-        public static GameWindow Current { get; private set; }
-
         private IntPtr handle;
+        private Color clearColor;
         private int width;
         private int height;
         private string title;
-        private Color clearColor;
+
+        private GLFW.GLFWerrorfun glfwErrorFunction;
+        private GLFW.GLFWwindowsizefun glfwWindowSizeFunction;
+        private GLFW.GLFWwindowclosefun glfwWindowCloseFunction;
+        private GLFW.GLFWwindowrefreshfun glfwWindowRefreshFunction;
+        private GLFW.GLFWcursorposfun glfwCursorPosFunction;
+        private GLFW.GLFWmousebuttonfun glfwMouseButtonFunction;
+        private GLFW.GLFWkeyfun glfwKeyFunction;
+        private GLFW.GLFWcharfun glfwCharFunction;
 
         private IntPtr Handle
         {
@@ -62,10 +69,7 @@ namespace Seanuts.Framework
                 }
             }
         }
-        public bool Running
-        {
-            get { return Handle != IntPtr.Zero; }
-        }
+
         public Color ClearColor
         {
             get { return clearColor; }
@@ -79,22 +83,40 @@ namespace Seanuts.Framework
             this.Height = height;
             this.Title = title;
             this.ClearColor = Color.BLACK;
-
-            // Set the Current variable to this
-            GameWindow.Current = this;
         }
 
-        public void Open(bool fullscreen)
+        public void Open(bool fullscreen = false, bool vsync = true, bool pollEvents = true)
+        {            
+            InitGLFW();
+            InitWindow(fullscreen);
+            InitEvents();
+            InitSettings(vsync);
+            InitFramework();
+                   
+            Sync(pollEvents);
+        }
+        public void Close()
         {
-            // Init GLFW
+            GLFW.glfwSetWindowShouldClose(Handle, 1);
+        }
+
+        private void InitGLFW()
+        {
             if (GLFW.glfwInit() == 0)
             {
                 throw new GLFWException(-1, "Unable to initialize");
             }
-
-            // Create the window
-            if (fullscreen) Handle = GLFW.glfwCreateWindow(Width, Height, Encoding.ASCII.GetBytes(Title), GLFW.glfwGetPrimaryMonitor(), IntPtr.Zero);
-            if (!fullscreen) Handle = GLFW.glfwCreateWindow(Width, Height, Encoding.ASCII.GetBytes(Title), IntPtr.Zero, IntPtr.Zero);
+        }
+        private void InitWindow(bool fullscreen)
+        {
+            if (fullscreen)
+            {
+                Handle = GLFW.glfwCreateWindow(Width, Height, Encoding.ASCII.GetBytes(Title), GLFW.glfwGetPrimaryMonitor(), IntPtr.Zero);
+            }
+            else
+            {
+                Handle = GLFW.glfwCreateWindow(Width, Height, Encoding.ASCII.GetBytes(Title), IntPtr.Zero, IntPtr.Zero);
+            }
 
             if (Handle == IntPtr.Zero)
             {
@@ -102,45 +124,69 @@ namespace Seanuts.Framework
                 throw new GLFWException(-1, "Unable to create window");
             }
 
-            // Make the window's context the current one
             GLFW.glfwMakeContextCurrent(Handle);
+        }
+        private void InitEvents()
+        {
+            this.glfwErrorFunction = new GLFW.GLFWerrorfun(OnErrorFunction);
+            this.glfwCharFunction = new GLFW.GLFWcharfun(OnCharFunction);
+            this.glfwCursorPosFunction = new GLFW.GLFWcursorposfun(OnCursorPositionFunction);
+            this.glfwKeyFunction = new GLFW.GLFWkeyfun(OnKeyFunction);
+            this.glfwMouseButtonFunction = new GLFW.GLFWmousebuttonfun(OnMouseButtonFunction);
+            this.glfwWindowCloseFunction = new GLFW.GLFWwindowclosefun(OnWindowCloseFunction);
+            this.glfwWindowRefreshFunction = new GLFW.GLFWwindowrefreshfun(OnWindowRefreshFunction);
+            this.glfwWindowSizeFunction = new GLFW.GLFWwindowsizefun(OnWindowSizeFunction);
 
-            // Set events
-            GLFW.glfwSetErrorCallback(new GLFW.GLFWerrorfun(OnErrorFunction));
-            GLFW.glfwSetWindowSizeCallback(Handle, new GLFW.GLFWwindowsizefun(OnResizeFunction));
-            GLFW.glfwSetWindowCloseCallback(Handle, new GLFW.GLFWwindowclosefun(OnCloseFunction));
-            GLFW.glfwSetCursorPosCallback(Handle, new GLFW.GLFWcursorposfun(OnCursorPositionFunction));
-            GLFW.glfwSetMouseButtonCallback(Handle, new GLFW.GLFWmousebuttonfun(OnMouseButtonFunction));
-            GLFW.glfwSetKeyCallback(Handle, new GLFW.GLFWkeyfun(OnKeyFunction));
-            GLFW.glfwSetCharCallback(Handle, new GLFW.GLFWcharfun(OnCharFunction));
-
-            // Enable VSYNC
-            GLFW.glfwSwapInterval(1);
-
-            // Init everything
+            GLFW.glfwSetErrorCallback(this.glfwErrorFunction);
+            GLFW.glfwSetWindowSizeCallback(Handle, this.glfwWindowSizeFunction);
+            GLFW.glfwSetWindowCloseCallback(Handle, this.glfwWindowCloseFunction);
+            GLFW.glfwSetWindowRefreshCallback(Handle, this.glfwWindowRefreshFunction);
+            GLFW.glfwSetCursorPosCallback(Handle, this.glfwCursorPosFunction);
+            GLFW.glfwSetMouseButtonCallback(Handle, this.glfwMouseButtonFunction);
+            GLFW.glfwSetKeyCallback(Handle, this.glfwKeyFunction);
+            GLFW.glfwSetCharCallback(Handle, this.glfwCharFunction);
+        }
+        private void InitSettings(bool vsync)
+        {
+            if (vsync)
+            {
+                GLFW.glfwSwapInterval(1);
+            }
+            else
+            {
+                GLFW.glfwSwapInterval(0);
+            }
+        }
+        private void InitFramework()
+        {
             Mouse.Init();
             Keyboard.Init();
             Draw.Init(this);
+        }
 
+        private void Sync(bool pollEvents)
+        {
             // Execute onload event
             if (OnLoad != null)
             {
                 OnLoad();
             }
 
-            // Start the threads
-            Thread thrUpdate = new Thread(Update_Callback);
-            thrUpdate.Start();
-
             // Update time
             Time.Now = GLFW.glfwGetTime();
 
-            // Keep the main thread running for rendering
+            // Main loop
             while (GLFW.glfwWindowShouldClose(Handle) == 0)
             {
                 // Update time
                 Time.Then = Time.Now;
                 Time.Now = GLFW.glfwGetTime();
+
+                // Update
+                if (OnUpdate != null)
+                {
+                    OnUpdate();
+                }
 
                 // Render
                 GL10.glEnable(GL11.GL_BLEND);
@@ -154,35 +200,21 @@ namespace Seanuts.Framework
                     OnRender();
                 }
 
-                // Poll events
-                GLFW.glfwPollEvents();
-
                 // Swap buffers
                 GLFW.glfwSwapBuffers(Handle);
-            }
 
-            // Clear the handle
-            Handle = IntPtr.Zero;
-
-            // Cleanup
-            GLFW.glfwDestroyWindow(Handle);
-        }
-        public void Close()
-        {
-            GLFW.glfwSetWindowShouldClose(Handle, 1);
-        }
-
-        /* THREAD */
-        private void Update_Callback()
-        {
-            while (Running)
-            {
-                // Update
-                if (OnUpdate != null)
+                // Poll events or wait for events
+                if (pollEvents)
                 {
-                    OnUpdate();
+                    GLFW.glfwPollEvents();
+                }
+                else
+                {
+                    GLFW.glfwWaitEvents();
                 }
             }
+
+            GLFW.glfwDestroyWindow(Handle);
         }
 
         /* GENERAL FUNCTIONS */
@@ -190,7 +222,7 @@ namespace Seanuts.Framework
         {
             throw new GLFWException(errorCode, description);
         }
-        private void OnResizeFunction(IntPtr windowHandle, int width, int height)
+        private void OnWindowSizeFunction(IntPtr windowHandle, int width, int height)
         {
             Width = width;
             Height = height;
@@ -200,6 +232,13 @@ namespace Seanuts.Framework
                 OnResize(width, height);
             }
         }
+        private void OnWindowRefreshFunction(IntPtr windowHandle)
+        {
+            if (OnRefresh != null)
+            {
+                OnRefresh();
+            }
+        }
         private void OnPositionFunction(IntPtr windowHandle, int x, int y)
         {
             if (OnPosition != null)
@@ -207,7 +246,7 @@ namespace Seanuts.Framework
                 OnPosition(x, y);
             }
         }
-        private void OnCloseFunction(IntPtr windowHandle)
+        private void OnWindowCloseFunction(IntPtr windowHandle)
         {
             if (OnClose != null)
             {
@@ -243,6 +282,7 @@ namespace Seanuts.Framework
         /* EVENTS */
         public delegate void OnUpdateDelegate();
         public delegate void OnRenderDelegate();
+        public delegate void OnRefreshDelegate();
         public delegate void OnResizeDelegate(int width, int height);
         public delegate void OnPositionDelegate(int x, int y);
         public delegate void OnLoadDelegate();
@@ -251,6 +291,7 @@ namespace Seanuts.Framework
 
         public event OnUpdateDelegate OnUpdate;
         public event OnRenderDelegate OnRender;
+        public event OnRefreshDelegate OnRefresh;
         public event OnResizeDelegate OnResize;
         public event OnPositionDelegate OnPosition;
         public event OnCloseDelegate OnClose;

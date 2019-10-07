@@ -19,6 +19,7 @@ namespace example2
                 Window.OnLoad += Window_OnLoad;
                 Window.OnUpdate += Window_OnUpdate;
                 Window.OnRender += Window_OnRender;
+                Window.OnRefresh += Window_OnRefresh;
 
                 Window.Open(false);
             }
@@ -53,6 +54,10 @@ namespace example2
         static void Window_OnRender()
         {
             Player.Render();
+        }
+        static void Window_OnRefresh()
+        {
+            Console.Write("R");
         }
     }
 }

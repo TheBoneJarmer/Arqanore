@@ -20,24 +20,38 @@ namespace example2
 
         public void Update()
         {
-            var speed = (float)(Time.DeltaTime / 10.0);
+            var speed = (float)Time.DeltaTime * 100f;
+            var speedX = 0f;
+            var speedY = 0f;
 
             if (Keyboard.KeyDown(KeyCode.LEFT))
             {
-                this.Position.X -= speed;
+                speedX = -speed;
             }
-            if (Keyboard.KeyDown(KeyCode.RIGHT))
+            else if (Keyboard.KeyDown(KeyCode.RIGHT))
             {
-                this.Position.X += speed;
+                speedX = speed;
             }
+            else
+            {
+                speedX = 0;
+            }
+
             if (Keyboard.KeyDown(KeyCode.UP))
             {
-                this.Position.Y -= speed;
+                speedY = -speed;
             }
-            if (Keyboard.KeyDown(KeyCode.DOWN))
+            else if (Keyboard.KeyDown(KeyCode.DOWN))
             {
-                this.Position.Y += speed;
+                speedY = speed;
             }
+            else
+            {
+                speedY = 0;
+            }
+
+            this.Position.X += speedX;
+            this.Position.Y += speedY;
         }
 
         public void Render()
