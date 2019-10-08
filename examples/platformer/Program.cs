@@ -1,7 +1,7 @@
 ﻿using System;
 using Seanuts.Framework;
 
-namespace example3
+namespace Platformer
 {
     class Program
     {

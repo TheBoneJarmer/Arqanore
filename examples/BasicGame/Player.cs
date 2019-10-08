@@ -5,7 +5,7 @@ using Seanuts.Framework.Graphics;
 using Seanuts.Framework.Input;
 using Seanuts.Framework.Math;
 
-namespace example2
+namespace BasicGame
 {
     public class Player
     {
