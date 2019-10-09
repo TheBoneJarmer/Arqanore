@@ -207,6 +207,7 @@ namespace Seanuts.Framework
                 if (pollEvents)
                 {
                     GLFW.glfwPollEvents();
+                    Thread.Sleep(10);
                 }
                 else
                 {

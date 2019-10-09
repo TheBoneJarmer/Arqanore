@@ -27,21 +27,21 @@ namespace Platformer
         {
             if (Keyboard.KeyDown(KeyCode.LEFT))
             {
-                this.Friction -= (float)Time.DeltaTime / 10.0f;
+                this.Friction -= (float)Time.DeltaTime * 10.0f;
             }
             else if (Keyboard.KeyDown(KeyCode.RIGHT))
             {
-                this.Friction += (float)Time.DeltaTime / 10.0f;
+                this.Friction += (float)Time.DeltaTime * 10.0f;
             }
             else
             {
-                if (this.Friction > (float)Time.DeltaTime / 100.0f)
+                if (this.Friction > (float)Time.DeltaTime * 10.0f)
                 {
-                    this.Friction -= (float)Time.DeltaTime / 100.0f;
+                    this.Friction -= (float)Time.DeltaTime * 2.5f;
                 }
-                else if (this.Friction < (float)Time.DeltaTime / 100.0f)
+                else if (this.Friction < -(float)Time.DeltaTime * 10.0f)
                 {
-                    this.Friction += (float)Time.DeltaTime / 100.0f;
+                    this.Friction += (float)Time.DeltaTime * 2.5f;
                 }
                 else
                 {
@@ -49,35 +49,41 @@ namespace Platformer
                 }
             }
 
-            if (Keyboard.KeyDown(KeyCode.UP))
+            if (Keyboard.KeyDown(KeyCode.UP) && this.Velocity == 0)
             {
-                this.Velocity = -(float)Time.DeltaTime * 1000.0f;
+                this.Velocity = -(float)Time.DeltaTime * 500.0f;
             }
 
-            if (this.Friction > Time.DeltaTime * 100)
+            if (this.Friction > Time.DeltaTime * 200)
             {
-                this.Friction = (float)Time.DeltaTime * 100;
+                this.Friction = (float)Time.DeltaTime * 200;
             }
-            if (this.Friction < -Time.DeltaTime * 100)
+            if (this.Friction < -Time.DeltaTime * 200)
             {
-                this.Friction = -(float)Time.DeltaTime * 100;
-            }
-
-            if (this.Velocity < 0)
-            {
-                this.Velocity += (float)Time.DeltaTime * 100.0f;
-            }
-            else
-            {
-                this.Velocity = 0;
+                this.Friction = -(float)Time.DeltaTime * 200;
             }
 
             this.Position.X += Friction;
             this.Position.Y += this.Velocity;
+            this.Velocity += (float)Time.DeltaTime * 25.0f;
+
+            if (this.Position.Y >= 600)
+            {
+                this.Velocity = 0;
+                this.Position.Y = 600;
+            }
         }
         public void Render()
         {
-            Draw.Box(Position.X, Position.Y, 32, 32, 0, 0, 0, 0, 0, 1, 1, PolygonFillMode.Filled);
+            Draw.Box(Position.X, Position.Y, 32, 32, 0, 0, -32, 0, 0, 1, 1, PolygonFillMode.Filled);
+        }
+
+        public bool Collides(Block other)
+        {
+            var rect1 = new Rectangle(Position.X, Position.Y - 32, 32, 32);
+            var rect2 = new Rectangle(other.Position.X, other.Position.Y - 32, 32, 32);
+
+            return rect1.Intersect(rect2);
         }
     }
 }
