@@ -42,10 +42,10 @@ namespace Seanuts.Framework.Graphics
 
             if (compiled == 0)
             {
-                var buffer = new byte[1024];
+                var buffer = new byte[2048];
                 var bufferSize = 0;
 
-                GL20.glGetShaderInfoLog(shader, 1024, ref bufferSize, buffer);
+                GL20.glGetShaderInfoLog(shader, 2048, ref bufferSize, buffer);
 
                 throw new Exception(Encoding.ASCII.GetString(buffer));
             }

@@ -92,7 +92,8 @@ namespace Seanuts.Framework
             InitEvents();
             InitSettings(vsync);
             InitFramework();
-                   
+
+            PrintInfo();                   
             Sync(pollEvents);
         }
         public void Close()
@@ -162,6 +163,13 @@ namespace Seanuts.Framework
             Mouse.Init();
             Keyboard.Init();
             Draw.Init(this);
+        }
+
+        private void PrintInfo()
+        {
+            Console.WriteLine($"GL Version: {Device.GLVersion}");
+            Console.WriteLine($"GLSL Version: {Device.GLSLVersion}");
+            Console.WriteLine();
         }
 
         private void Sync(bool pollEvents)

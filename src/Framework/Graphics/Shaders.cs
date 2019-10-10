@@ -17,28 +17,30 @@ namespace Seanuts.Framework.Graphics
                 if (@default == null)
                 {
                     var vSource = new List<string>();
-                    vSource.Add("attribute vec2 aposition;");
-                    vSource.Add("uniform vec2 uresolution;");
-                    vSource.Add("uniform vec2 urotation;");
-                    vSource.Add("uniform vec2 utranslation;");
-                    vSource.Add("uniform vec2 uscale;");
-                    vSource.Add("");
-                    vSource.Add("void main() {");
-                    vSource.Add("vec2 rotatedPosition = vec2(aposition.x * urotation.y + aposition.y * urotation.x, aposition.y * urotation.y - aposition.x * urotation.x);");
-                    vSource.Add("vec2 position = (rotatedPosition + utranslation) * uscale;");
-                    vSource.Add("vec2 zeroToOne = position / uresolution;");
-                    vSource.Add("vec2 zeroToTwo = zeroToOne * 2.0;");
-                    vSource.Add("vec2 clipSpace = zeroToTwo - 1.0;");
-                    vSource.Add("gl_Position = vec4(clipSpace.x, -clipSpace.y, 0, 1);");
-                    vSource.Add("}");
+                    vSource.Add("attribute vec2 aposition;\n");
+                    vSource.Add("uniform vec2 uresolution;\n");
+                    vSource.Add("uniform vec2 urotation;\n");
+                    vSource.Add("uniform vec2 utranslation;\n");
+                    vSource.Add("uniform vec2 uscale;\n");
+                    vSource.Add("\n");
+                    vSource.Add("void main() {\n");
+                    vSource.Add("vec2 rotatedPosition = vec2(aposition.x * urotation.y + aposition.y * urotation.x, aposition.y * urotation.y - aposition.x * urotation.x);\n");
+                    vSource.Add("vec2 position = (rotatedPosition + utranslation) * uscale;\n");
+                    vSource.Add("vec2 zeroToOne = position / uresolution;\n");
+                    vSource.Add("vec2 zeroToTwo = zeroToOne * 2.0;\n");
+                    vSource.Add("vec2 clipSpace = zeroToTwo - 1.0;\n");
+                    vSource.Add("gl_Position = vec4(clipSpace.x, -clipSpace.y, 0, 1);\n");
+                    vSource.Add("}\n");
 
                     var fSource = new List<string>();
-                    fSource.Add("precision mediump float;");
-                    fSource.Add("uniform vec4 ucolor;");
-                    fSource.Add("void main() {");
-                    fSource.Add("vec4 finalcolor = ucolor;");
-                    fSource.Add("gl_FragColor = finalcolor;");
-                    fSource.Add("}");
+                    fSource.Add("#version 130\n");
+                    fSource.Add("\n");
+                    fSource.Add("precision mediump float;\n");
+                    fSource.Add("uniform vec4 ucolor;\n");
+                    fSource.Add("\n");
+                    fSource.Add("void main() {\n");
+                    fSource.Add("gl_FragColor = ucolor;\n");
+                    fSource.Add("}\n");
 
                     @default = new Shader(vSource.ToArray(), fSource.ToArray());
                 }
