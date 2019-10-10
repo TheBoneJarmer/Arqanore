@@ -16,6 +16,7 @@ namespace Seanuts.Sockets
 
         private int port;
         private int maxConnections;
+        private bool listening;
 
         public AsyncSocketServer(int port)
         {
@@ -25,11 +26,17 @@ namespace Seanuts.Sockets
 
         public void Start()
         {
+            listening = true;
+
             thread1 = new Thread(Thread1_Callback);
             thread1.Start();
 
             thread2 = new Thread(Thread2_Callback);
             thread2.Start();
+        }
+        public void Stop()
+        {
+            listening = false;
         }
 
         private void Thread1_Callback()
@@ -92,7 +99,7 @@ namespace Seanuts.Sockets
             accept.Socket = listener;
             accept.ResetEvent = new ManualResetEvent(false);
 
-            while (true)
+            while (listening)
             {
                 try
                 {
