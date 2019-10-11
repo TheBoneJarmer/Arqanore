@@ -33,11 +33,11 @@ namespace Platformer
                 // Jump boost
                 if (Type == 0)
                 {
-                    player.AddUpgrade("jump", 25);
+                    player.AddUpgrade("jump", 50.0f);
                 }
                 if (Type == 1)
                 {
-                    player.AddUpgrade("time", 0.5f);
+                    player.AddUpgrade("time", 1.0f);
                 }
 
                 Type = -1;
