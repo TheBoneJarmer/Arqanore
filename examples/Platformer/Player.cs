@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Seanuts;
 using Seanuts.Framework;
 using Seanuts.Framework.Graphics;
@@ -14,9 +16,11 @@ namespace Platformer
         public float Friction { get; set; }
 
         public int HP { get; set; }
+        private Dictionary<string, float> Upgrades { get; set; }
 
         public Player(float x, float y)
         {
+            Upgrades = new Dictionary<string, float>();
             Position = new Vector2(x, y);
             Velocity = 0;
             Friction = 0;
@@ -24,6 +28,13 @@ namespace Platformer
         }
 
         public void Update()
+        {
+            Move();
+            Jump();
+            Physics();
+        }
+
+        private void Move()
         {
             if (Keyboard.KeyDown(KeyCode.LEFT))
             {
@@ -48,12 +59,23 @@ namespace Platformer
                     this.Friction = 0;
                 }
             }
+        }
+        public void Jump()
+        {
+            float speed = 500.0f;
+
+            if (Upgrades.Any(x => x.Key == "jump"))
+            {
+                speed += Upgrades["jump"];
+            }
 
             if (Keyboard.KeyDown(KeyCode.UP) && this.Velocity == 0)
             {
-                this.Velocity = -(float)Time.DeltaTime * 500.0f;
+                this.Velocity = -(float)Time.DeltaTime * speed;
             }
-
+        }
+        public void Physics()
+        {
             if (this.Friction > Time.DeltaTime * 200)
             {
                 this.Friction = (float)Time.DeltaTime * 200;
@@ -67,23 +89,43 @@ namespace Platformer
             this.Position.Y += this.Velocity;
             this.Velocity += (float)Time.DeltaTime * 25.0f;
 
-            if (this.Position.Y >= 600)
+            if (this.Position.Y >= 600 - 32)
             {
                 this.Velocity = 0;
-                this.Position.Y = 600;
+                this.Position.Y = 600 - 32;
             }
         }
-        public void Render()
+
+        public void AddUpgrade(string name, float value)
         {
-            Draw.Box(Position.X, Position.Y, 32, 32, 0, 0, -32, 0, 0, 1, 1, PolygonFillMode.Filled);
+            if (Upgrades.ContainsKey(name))
+            {
+                Upgrades[name] += value;
+            }
+            else
+            {
+                Upgrades.Add(name, value);
+            }
+        }
+        public bool HasUpgrade(string name)
+        {
+            return Upgrades.ContainsKey(name);
+        }
+        public float GetUpgrade(string name)
+        {
+            if (Upgrades.ContainsKey(name))
+            {
+                return 0;
+            }
+            else
+            {
+                return Upgrades[name];
+            }
         }
 
-        public bool Collides(Block other)
+        public void Render()
         {
-            var rect1 = new Rectangle(Position.X, Position.Y - 32, 32, 32);
-            var rect2 = new Rectangle(other.Position.X, other.Position.Y - 32, 32, 32);
-
-            return rect1.Intersect(rect2);
+            Draw.Box(Position.X, Position.Y, 32, 32, 0, 0, 0, 0, 0, 1, 1, PolygonFillMode.Filled);
         }
     }
 }
