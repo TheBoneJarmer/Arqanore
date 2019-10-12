@@ -291,35 +291,5 @@ namespace Seanuts.Framework
         {
             Draw.Sprite(sprite, bounds.X, bounds.Y, bounds.Width, bounds.Height, offset.X, offset.Y, angle, (int)frame.X, (int)frame.Y, (int)frame.Width, (int)frame.Height);
         }
-
-        public static void Text(Font font, string text, float x, float y)
-        {
-            Draw.Text(font, text, x, y, TextAlign.Left);
-        }
-        public static void Text(Font font, string text, float x, float y, TextAlign textAlign)
-        {
-            var xx = 0.0f;
-            var width = font.MeasureText(text);
-
-            if (textAlign == TextAlign.Center)
-            {
-                xx = -(width / 2.0f);
-            }
-            if (textAlign == TextAlign.Right)
-            {
-                xx = -width;
-            }
-
-            for (var i=0; i<text.Length; i++)
-            {
-                var chr = text[i];
-                var glyph = font.Glyphs.FirstOrDefault(g => g.Char == chr);
-
-                // Draw the glyph
-                Draw.Sprite(font.Bitmap, x + xx, y, 16, 16, 0, 0, 0, glyph.X, glyph.Y, 16, 16);
-
-                xx += glyph.Width;
-            }
-        }
     }
 }
