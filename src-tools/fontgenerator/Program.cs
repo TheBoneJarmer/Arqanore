@@ -48,6 +48,7 @@ namespace FontGenerator
 
             // First argument have to be font family name
             fontFamily = args[0];
+            filename = args[0];
 
             // Every other argument is optional
             for (var i = 0; i < args.Length; i++)
