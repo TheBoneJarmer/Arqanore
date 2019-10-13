@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Seanuts
 {
-    public enum WebSocketStatus
+    public enum SNWebSocketStatus
     {
         None,
         Opening,
@@ -13,37 +13,37 @@ namespace Seanuts
         Closed
     }
 
-    public enum WebSocketMessageType
+    public enum SNWebSocketMessageType
     {
         Text = 1,
         CloseConnection = 8
     }
 
-    public enum HttpVersion
+    public enum SNHttpVersion
     {
         Http11
     }
     
-    public enum PolygonFillMode
+    public enum SNPolygonFillMode
     {
         Filled,
         Lines,
         Points
     }
-    public enum TextAlign
+    public enum SNTextAlign
     {
         Left,
         Center,
         Right
     }
 
-    public enum MouseButton
+    public enum SNMouseButton
     {
         Left,
         Middle,
         Right
     }
-    public enum KeyCode
+    public enum SNKeyCode
     {
         UNKNOWN = -1,
         SPACE = 32,

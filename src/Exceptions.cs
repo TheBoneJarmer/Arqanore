@@ -5,19 +5,19 @@ using System.Text;
 
 namespace Seanuts
 {
-    public class WebSocketException : Exception
+    public class SNWebSocketException : Exception
     {
-        public WebSocketException(string message) : base(message)
+        public SNWebSocketException(string message) : base(message)
         {
 
         }
     }
-    public class HttpException : Exception
+    public class SNHttpException : Exception
     {
         public HttpStatusCode StatusCode { get; private set; }
         public string ResponseText { get; private set; }
 
-        public HttpException(HttpStatusCode status, string responseText) : base(status.ToString() + ": " + responseText)
+        public SNHttpException(HttpStatusCode status, string responseText) : base(status.ToString() + ": " + responseText)
         {
             this.StatusCode = status;
             this.ResponseText = responseText;
