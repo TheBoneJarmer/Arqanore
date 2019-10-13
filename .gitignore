@@ -3,9 +3,9 @@
 .vscode/
 
 # Dotnet Core
-bin/
-obj/
-packages/
+**/bin/
+**/obj/
+**/packages/
 
 # Seanuts
 lib/
