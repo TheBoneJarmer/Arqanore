@@ -7,7 +7,6 @@ mkdir "tools"
 # Clone the TilarGL library
 cd "lib"
 git clone git@github.com:TheBoneJarmer/TilarGL.git
-git checkout master
 
 # Prepare the library
 cd "TilarGL"
