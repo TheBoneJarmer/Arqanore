@@ -5,4 +5,5 @@ obj/
 packages/
 
 lib/
+tools/
 glfw3.dll

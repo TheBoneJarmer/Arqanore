@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyName>font-gen</AssemblyName>
+    <AssemblyName>fontgen</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

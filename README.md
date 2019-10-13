@@ -4,39 +4,32 @@ Seanuts is an 2D OpenGL framework that focusses on multiplayer games
 ## Installation
 This library has not yet a NuGet package, once I believe it is solid enough, I will start creating and pushing packages. For now, build it and add it as reference to your project.
 
-## Building
+### Initialization
+Before you start using Seanuts, please run the init script first to prepare your working environment. If you don't, your application may compile but not work.
 
-### Requirements
+## Requirements
 
-#### Dotnet core
+### Dotnet core
 Seanuts requires dotnet core 2.1 or higher to compile.
 
-#### TilarGL
+### TilarGL
 Seanuts is built on top of my other library, TilarGL, which can be found at https://github.com/TheBoneJarmer/TilarGL.
 
-### Step-By-Step
-
-* Clone the TilarGL repository
-* Compile TilarGL according the instructions in the README
-* Make a folder called 'lib' in the root of your local Seanuts repository
-* Copy the resulting dll, TilarGL.dll, to the 'lib' folder
-* Compile Seanuts
-
 ## Usage
-Below code is the source of the example 'basic_window'. For more examples, please look in the 'examples' folder in the root of this repository.
+Below code for showing a basic window. For more examples, please look in the 'examples' folder in the root of this repository.
 
 ```C#
 using System;
 using Seanuts.Framework;
 
-namespace example1
+namespace example
 {
     class Program
     {
         static void Main(string[] args)
         {
             var window = new GameWindow(800, 600, "Basic Window");
-            window.Open(false);
+            window.Open();
         }
     }
 }
