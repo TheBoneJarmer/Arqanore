@@ -32,7 +32,7 @@ namespace FontGenerator
             ParseArgs(args, out filename, out fontFamily, out fontSize, out r, out g, out b, out a);
 
             // Generate the fontdata and save it
-            var fontData = new FontData(fontFamily, fontSize, r, g, b, a);
+            var fontData = new SNFont(fontFamily, fontSize, r, g, b, a);
             fontData.Save(filename);
         }
 
@@ -48,7 +48,7 @@ namespace FontGenerator
 
             // First argument have to be font family name
             fontFamily = args[0];
-            filename = args[0] + ".seafnt";
+            filename = args[0] + ".snfnt";
 
             // Every other argument is optional
             for (var i = 0; i < args.Length; i++)
@@ -99,7 +99,7 @@ namespace FontGenerator
             Console.WriteLine("family    The font family name. This font must be installed on your system.");
             Console.WriteLine();
             Console.WriteLine("OPTIONS");
-            Console.WriteLine("-o        The output filename. Must end with the .seafnt extension.");
+            Console.WriteLine("-o        The output filename. Must end with the .snfnt extension.");
             Console.WriteLine("-s        The font size in floating point or integer notation.");
             Console.WriteLine("-r        The red component of the color. Default value is 255.");
             Console.WriteLine("-g        The green component of the color. Default value is 255.");
@@ -107,7 +107,7 @@ namespace FontGenerator
             Console.WriteLine("-a        The alpha component of the color. Default value is 255.");
             Console.WriteLine();
             Console.WriteLine("EXAMPLES");
-            Console.WriteLine("fontgen \"Arial \" -o \"Default.seafnt\" -s 12 -g 0");
+            Console.WriteLine("fontgen \"Arial \" -o \"Default.snfnt\" -s 12 -g 0");
         }
 
         static bool RequestHelp(string[] args)

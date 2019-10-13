@@ -29,7 +29,7 @@ namespace Seanuts.Framework
         }
         public SNFont(string path) : this()
         {
-            if (!path.EndsWith(".seafnt"))
+            if (!path.EndsWith(".snfnt"))
             {
                 throw new SeanutsException("Invalid font extension");
             }
@@ -88,7 +88,7 @@ namespace Seanuts.Framework
             }
             catch (Exception)
             {
-                throw new SeanutsException("Unable to parse Seafont file. Data is corrupt");
+                throw new SeanutsException("Unable to parse Seanuts Font file. Data is corrupt");
             }
         }
 
@@ -105,9 +105,9 @@ namespace Seanuts.Framework
 
         public void Save(string filename)
         {
-            if (!filename.EndsWith(".seafnt"))
+            if (!filename.EndsWith(".snfnt"))
             {
-                throw new SeanutsException("Filename must end with .seafnt extension");
+                throw new SeanutsException("Filename must end with .snfnt extension");
             }
 
             var bmpBytes = GenerateBitmapBytes();

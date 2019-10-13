@@ -8,9 +8,9 @@ namespace FontViewer
 {
     class Program
     {
-        static GameWindow Window { get; set; }
-        static FontData Data { get; set; }
-        static Background Background { get; set; }
+        static SNWindow Window { get; set; }
+        static SNFont Data { get; set; }
+        static SNBackground Background { get; set; }
 
         static void Main(string[] args)
         {
@@ -25,9 +25,9 @@ namespace FontViewer
 
         static void Run(string filename)
         {
-            Data = new FontData(filename);
+            Data = new SNFont(filename);
 
-            Window = new GameWindow(Data.Bitmap.Width, Data.Bitmap.Height, Data.Font.FontFamily.Name);
+            Window = new SNWindow(Data.Bitmap.Width, Data.Bitmap.Height, Data.Font.FontFamily.Name);
             Window.OnLoad += Window_Onload;
             Window.OnUpdate += Window_OnUpdate;
             Window.OnRender += Window_OnRender;
@@ -36,7 +36,7 @@ namespace FontViewer
 
         static void Window_Onload()
         {
-            Background = new Background(Data.Bitmap);
+            Background = new SNBackground(Data.Bitmap);
         }
         static void Window_OnUpdate()
         {
@@ -44,11 +44,11 @@ namespace FontViewer
         }
         static void Window_OnRender()
         {
-            Draw.Background(Background, 0, 0, Background.Width, Background.Height, 1, 1, 0);
+            SNDraw.Background(Background, 0, 0, Background.Width, Background.Height, 1, 1, 0);
 
             foreach (var rect in Data.Bounds)
             {
-                Draw.Box(rect.X - 1, rect.Y - 1, rect.Width + 2, rect.Height + 2, 0, 0, 0, 255, 0, 255, 255, PolygonFillMode.Lines);
+                SNDraw.Box(rect.X - 1, rect.Y - 1, rect.Width + 2, rect.Height + 2, 0, 0, 0, 255, 0, 255, 255, SNPolygonFillMode.Lines);
             }
         }
 
