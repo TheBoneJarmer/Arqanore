@@ -25,7 +25,7 @@ namespace Seanuts.Framework
             Draw.gameWindow = gameWindow;
         }
 
-        public static void Box(float x, float y, float width, float height, float angle, float offsetX, float offsetY, float r, float g, float b, float a, PolygonFillMode fillMode)
+        public static void Box(float x, float y, float width, float height, float angle, float offsetX, float offsetY, int r, int g, int b, int a, PolygonFillMode fillMode)
         {
             float[] vertices = new float[8]
             {
@@ -38,7 +38,7 @@ namespace Seanuts.Framework
             Polygon(vertices, x, y, angle, r, g, b, a, fillMode);
         }
 
-        public static void Line(float x1, float y1, float x2, float y2, float r, float g, float b, float a)
+        public static void Line(float x1, float y1, float x2, float y2, int r, int g, int b, int a)
         {
             var positionAttribLocation = GL20.glGetAttribLocation(Shaders.Default.Id, "aposition");
             var rotationUniformLocation = GL20.glGetUniformLocation(Shaders.Default.Id, "urotation");
@@ -59,7 +59,7 @@ namespace Seanuts.Framework
             GL20.glUniform2f(rotationUniformLocation, 0, 1);
             GL20.glUniform2f(scaleUniformLocation, 1.0f, 1.0f);
             GL20.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
-            GL20.glUniform4f(colorUniformLocation, r, g, b, a);
+            GL20.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
             GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
@@ -67,7 +67,7 @@ namespace Seanuts.Framework
             GL11.glDrawArrays(GL11.GL_LINES, 0, 8);
         }
 
-        public static void Polygon(float[] vertices, float x, float y, float angle, float r, float g, float b, float a, PolygonFillMode fillMode)
+        public static void Polygon(float[] vertices, float x, float y, float angle, int r, int g, int b, int a, PolygonFillMode fillMode)
         {
             var cos = System.Math.Cos(MathHelper.ToRadians(angle + 90));
             var sin = System.Math.Sin(MathHelper.ToRadians(angle + 90));
@@ -91,7 +91,7 @@ namespace Seanuts.Framework
             GL20.glUniform2f(rotationUniformLocation, (float)cos, (float)sin);
             GL20.glUniform2f(scaleUniformLocation, 1.0f, 1.0f);
             GL20.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
-            GL20.glUniform4f(colorUniformLocation, r, g, b, a);
+            GL20.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
             GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);

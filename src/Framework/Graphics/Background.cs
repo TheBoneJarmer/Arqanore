@@ -13,10 +13,18 @@ namespace Seanuts.Framework.Graphics
         public int Width { get; private set; }
         public int Height { get; private set; }
 
+        public Background(Bitmap bmp)
+        {
+            Load(bmp);
+        }
         public Background(string src)
         {
+            Load(new Bitmap(Image.FromFile(src)));
+        }
+
+        private void Load(Bitmap bmp)
+        {
             var ids = new uint[1];
-            var bmp = new Bitmap(Image.FromFile(src));
             var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
             // Set properties

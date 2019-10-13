@@ -2,6 +2,7 @@
 using System.Linq;
 using Seanuts;
 using Seanuts.Framework;
+using Seanuts.Framework.Graphics;
 
 namespace FontViewer
 {
@@ -9,6 +10,7 @@ namespace FontViewer
     {
         static GameWindow Window { get; set; }
         static FontData Data { get; set; }
+        static Background Background { get; set; }
 
         static void Main(string[] args)
         {
@@ -18,12 +20,14 @@ namespace FontViewer
                 return;
             }
 
-
+            Run(args[0]);
         }
 
         static void Run(string filename)
         {
             Data = new FontData(filename);
+            Data.Color = System.Drawing.Color.White;
+            Data.GenerateBitmap();
 
             Window = new GameWindow(Data.Bitmap.Width, Data.Bitmap.Height, Data.Font.FontFamily.Name);
             Window.OnLoad += Window_Onload;
@@ -34,7 +38,7 @@ namespace FontViewer
 
         static void Window_Onload()
         {
-
+            Background = new Background(Data.Bitmap);
         }
         static void Window_OnUpdate()
         {
@@ -42,7 +46,12 @@ namespace FontViewer
         }
         static void Window_OnRender()
         {
-            
+            Draw.Background(Background, 0, 0, Background.Width, Background.Height, 1, 1, 0);
+
+            foreach (var rect in Data.Bounds)
+            {
+                Draw.Box(rect.X - 1, rect.Y - 1, rect.Width + 2, rect.Height + 2, 0, 0, 0, 255, 0, 255, 255, PolygonFillMode.Lines);
+            }
         }
 
         static void DisplayHelp()

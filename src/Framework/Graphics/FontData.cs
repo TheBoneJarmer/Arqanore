@@ -12,15 +12,23 @@ namespace Seanuts.Framework
         private int GlyphsHor { get; set; }
         private int GlyphsVert { get; set; }
 
-        public System.Drawing.Bitmap Bitmap { get; private set; }
-        public System.Drawing.RectangleF[] Bounds { get; private set; }
-        public System.Drawing.Font Font { get; private set; }
-        public System.Drawing.Color Color { get; private set; }
+        public System.Drawing.Bitmap Bitmap { get; set; }
+        public System.Drawing.RectangleF[] Bounds { get; set; }
+        public System.Drawing.Font Font { get; set; }
+        public System.Drawing.Color Color { get; set; }
 
-        public FontData(string path)
+        public FontData()
         {
             Bounds = new System.Drawing.RectangleF[255];
+            Color = System.Drawing.Color.White;
+            Font = new System.Drawing.Font("Arial", 12);
+            CellSize = 24;
 
+            GlyphsHor = 16;
+            GlyphsVert = 16;
+        }
+        public FontData(string path) : this()
+        {
             if (!path.EndsWith(".seafnt"))
             {
                 throw new SeanutsException("Invalid font extension");
@@ -70,7 +78,13 @@ namespace Seanuts.Framework
                 }
 
                 // Generate the bitmap
-                Bitmap = new System.Drawing.Bitmap(new MemoryStream(bmpBytes));
+                using (var ms = new MemoryStream(bmpBytes))
+                {
+                    Bitmap = new System.Drawing.Bitmap(ms);
+                }
+
+                // Set some remaining variables
+                CellSize = (int)System.Math.Floor(fontSize * 2);
             }
             catch (Exception)
             {
@@ -78,17 +92,13 @@ namespace Seanuts.Framework
             }
         }
 
-        public FontData(string fontFamily, float fontSize, int r, int g, int b, int a)
+        public FontData(string fontFamily, float fontSize, int r, int g, int b, int a) : this()
         {
             CellSize = (int)System.Math.Floor(fontSize * 2);
-            GlyphsHor = 16;
-            GlyphsVert = 16;
-
             Color = System.Drawing.Color.FromArgb(a, r, g, b);
-            Bounds = new System.Drawing.RectangleF[255];
             Font = new System.Drawing.Font(fontFamily, fontSize);
             Bitmap = new System.Drawing.Bitmap(CellSize * GlyphsHor, CellSize * GlyphsVert);
-
+            
             GenerateBitmap();
             GenerateBounds();
         }
@@ -159,10 +169,17 @@ namespace Seanuts.Framework
             return result.ToArray();
         }
 
-        private void GenerateBitmap()
+        public void GenerateBitmap()
         {
-            var brush = new System.Drawing.SolidBrush(Color);
+            if (Bitmap == null)
+            {
+                Bitmap = new System.Drawing.Bitmap(CellSize * GlyphsHor, CellSize * GlyphsVert);
+            }
+
+            var brush = new System.Drawing.SolidBrush(Color);            
             var grp = System.Drawing.Graphics.FromImage(Bitmap);
+
+            grp.Clear(System.Drawing.Color.FromArgb(0, 0, 0, 0));
 
             for (var i=0; i<Bounds.Length; i++)
             {
@@ -174,7 +191,7 @@ namespace Seanuts.Framework
                 grp.DrawString(chr.ToString(), Font, brush, point);
             }
         }
-        private void GenerateBounds()
+        public void GenerateBounds()
         {
             for (var i=0; i<Bounds.Length; i++)
             {
