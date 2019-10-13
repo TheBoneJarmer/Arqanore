@@ -26,8 +26,8 @@ namespace FontViewer
         static void Run(string filename)
         {
             Data = new FontData(filename);
-            Data.Color = System.Drawing.Color.White;
-            Data.GenerateBitmap();
+            // Data.Color = System.Drawing.Color.White;
+            // Data.GenerateBitmap();
 
             Window = new GameWindow(Data.Bitmap.Width, Data.Bitmap.Height, Data.Font.FontFamily.Name);
             Window.OnLoad += Window_Onload;
