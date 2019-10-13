@@ -32,7 +32,7 @@ namespace FontGenerator
             ParseArgs(args, out filename, out fontFamily, out fontSize, out r, out g, out b, out a);
 
             // Generate the fontdata and save it
-            var fontData = new SNFont(fontFamily, fontSize, r, g, b, a);
+            var fontData = new SNFontData(fontFamily, fontSize, r, g, b, a);
             fontData.Save(filename);
         }
 

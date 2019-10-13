@@ -9,7 +9,7 @@ namespace FontViewer
     class Program
     {
         static SNWindow Window { get; set; }
-        static SNFont Data { get; set; }
+        static SNFontData Data { get; set; }
         static SNBackground Background { get; set; }
 
         static void Main(string[] args)
@@ -25,7 +25,7 @@ namespace FontViewer
 
         static void Run(string filename)
         {
-            Data = new SNFont(filename);
+            Data = new SNFontData(filename);
 
             Window = new SNWindow(Data.Bitmap.Width, Data.Bitmap.Height, Data.Font.FontFamily.Name);
             Window.OnLoad += Window_Onload;
@@ -60,7 +60,7 @@ namespace FontViewer
             Console.WriteLine("Displays seafont information");
             Console.WriteLine();
             Console.WriteLine("ARGUMENTS");
-            Console.WriteLine("filename  The path to the .seafnt file");
+            Console.WriteLine("filename  The path to the .snfnt file");
         }
 
         static bool RequestsHelp(string[] args)
