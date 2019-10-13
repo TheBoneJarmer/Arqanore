@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Seanuts.Framework
@@ -14,17 +15,78 @@ namespace Seanuts.Framework
         public System.Drawing.Bitmap Bitmap { get; private set; }
         public System.Drawing.RectangleF[] Bounds { get; private set; }
         public System.Drawing.Font Font { get; private set; }
-        public System.Drawing.Brush Brush { get; private set; }
+        public System.Drawing.Color Color { get; private set; }
 
-        public FontData(string fontFamily, float fontSize, System.Drawing.Color color)
+        public FontData(string path)
+        {
+            Bounds = new System.Drawing.RectangleF[255];
+
+            if (!path.EndsWith(".seafnt"))
+            {
+                throw new SeanutsException("Invalid font extension");
+            }
+
+            try
+            {
+                var bytes = File.ReadAllBytes(path);
+                var index = 40;
+
+                // Get all indices from the header
+                var bmpBytesCount = int.Parse(Encoding.ASCII.GetString(bytes, 0, 8));
+                var glyphBoundsDataBytesCount = int.Parse(Encoding.ASCII.GetString(bytes, 8, 8));
+                var fontFamilyBytesCount = int.Parse(Encoding.ASCII.GetString(bytes, 16, 8));
+                var fontSizeBytesCount = int.Parse(Encoding.ASCII.GetString(bytes, 24, 8));
+                var argbBytesCount = int.Parse(Encoding.ASCII.GetString(bytes, 32, 8));
+
+                // Get all the data
+                var fontFamily = Encoding.ASCII.GetString(bytes, index, fontFamilyBytesCount);
+                index += fontFamilyBytesCount;
+
+                var fontSize = float.Parse(Encoding.ASCII.GetString(bytes, index, fontSizeBytesCount));
+                index += fontSizeBytesCount;
+
+                var argb = int.Parse(Encoding.ASCII.GetString(bytes, index, argbBytesCount));
+                index += argbBytesCount;
+
+                var bmpBytes = bytes.ToList().GetRange(index, bmpBytesCount).ToArray();
+                index += bmpBytesCount;
+
+                var glyphBoundsData = Encoding.ASCII.GetString(bytes, index, glyphBoundsDataBytesCount);
+
+                // Generate the font and color property
+                this.Font = new System.Drawing.Font(fontFamily, fontSize);
+                this.Color = System.Drawing.Color.FromArgb(argb);
+
+                // Fill the bounds array
+                for (var i = 0; i < Bounds.Length; i++)
+                {
+                    var entry = glyphBoundsData.Split(';')[i];
+                    var x = float.Parse(entry.Split(',')[0]);
+                    var y = float.Parse(entry.Split(',')[1]);
+                    var width = float.Parse(entry.Split(',')[2]);
+                    var height = float.Parse(entry.Split(',')[3]);
+
+                    Bounds[i] = new System.Drawing.RectangleF(x, y, width, height);
+                }
+
+                // Generate the bitmap
+                Bitmap = new System.Drawing.Bitmap(new MemoryStream(bmpBytes));
+            }
+            catch (Exception)
+            {
+                throw new SeanutsException("Unable to parse Seafont file. Data is corrupt");
+            }
+        }
+
+        public FontData(string fontFamily, float fontSize, int r, int g, int b, int a)
         {
             CellSize = (int)System.Math.Floor(fontSize * 2);
             GlyphsHor = 16;
             GlyphsVert = 16;
 
+            Color = System.Drawing.Color.FromArgb(a, r, g, b);
             Bounds = new System.Drawing.RectangleF[255];
             Font = new System.Drawing.Font(fontFamily, fontSize);
-            Brush = new System.Drawing.SolidBrush(color);
             Bitmap = new System.Drawing.Bitmap(CellSize * GlyphsHor, CellSize * GlyphsVert);
 
             GenerateBitmap();
@@ -34,24 +96,33 @@ namespace Seanuts.Framework
         public void Save()
         {
             var bmpBytes = GenerateBitmapBytes();
-            var dataBytes = GenerateDataBytes();
-            var headerBytes = GenerateHeaderBytes(bmpBytes.Length, dataBytes.Length);
+            var glyphBoundsDataBytes = GenerateGlyphBoundsDataBytes();
+            var headerBytes = GenerateHeaderBytes(bmpBytes.Length, glyphBoundsDataBytes.Length);
 
             var fs = new FileStream(Font.FontFamily.Name + ".seafnt", FileMode.Create);
 
             fs.Write(headerBytes, 0, headerBytes.Length);
             fs.Write(bmpBytes, 0, bmpBytes.Length);
-            fs.Write(dataBytes, 0, dataBytes.Length);
+            fs.Write(glyphBoundsDataBytes, 0, glyphBoundsDataBytes.Length);
 
             fs.Close();
         }
 
-        private byte[] GenerateHeaderBytes(int bmpBytesCount, int dataBytesCount)
+        private byte[] GenerateHeaderBytes(int bmpBytesCount, int glyphBoundsDataBytesCount)
         {
             var result = new List<byte>();
 
+            // Add all lengths at the begin of the header
             result.AddRange(Encoding.ASCII.GetBytes(bmpBytesCount.ToString().PadLeft(8, '0')));
-            result.AddRange(Encoding.ASCII.GetBytes(dataBytesCount.ToString().PadLeft(8, '0')));
+            result.AddRange(Encoding.ASCII.GetBytes(glyphBoundsDataBytesCount.ToString().PadLeft(8, '0')));
+            result.AddRange(Encoding.ASCII.GetBytes(Font.FontFamily.Name.Length.ToString().PadLeft(8, '0')));
+            result.AddRange(Encoding.ASCII.GetBytes(Font.Size.ToString().Length.ToString().PadLeft(8, '0')));
+            result.AddRange(Encoding.ASCII.GetBytes(Color.ToArgb().ToString().Length.ToString().PadLeft(8, '0')));
+
+            // Add the font data
+            result.AddRange(Encoding.ASCII.GetBytes(Font.FontFamily.Name));
+            result.AddRange(Encoding.ASCII.GetBytes(Font.Size.ToString()));
+            result.AddRange(Encoding.ASCII.GetBytes(Color.ToArgb().ToString()));
 
             return result.ToArray();
         }
@@ -67,7 +138,7 @@ namespace Seanuts.Framework
 
             return result.ToArray();
         }
-        private byte[] GenerateDataBytes()
+        private byte[] GenerateGlyphBoundsDataBytes()
         {
             var result = new List<byte>();
 
@@ -90,6 +161,7 @@ namespace Seanuts.Framework
 
         private void GenerateBitmap()
         {
+            var brush = new System.Drawing.SolidBrush(Color);
             var grp = System.Drawing.Graphics.FromImage(Bitmap);
 
             for (var i=0; i<Bounds.Length; i++)
@@ -99,7 +171,7 @@ namespace Seanuts.Framework
                 var x = (float)System.Math.Floor(((i / (float)GlyphsVert) - y) * (float)GlyphsHor);
                 var point = new System.Drawing.PointF(x * CellSize, y * CellSize);
                 
-                grp.DrawString(chr.ToString(), Font, Brush, point);
+                grp.DrawString(chr.ToString(), Font, brush, point);
             }
         }
         private void GenerateBounds()

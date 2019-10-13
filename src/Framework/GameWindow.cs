@@ -200,7 +200,7 @@ namespace Seanuts.Framework
                 GL10.glEnable(GL11.GL_BLEND);
                 GL10.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 GL10.glViewport(0, 0, Width, Height);
-                GL10.glClearColor(clearColor.R, clearColor.G, clearColor.B, clearColor.A);
+                GL10.glClearColor(clearColor.R / 255.0f, clearColor.G / 255.0f, clearColor.B / 255.0f, clearColor.A / 255.0f);
                 GL10.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
                 if (OnRender != null)

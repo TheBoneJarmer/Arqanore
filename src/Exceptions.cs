@@ -34,4 +34,11 @@ namespace Seanuts
             this.Description = description;
         }
     }
+    public class SeanutsException : Exception
+    {
+        public SeanutsException(string message) : base(message)
+        {
+            
+        }
+    }
 }

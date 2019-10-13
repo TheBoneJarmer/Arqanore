@@ -37,14 +37,6 @@ namespace Seanuts.Framework
 
             Polygon(vertices, x, y, angle, r, g, b, a, fillMode);
         }
-        public static void Box(float x, float y, float width, float height, float angle, float offsetX, float offsetY, Color color, PolygonFillMode fillMode)
-        {
-            Draw.Box(x, y, width, height, angle, offsetX, offsetY, color.R, color.G, color.B, color.A, fillMode);
-        }
-        public static void Box(Rectangle bounds, Vector2 offset, float angle, Color color, PolygonFillMode fillMode)
-        {
-            Draw.Box(bounds.X, bounds.Y, bounds.Width, bounds.Height, angle, offset.X, offset.Y, color, fillMode);
-        }
 
         public static void Line(float x1, float y1, float x2, float y2, float r, float g, float b, float a)
         {
@@ -73,14 +65,6 @@ namespace Seanuts.Framework
             GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
 
             GL11.glDrawArrays(GL11.GL_LINES, 0, 8);
-        }
-        public static void Line(float x1, float y1, float x2, float y2, Color color)
-        {
-            Draw.Line(x1, y1, x2, y2, color.R, color.G, color.B, color.A);
-        }
-        public static void Line(Vector2 v1, Vector2 v2, Color color)
-        {
-            Draw.Line(v1.X, v1.Y, v2.X, v2.Y, color);
         }
 
         public static void Polygon(float[] vertices, float x, float y, float angle, float r, float g, float b, float a, PolygonFillMode fillMode)
@@ -129,14 +113,6 @@ namespace Seanuts.Framework
 
             GL11.glDrawArrays(GL11.GL_POLYGON, 0, vertices.Length / 2);
         }
-        public static void Polygon(float[] vertices, float x, float y, float angle, Color color, PolygonFillMode fillMode)
-        {
-            Draw.Polygon(vertices, x, y, angle, color.R, color.G, color.B, color.A, fillMode);
-        }
-        public static void Polygon(Vector2[] vertices, Vector2 position, float angle, Color color, PolygonFillMode fillMode)
-        {
-            Draw.Polygon(vertices.ToFloatArray(), position.X, position.Y, angle, color, fillMode);
-        }
 
         public static void Background(Background background, float x, float y, float width, float height, float scaleX, float scaleY, float angle)
         {
@@ -176,18 +152,6 @@ namespace Seanuts.Framework
 
             GL10.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices.Length / 2);
-        }
-        public static void Background(Background background, float x, float y, float width, float height, float scaleX, float scaleY)
-        {
-            Draw.Background(background, x, y, width, height, scaleX, scaleY, 0);
-        }
-        public static void Background(Background background, float x, float y, float width, float height)
-        {
-            Draw.Background(background, x, y, width, height, 1, 1, 0);
-        }
-        public static void Background(Background background, Rectangle bounds, Vector2 scale, float angle)
-        {
-            Draw.Background(background, bounds.X, bounds.X, bounds.Width, bounds.Height, scale.X, scale.Y, angle);
         }
 
         public static void Tileset(Tileset tileset, float x, float y, float width, float height, int tileX, int tileY, int tileWidth, int tileHeight, float scaleX, float scaleY)
@@ -230,10 +194,6 @@ namespace Seanuts.Framework
 
             GL10.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices.Length / 2);
-        }
-        public static void Tileset(Tileset tileset, float x, float y, float width, float height, int tileX, int tileY, int tileWidth, int tileHeight)
-        {
-            Draw.Tileset(tileset, x, y, width, height, tileX, tileY, tileWidth, tileHeight, 1, 1);
         }
 
         public static void Sprite(Sprite sprite, float x, float y, float width, float height, float offsetX, float offsetY, float angle, int framehor, int framevert, int framewidth, int frameheight, float scaleX, float scaleY)
@@ -278,18 +238,6 @@ namespace Seanuts.Framework
 
             GL10.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices.Length / 2);
-        }
-        public static void Sprite(Sprite sprite, float x, float y, float width, float height, float offsetX, float offsetY, float angle, int frameHor, int frameVert, int frameWidth, int frameHeight)
-        {
-            Draw.Sprite(sprite, x, y, width, height, offsetX, offsetY, angle, frameHor, frameVert, frameWidth, frameHeight, 1.0f, 1.0f);
-        }
-        public static void Sprite(Sprite sprite, Rectangle bounds, Rectangle frame, Vector2 offset, Vector2 scale, float angle)
-        {
-            Draw.Sprite(sprite, bounds.X, bounds.Y, bounds.Width, bounds.Height, offset.X, offset.Y, angle, (int)frame.X, (int)frame.Y, (int)frame.Width, (int)frame.Height, scale.X, scale.Y);
-        }
-        public static void Sprite(Sprite sprite, Rectangle bounds, Rectangle frame, Vector2 offset, float angle)
-        {
-            Draw.Sprite(sprite, bounds.X, bounds.Y, bounds.Width, bounds.Height, offset.X, offset.Y, angle, (int)frame.X, (int)frame.Y, (int)frame.Width, (int)frame.Height);
         }
     }
 }

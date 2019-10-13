@@ -66,7 +66,7 @@ namespace FontGenerator
         }
         static void Run(string fontFamily, float fontSize, int r, int g, int b, int a)
         {
-            var fontData = new FontData(fontFamily, fontSize, Color.FromArgb(a, r, g, b));
+            var fontData = new FontData(fontFamily, fontSize, r, g, b, a);
             fontData.Save();
         }
 
