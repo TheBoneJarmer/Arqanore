@@ -103,13 +103,18 @@ namespace Seanuts.Framework
             GenerateBounds();
         }
 
-        public void Save()
+        public void Save(string filename)
         {
+            if (!filename.EndsWith(".seafnt"))
+            {
+                throw new SeanutsException("Filename must end with .seafnt extension");
+            }
+
             var bmpBytes = GenerateBitmapBytes();
             var glyphBoundsDataBytes = GenerateGlyphBoundsDataBytes();
             var headerBytes = GenerateHeaderBytes(bmpBytes.Length, glyphBoundsDataBytes.Length);
 
-            var fs = new FileStream(Font.FontFamily.Name + ".seafnt", FileMode.Create);
+            var fs = new FileStream(filename, FileMode.Create);
 
             fs.Write(headerBytes, 0, headerBytes.Length);
             fs.Write(bmpBytes, 0, bmpBytes.Length);

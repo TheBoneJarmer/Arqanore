@@ -9,6 +9,18 @@ namespace FontGenerator
     {
         static void Main(string[] args)
         {
+            if (RequestHelp(args))
+            {
+                DisplayHelp();
+                Environment.Exit(0);
+            }
+
+            Run(args);
+        }
+
+        static void Run(string[] args)
+        {
+            var filename = "";
             var fontFamily = "";
             var fontSize = 0f;
             var r = 0;
@@ -16,95 +28,85 @@ namespace FontGenerator
             var b = 0;
             var a = 0;
 
-            if (RequestHelp(args))
-            {
-                DisplayHelp();
-                return;
-            }
-
-            ParseArgs(args, out fontFamily, out fontSize, out r, out g, out b, out a);
-            Run(fontFamily, fontSize, r, g, b, a);
-        }
-
-        static void ParseArgs(string[] args, out string fontFamily, out float fontSize, out int r, out int g, out int b, out int a)
-        {
-            fontFamily = "";
-            fontSize = 0f;
-            r = 0;
-            g = 0;
-            b = 0;
-            a = 0;
-            
-            // Check the args
-            if (args.Length != 2 && args.Length != 6)
-            {
-                Console.Error.WriteLine("Too few parameters. Please look at the help for more info.");
-                Environment.Exit(1);
-            }
-
             // Parse the arguments
-            if (args.Length > 1) {
-            	fontFamily = args[0];
+            ParseArgs(args, out filename, out fontFamily, out fontSize, out r, out g, out b, out a);
 
-		        if (!float.TryParse(args[1], out fontSize))
-		        {
-		            Console.Error.WriteLine($"Font size value {args[1]} is not a valid floating point decimal");
-		            Environment.Exit(2);
-		        }
-            }
-            
-            if (args.Length == 2)
-            {
-            	r = 255;
-            	g = 255;
-            	b = 255;
-            	a = 255;
-            }
-            
-            if (args.Length == 6)
-            {
-            	if (!int.TryParse(args[2], out r))
-		        {
-		            Console.Error.WriteLine($"Red component value {args[2]} is not a valid integer decimal");
-		            Environment.Exit(2);
-		        }
-		        if (!int.TryParse(args[3], out g))
-		        {
-		            Console.Error.WriteLine($"Red component value {args[3]} is not a valid integer decimal");
-		            Environment.Exit(2);
-		        }
-		        if (!int.TryParse(args[4], out b))
-		        {
-		            Console.Error.WriteLine($"Red component value {args[4]} is not a valid integer decimal");
-		            Environment.Exit(2);
-		        }
-		        if (!int.TryParse(args[5], out a))
-		        {
-		            Console.Error.WriteLine($"Red component value {args[5]} is not a valid integer decimal");
-		            Environment.Exit(2);
-		        }
-            }
-        }
-        static void Run(string fontFamily, float fontSize, int r, int g, int b, int a)
-        {
+            // Generate the fontdata and save it
             var fontData = new FontData(fontFamily, fontSize, r, g, b, a);
-            fontData.Save();
+            fontData.Save(filename);
+        }
+
+        static void ParseArgs(string[] args, out string filename, out string fontFamily, out float fontSize, out int r, out int g, out int b, out int a)
+        {
+            filename = "";
+            fontFamily = "";
+            fontSize = 16f;
+            r = 255;
+            g = 255;
+            b = 255;
+            a = 255;
+
+            // First argument have to be font family name
+            fontFamily = args[0];
+
+            // Every other argument is optional
+            for (var i = 0; i < args.Length; i++)
+            {
+                var arg = args[i];
+
+                if (arg == "-o")
+                {
+                    filename = args[i + 1];
+                    i++;
+                }
+                if (arg == "-s")
+                {
+                    fontSize = float.Parse(args[i + 1]);
+                    i++;
+                }
+                if (arg == "-r")
+                {
+                    r = int.Parse(args[i + 1]);
+                    i++;
+                }
+                if (arg == "-g")
+                {
+                    g = int.Parse(args[i + 1]);
+                    i++;
+                }
+                if (arg == "-b")
+                {
+                    b = int.Parse(args[i + 1]);
+                    i++;
+                }
+                if (arg == "-a")
+                {
+                    a = int.Parse(args[i + 1]);
+                    i++;
+                }
+            }
         }
 
         static void DisplayHelp()
         {
-            Console.WriteLine("Usage: font-gen <family> <size> (<r> <g> <b> <a>)");
+            Console.WriteLine("Usage: font-gen <family> [options]");
             Console.WriteLine();
             Console.WriteLine("ABOUT");
             Console.WriteLine("This font generator can be used to generate bitmap fonts for the Seanuts framework");
             Console.WriteLine();
             Console.WriteLine("ARGUMENTS");
             Console.WriteLine("family    The font family name. This font must be installed on your system.");
-            Console.WriteLine("size      The font size in floating point or integer notation.");
-            Console.WriteLine("r         (Optional) The red component of the color. Default value is 255.");
-            Console.WriteLine("g         (Optional) The green component of the color. Default value is 255.");
-            Console.WriteLine("b         (Optional) The blue component of the color. Default value is 255.");
-            Console.WriteLine("a         (Optional) The alpha component of the color. Default value is 255.");
+            Console.WriteLine();
+            Console.WriteLine("OPTIONS");
+            Console.WriteLine("-o        The output filename. Must end with the .seafnt extension.");
+            Console.WriteLine("-s        The font size in floating point or integer notation.");
+            Console.WriteLine("-r        The red component of the color. Default value is 255.");
+            Console.WriteLine("-g        The green component of the color. Default value is 255.");
+            Console.WriteLine("-b        The blue component of the color. Default value is 255.");
+            Console.WriteLine("-a        The alpha component of the color. Default value is 255.");
+            Console.WriteLine();
+            Console.WriteLine("EXAMPLES");
+            Console.WriteLine("fontgen \"Arial \" -o \"Default.seafnt\" -s 12 -g 0");
         }
 
         static bool RequestHelp(string[] args)
