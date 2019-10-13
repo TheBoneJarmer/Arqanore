@@ -10,14 +10,14 @@ namespace Platformer
 {
     class Program
     {
-        static GameWindow Window { get; set; }
+        static SNWindow Window { get; set; }
         static Player Player { get; set; }
         static Block[] Blocks { get; set; }
         static Item[] Items { get; set; }
         
         static void Main(string[] args)
         {
-            Window = new GameWindow(800, 600, "Platformer");
+            Window = new SNWindow(800, 600, "Platformer");
             Window.OnLoad += Window_OnLoad;
             Window.OnUpdate += Window_OnUpdate;
             Window.OnRender += Window_OnRender;
@@ -26,7 +26,7 @@ namespace Platformer
 
         static void Window_OnLoad()
         {
-            Window.ClearColor = Color.WHITE;
+            Window.ClearColor = SNColor.WHITE;
             Player = new Player(Window.Width / 2f, (int)Math.Floor(Window.Height / 100.0 * 75.0));
 
             // Generate a level
@@ -93,7 +93,7 @@ namespace Platformer
                 }
             }
 
-            if (Keyboard.KeyDown(KeyCode.ESCAPE))
+            if (SNKeyboard.KeyDown(SNKeyCode.ESCAPE))
             {
                 Window.Close();
             }

@@ -10,11 +10,11 @@ namespace Platformer
     public class Item
     {
         public int Type { get; set; }
-        public Vector2 Position { get; set; }
+        public SNVector2 Position { get; set; }
 
         public Item(float x, float y)
         {
-            Position = new Vector2(x, y);
+            Position = new SNVector2(x, y);
             Type = 0;
 
             if (new Random().Next(0, 100) > 50)
@@ -25,8 +25,8 @@ namespace Platformer
         
         public void Update(Player player)
         {
-            var rect1 = new Rectangle(Position.X, Position.Y, 32, 32);
-            var rect2 = new Rectangle(player.Position.X, player.Position.Y, 32, 32);
+            var rect1 = new SNRectangle(Position.X, Position.Y, 32, 32);
+            var rect2 = new SNRectangle(player.Position.X, player.Position.Y, 32, 32);
 
             if (rect1.Intersect(rect2))
             {
@@ -48,11 +48,11 @@ namespace Platformer
         {
             if (Type == 0)
             {
-                Draw.Box(Position.X, Position.Y, 16, 16, 45, 8, 8, 1, 0, 1, 1, PolygonFillMode.Filled);
+                SNDraw.Box(Position.X, Position.Y, 16, 16, 45, 8, 8, 255, 0, 255, 255, SNPolygonFillMode.Filled);
             }
             if (Type == 1)
             {
-                Draw.Box(Position.X, Position.Y, 16, 16, 45, 8, 8, 0, 1, 1, 1, PolygonFillMode.Filled);
+                SNDraw.Box(Position.X, Position.Y, 16, 16, 45, 8, 8, 0, 255, 255, 255, SNPolygonFillMode.Filled);
             }
         }
     }

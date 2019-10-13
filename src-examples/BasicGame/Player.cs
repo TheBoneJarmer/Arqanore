@@ -9,26 +9,26 @@ namespace BasicGame
 {
     public class Player
     {
-        public Vector2 Position { get; private set; }
+        public SNVector2 Position { get; private set; }
         public int HP { get; private set; }
 
         public Player()
         {
-            this.Position = new Vector2(400, 300);
+            this.Position = new SNVector2(400, 300);
             this.HP = 100;
         }
 
         public void Update()
         {
-            var speed = (float)Time.DeltaTime * 100f;
+            var speed = (float)SNTime.DeltaTime * 100f;
             var speedX = 0f;
             var speedY = 0f;
 
-            if (Keyboard.KeyDown(KeyCode.LEFT))
+            if (SNKeyboard.KeyDown(SNKeyCode.LEFT))
             {
                 speedX = -speed;
             }
-            else if (Keyboard.KeyDown(KeyCode.RIGHT))
+            else if (SNKeyboard.KeyDown(SNKeyCode.RIGHT))
             {
                 speedX = speed;
             }
@@ -37,11 +37,11 @@ namespace BasicGame
                 speedX = 0;
             }
 
-            if (Keyboard.KeyDown(KeyCode.UP))
+            if (SNKeyboard.KeyDown(SNKeyCode.UP))
             {
                 speedY = -speed;
             }
-            else if (Keyboard.KeyDown(KeyCode.DOWN))
+            else if (SNKeyboard.KeyDown(SNKeyCode.DOWN))
             {
                 speedY = speed;
             }
@@ -56,7 +56,7 @@ namespace BasicGame
 
         public void Render()
         {
-            Draw.Box(Position.X, Position.Y, 32, 32, 0, -16, -16, 0, 0, 1.0f,1.0f, PolygonFillMode.Filled);        
+            SNDraw.Box(Position.X, Position.Y, 32, 32, 0, -16, -16, 0, 0, 255,255, SNPolygonFillMode.Filled);        
         }
     }
 }

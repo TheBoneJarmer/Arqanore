@@ -11,7 +11,7 @@ namespace Platformer
 {
     public class Player
     {
-        public Vector2 Position { get; set; }
+        public SNVector2 Position { get; set; }
         public float Velocity { get; set; }
         public float Friction { get; set; }
 
@@ -21,7 +21,7 @@ namespace Platformer
         public Player(float x, float y)
         {
             Upgrades = new Dictionary<string, float>();
-            Position = new Vector2(x, y);
+            Position = new SNVector2(x, y);
             Velocity = 0;
             Friction = 0;
             HP = 100;
@@ -36,23 +36,23 @@ namespace Platformer
 
         private void Move()
         {
-            if (Keyboard.KeyDown(KeyCode.LEFT))
+            if (SNKeyboard.KeyDown(SNKeyCode.LEFT))
             {
-                this.Friction -= (float)Time.DeltaTime * 10.0f;
+                this.Friction -= (float)SNTime.DeltaTime * 10.0f;
             }
-            else if (Keyboard.KeyDown(KeyCode.RIGHT))
+            else if (SNKeyboard.KeyDown(SNKeyCode.RIGHT))
             {
-                this.Friction += (float)Time.DeltaTime * 10.0f;
+                this.Friction += (float)SNTime.DeltaTime * 10.0f;
             }
             else
             {
-                if (this.Friction > (float)Time.DeltaTime * 10.0f)
+                if (this.Friction > (float)SNTime.DeltaTime * 10.0f)
                 {
-                    this.Friction -= (float)Time.DeltaTime * 2.5f;
+                    this.Friction -= (float)SNTime.DeltaTime * 2.5f;
                 }
-                else if (this.Friction < -(float)Time.DeltaTime * 10.0f)
+                else if (this.Friction < -(float)SNTime.DeltaTime * 10.0f)
                 {
-                    this.Friction += (float)Time.DeltaTime * 2.5f;
+                    this.Friction += (float)SNTime.DeltaTime * 2.5f;
                 }
                 else
                 {
@@ -69,25 +69,25 @@ namespace Platformer
                 speed += Upgrades["jump"];
             }
 
-            if (Keyboard.KeyDown(KeyCode.UP) && this.Velocity == 0)
+            if (SNKeyboard.KeyDown(SNKeyCode.UP) && this.Velocity == 0)
             {
-                this.Velocity = -(float)Time.DeltaTime * speed;
+                this.Velocity = -(float)SNTime.DeltaTime * speed;
             }
         }
         public void Physics()
         {
-            if (this.Friction > Time.DeltaTime * 200)
+            if (this.Friction > SNTime.DeltaTime * 200)
             {
-                this.Friction = (float)Time.DeltaTime * 200;
+                this.Friction = (float)SNTime.DeltaTime * 200;
             }
-            if (this.Friction < -Time.DeltaTime * 200)
+            if (this.Friction < -SNTime.DeltaTime * 200)
             {
-                this.Friction = -(float)Time.DeltaTime * 200;
+                this.Friction = -(float)SNTime.DeltaTime * 200;
             }
 
             this.Position.X += Friction;
             this.Position.Y += this.Velocity;
-            this.Velocity += (float)Time.DeltaTime * 25.0f;
+            this.Velocity += (float)SNTime.DeltaTime * 25.0f;
 
             if (this.Position.Y >= 600 - 32)
             {
@@ -125,7 +125,7 @@ namespace Platformer
 
         public void Render()
         {
-            Draw.Box(Position.X, Position.Y, 32, 32, 0, 0, 0, 0, 0, 1, 1, PolygonFillMode.Filled);
+            SNDraw.Box(Position.X, Position.Y, 32, 32, 0, 0, 0, 0, 0, 255, 255, SNPolygonFillMode.Filled);
         }
     }
 }

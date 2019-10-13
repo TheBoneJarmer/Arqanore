@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Seanuts.csproj" />
+    <ProjectReference Include="..\..\src-seanuts\Seanuts.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

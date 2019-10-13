@@ -7,8 +7,8 @@ namespace BasicWindow
     {
         static void Main(string[] args)
         {
-            var window = new GameWindow(800, 600, "Basic Window");
-            window.Open(false);
+            var window = new SNWindow(800, 600, "Basic Window");
+            window.Open();
         }
     }
 }
