@@ -7,16 +7,24 @@ using TilarGL;
 
 namespace Seanuts.Framework.Graphics
 {
-    public class SNSprite
+    public class SNImage
     {
         public uint Id { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
 
-        public SNSprite(string src)
+        public SNImage(Bitmap bmp)
+        {
+            Load(bmp);
+        }
+        public SNImage(string filename)
+        {
+            Load(new Bitmap(Image.FromFile(filename)));
+        }
+
+        private void Load(Bitmap bmp)
         {
             var ids = new uint[1];
-            var bmp = new Bitmap(Image.FromFile(src));
             var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
             // Set properties

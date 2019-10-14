@@ -114,113 +114,31 @@ namespace Seanuts.Framework
             GL11.glDrawArrays(GL11.GL_POLYGON, 0, vertices.Length / 2);
         }
 
-        public static void Background(SNBackground background, float x, float y, float width, float height, float scaleX, float scaleY, float angle)
+        public static void Image(SNImage image, float x, float y, float width, float height, float offsetX, float offsetY, float angle, float clipX, float clipY, float clipWidth, float clipHeight, float scaleX, float scaleY)
         {
             var cos = System.Math.Cos(SNMath.ToRadians(angle + 90));
             var sin = System.Math.Sin(SNMath.ToRadians(angle + 90));
-            var vertices = new float[12] { 0, 0, width, 0, 0, height, width, 0, 0, height, width, height };
-            var texcoords = new float[12] { 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1 };
-
-            var positionAttribLocation = GL20.glGetAttribLocation(SNShaders.Background.Id, "aposition");
-            var texcoordAttribLocation = GL20.glGetAttribLocation(SNShaders.Background.Id, "atexcoord");
-            var rotationUniformLocation = GL20.glGetUniformLocation(SNShaders.Background.Id, "urotation");
-            var scaleUniformLocation = GL20.glGetUniformLocation(SNShaders.Background.Id, "uscale");
-            var translationUniformLocation = GL20.glGetUniformLocation(SNShaders.Background.Id, "utranslation");
-            var resolutionUniformLocation = GL20.glGetUniformLocation(SNShaders.Background.Id, "uresolution");
-
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices.Length * 4, vertices, GL15.GL_STATIC_DRAW);
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, tcbuffer);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, texcoords.Length * 4, texcoords, GL15.GL_STATIC_DRAW);
-
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, background.Id);
-            GL20.glUseProgram(SNShaders.Background.Id);
-
-            GL20.glEnableVertexAttribArray(positionAttribLocation);
-            GL20.glEnableVertexAttribArray(texcoordAttribLocation);
-
-            GL20.glUniform2f(translationUniformLocation, x, y);
-            GL20.glUniform2f(rotationUniformLocation, (float)cos, (float)sin);
-            GL20.glUniform2f(scaleUniformLocation, scaleX, scaleY);
-            GL20.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
-
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
-            GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
-
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, tcbuffer);
-            GL20.glVertexAttribPointer(texcoordAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
-
-            GL10.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
-            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices.Length / 2);
-        }
-
-        public static void Tileset(SNTileset tileset, float x, float y, float width, float height, int tileX, int tileY, int tileWidth, int tileHeight, float scaleX, float scaleY)
-        {
-            var tcx = (1 / (tileset.Width / tileWidth)) * tileX;
-            var tcy = (1 / (tileset.Height / tileHeight)) * tileY;
-            var difx = 1 / (tileset.Width / tileWidth);
-            var dify = 1 / (tileset.Height / tileHeight);
-            var vertices = new float[12] { 0, 0, width, 0, 0, height, width, 0, 0, height, width, height };
-            var texcoords = new float[12] { tcx, tcy, tcx + difx, tcy, tcx, tcy + dify, tcx + difx, tcy, tcx, tcy + dify, tcx + difx, tcy + dify };
-
-            var positionAttribLocation = GL20.glGetAttribLocation(SNShaders.Sprite.Id, "aposition");
-            var texcoordAttribLocation = GL20.glGetAttribLocation(SNShaders.Sprite.Id, "atexcoord");
-            var rotationUniformLocation = GL20.glGetUniformLocation(SNShaders.Sprite.Id, "urotation");
-            var scaleUniformLocation = GL20.glGetUniformLocation(SNShaders.Sprite.Id, "uscale");
-            var translationUniformLocation = GL20.glGetUniformLocation(SNShaders.Sprite.Id, "utranslation");
-            var resolutionUniformLocation = GL20.glGetUniformLocation(SNShaders.Sprite.Id, "uresolution");
-
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices.Length * 4, vertices, GL15.GL_STATIC_DRAW);
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, tcbuffer);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, texcoords.Length * 4, texcoords, GL15.GL_STATIC_DRAW);
-
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, tileset.Id);
-            GL20.glUseProgram(SNShaders.Sprite.Id);
-
-            GL20.glEnableVertexAttribArray(positionAttribLocation);
-            GL20.glEnableVertexAttribArray(texcoordAttribLocation);
-
-            GL20.glUniform2f(translationUniformLocation, x, y);
-            GL20.glUniform2f(rotationUniformLocation, 0, 1);
-            GL20.glUniform2f(scaleUniformLocation, scaleX, scaleY);
-            GL20.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
-
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
-            GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
-
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, tcbuffer);
-            GL20.glVertexAttribPointer(texcoordAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
-
-            GL10.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
-            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices.Length / 2);
-        }
-
-        public static void Sprite(SNSprite sprite, float x, float y, float width, float height, float offsetX, float offsetY, float angle, int framehor, int framevert, int framewidth, int frameheight, float scaleX, float scaleY)
-        {
-            var cos = System.Math.Cos(SNMath.ToRadians(angle + 90));
-            var sin = System.Math.Sin(SNMath.ToRadians(angle + 90));
-            var tcx = (1.0f / ((float)sprite.Width / (float)framewidth)) * (float)framehor;
-            var tcy = (1.0f / ((float)sprite.Height / (float)frameheight)) * (float)framevert;
-            var difx = 1.0f / (float)(sprite.Width / (float)framewidth);
-            var dify = 1.0f / ((float)sprite.Height / (float)frameheight);
+            var texCoordX = (1f / (float)image.Width) * clipX;
+            var texCoordY = (1f / (float)image.Height) * clipY;
+            var texCoordWidth = 1f / ((float)(image.Width) / clipWidth);
+            var texCoordHeight = 1f / ((float)(image.Height) / clipHeight);
             var vertices = new float[12] { offsetX, offsetY, offsetX + width, offsetY, offsetX, offsetY + height, offsetX + width, offsetY, offsetX, offsetY + height, offsetX + width, offsetY + height };
-            var texcoords = new float[12] { tcx, tcy, tcx + difx, tcy, tcx, tcy + dify, tcx + difx, tcy, tcx, tcy + dify, tcx + difx, tcy + dify };
+            var texcoords = new float[12] { texCoordX, texCoordY, texCoordX + texCoordWidth, texCoordY, texCoordX, texCoordY + texCoordHeight, texCoordX + texCoordWidth, texCoordY, texCoordX, texCoordY + texCoordHeight, texCoordX + texCoordWidth, texCoordY + texCoordHeight };
 
-            var positionAttribLocation = GL20.glGetAttribLocation(SNShaders.Sprite.Id, "aposition");
-            var texcoordAttribLocation = GL20.glGetAttribLocation(SNShaders.Sprite.Id, "atexcoord");
-            var rotationUniformLocation = GL20.glGetUniformLocation(SNShaders.Sprite.Id, "urotation");
-            var scaleUniformLocation = GL20.glGetUniformLocation(SNShaders.Sprite.Id, "uscale");
-            var translationUniformLocation = GL20.glGetUniformLocation(SNShaders.Sprite.Id, "utranslation");
-            var resolutionUniformLocation = GL20.glGetUniformLocation(SNShaders.Sprite.Id, "uresolution");
+            var positionAttribLocation = GL20.glGetAttribLocation(SNShaders.Image.Id, "aposition");
+            var texcoordAttribLocation = GL20.glGetAttribLocation(SNShaders.Image.Id, "atexcoord");
+            var rotationUniformLocation = GL20.glGetUniformLocation(SNShaders.Image.Id, "urotation");
+            var scaleUniformLocation = GL20.glGetUniformLocation(SNShaders.Image.Id, "uscale");
+            var translationUniformLocation = GL20.glGetUniformLocation(SNShaders.Image.Id, "utranslation");
+            var resolutionUniformLocation = GL20.glGetUniformLocation(SNShaders.Image.Id, "uresolution");
 
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
             GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices.Length * 4, vertices, GL15.GL_STATIC_DRAW);
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, tcbuffer);
             GL15.glBufferData(GL15.GL_ARRAY_BUFFER, texcoords.Length * 4, texcoords, GL15.GL_STATIC_DRAW);
 
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, sprite.Id);
-            GL20.glUseProgram(SNShaders.Sprite.Id);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, image.Id);
+            GL20.glUseProgram(SNShaders.Image.Id);
 
             GL20.glEnableVertexAttribArray(positionAttribLocation);
             GL20.glEnableVertexAttribArray(texcoordAttribLocation);
@@ -238,6 +156,25 @@ namespace Seanuts.Framework
 
             GL10.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices.Length / 2);
+        }
+
+        public static void Text(SNFont font, string text, float x, float y)
+        {
+            var xx = x;
+            var yy = y;
+            var width = font.Size * 2;
+            var height = font.Size * 2;
+
+            for (var i = 0; i < text.Length; i++)
+            {
+                var chr = (char)text[i];
+                var code = (byte)chr;
+                var bounds = font.Bounds[(int)code];
+
+                SNDraw.Image(font.Image, xx, yy, bounds.Width, bounds.Height, 0, 0, 0, bounds.X, bounds.Y, bounds.Width, bounds.Height, 1, 1);
+
+                xx += bounds.Width;
+            }
         }
     }
 }

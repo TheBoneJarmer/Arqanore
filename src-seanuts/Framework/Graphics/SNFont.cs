@@ -1,40 +1,38 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using Seanuts.Framework.Math;
 using TilarGL;
 
 namespace Seanuts.Framework.Graphics
 {
     public class SNFont
     {
-        public uint Id { get; private set; }
-        public SNFontData Data { get; private set; }
+        private SNFontData data;
+        private SNImage image;
+
+        public SNImage Image
+        {
+            get { return image; }
+        }
+        public SNRectangle[] Bounds
+        {
+            get { return data.Bounds; }
+        }
+
+        public string Family
+        {
+            get { return data.Font.FontFamily.Name; }
+        }
+        public float Size
+        {
+            get { return data.Font.Size; }
+        }
         
         public SNFont(string filename)
         {
-            Data = new SNFontData(filename);
-        }
-
-        private void Load(Bitmap bmp)
-        {
-            var ids = new uint[1];
-            var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-
-            // Generate 2D texture
-            GL11.glGenTextures(1, ids);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ids[0]);
-            GL10.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
-            GL10.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
-            GL10.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-            GL10.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-            GL10.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, bmp.Width, bmp.Height, 0, GL12.GL_BGRA, GL11.GL_UNSIGNED_BYTE, data.Scan0);
-
-            // Cleanup
-            bmp.UnlockBits(data);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-
-            // Finish
-            Id = ids[0];
+            data = new SNFontData(filename);
+            image = new SNImage(data.Bitmap);
         }
     }
 }

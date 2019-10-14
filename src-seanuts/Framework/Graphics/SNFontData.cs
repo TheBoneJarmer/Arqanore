@@ -5,26 +5,27 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Seanuts.Framework.Math;
 
 namespace Seanuts.Framework
 {
     public class SNFontData
     {
-        private int CellSize { get; set; }
-        private int GlyphsHor { get; set; }
-        private int GlyphsVert { get; set; }
+        public int GlyphSize { get; private set; }
+        public int GlyphsHor { get; private set; }
+        public int GlyphsVert { get; private set; }
 
         public Bitmap Bitmap { get; set; }
-        public RectangleF[] Bounds { get; set; }
+        public SNRectangle[] Bounds { get; set; }
         public Font Font { get; set; }
         public Color Color { get; set; }
 
         public SNFontData()
         {
-            Bounds = new RectangleF[255];
+            Bounds = new SNRectangle[255];
             Color = Color.White;
             Font = new Font("Arial", 12);
-            CellSize = 24;
+            GlyphSize = 24;
 
             GlyphsHor = 16;
             GlyphsVert = 16;
@@ -76,7 +77,7 @@ namespace Seanuts.Framework
                     var width = float.Parse(entry.Split(',')[2]);
                     var height = float.Parse(entry.Split(',')[3]);
 
-                    Bounds[i] = new RectangleF(x, y, width, height);
+                    Bounds[i] = new SNRectangle(x, y, width, height);
                 }
 
                 // Generate the bitmap
@@ -86,7 +87,7 @@ namespace Seanuts.Framework
                 }
 
                 // Set some remaining variables
-                CellSize = (int)System.Math.Floor(fontSize * 2);
+                GlyphSize = (int)System.Math.Floor(fontSize * 2);
             }
             catch (Exception)
             {
@@ -96,10 +97,10 @@ namespace Seanuts.Framework
 
         public SNFontData(string fontFamily, float fontSize, int r, int g, int b, int a) : this()
         {
-            CellSize = (int)System.Math.Floor(fontSize * 2);
+            GlyphSize = (int)System.Math.Floor(fontSize * 2);
             Color = Color.FromArgb(a, r, g, b);
             Font = new Font(fontFamily, fontSize);
-            Bitmap = new Bitmap(CellSize * GlyphsHor, CellSize * GlyphsVert);
+            Bitmap = new Bitmap(GlyphSize * GlyphsHor, GlyphSize * GlyphsVert);
             
             GenerateBitmap();
             GenerateBounds();
@@ -180,7 +181,7 @@ namespace Seanuts.Framework
         {
             if (Bitmap == null)
             {
-                Bitmap = new Bitmap(CellSize * GlyphsHor, CellSize * GlyphsVert);
+                Bitmap = new Bitmap(GlyphSize * GlyphsHor, GlyphSize * GlyphsVert);
             }
 
             var brush = new SolidBrush(Color);            
@@ -193,7 +194,7 @@ namespace Seanuts.Framework
                 var chr = (char)i;
                 var y = (float)System.Math.Floor(i / (float)GlyphsVert);
                 var x = (float)System.Math.Floor(((i / (float)GlyphsVert) - y) * (float)GlyphsHor);
-                var point = new PointF(x * CellSize, y * CellSize);
+                var point = new PointF(x * GlyphSize, y * GlyphSize);
                 
                 grp.DrawString(chr.ToString(), Font, brush, point);
             }
@@ -205,13 +206,13 @@ namespace Seanuts.Framework
                 var y = (float)System.Math.Floor(i / (float)GlyphsVert);
                 var x = (float)System.Math.Floor(((i / (float)GlyphsVert) - y) * (float)GlyphsHor);
 
-                Bounds[i] = CalculateGlyphBounds((int)x, (int)y, CellSize);
+                Bounds[i] = CalculateGlyphBounds((int)x, (int)y, GlyphSize);
             }
         }
 
-        private RectangleF CalculateGlyphBounds(int cellX, int cellY, int cellSize)
+        private SNRectangle CalculateGlyphBounds(int cellX, int cellY, int cellSize)
         {
-            var result = new RectangleF();
+            var result = new SNRectangle();
             var smallest = new PointF(-1, -1);
             var biggest = new PointF(-1, -1);
 

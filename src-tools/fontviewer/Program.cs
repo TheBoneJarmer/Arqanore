@@ -10,7 +10,7 @@ namespace FontViewer
     {
         static SNWindow Window { get; set; }
         static SNFontData Data { get; set; }
-        static SNBackground Background { get; set; }
+        static SNImage Image { get; set; }
 
         static void Main(string[] args)
         {
@@ -36,7 +36,7 @@ namespace FontViewer
 
         static void Window_Onload()
         {
-            Background = new SNBackground(Data.Bitmap);
+            Image = new SNImage(Data.Bitmap);
         }
         static void Window_OnUpdate()
         {
@@ -44,7 +44,7 @@ namespace FontViewer
         }
         static void Window_OnRender()
         {
-            SNDraw.Background(Background, 0, 0, Background.Width, Background.Height, 1, 1, 0);
+            SNDraw.Image(Image, 0, 0, Image.Width, Image.Height, 0, 0, 0, 0, 0, Image.Width, Image.Height, 1, 1);
 
             foreach (var rect in Data.Bounds)
             {
