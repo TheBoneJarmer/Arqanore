@@ -170,8 +170,9 @@ namespace Seanuts.Framework
                 var chr = (char)text[i];
                 var code = (byte)chr;
                 var bounds = font.Bounds[(int)code];
+                var ascent = font.Ascents[(int)code];
 
-                SNDraw.Image(font.Image, xx, yy, bounds.Width, bounds.Height, 0, 0, 0, bounds.X, bounds.Y, bounds.Width, bounds.Height, 1, 1);
+                SNDraw.Image(font.Image, xx, yy - bounds.Height + ascent, bounds.Width, bounds.Height, 0, 0, 0, bounds.X, bounds.Y, bounds.Width, bounds.Height, 1, 1);
 
                 xx += bounds.Width;
             }

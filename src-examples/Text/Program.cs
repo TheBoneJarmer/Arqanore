@@ -24,7 +24,8 @@ namespace Text
         }
         static void Window_OnRender()
         {
-            SNDraw.Text(Font, "Hello World", 32, 32);
+            //SNDraw.Text(Font, "Hello World", 32, 32);
+            SNDraw.Text(Font, "This is just a very simple sentence! Love y'all!! :D", 32, 64);
         }
     }
 }

@@ -99,7 +99,7 @@ namespace Seanuts.Framework
         {
             GlyphSize = (int)System.Math.Floor(fontSize * 2);
             Color = Color.FromArgb(a, r, g, b);
-            Font = new Font(fontFamily, fontSize);
+            Font = new Font(fontFamily, fontSize, FontStyle.Regular, GraphicsUnit.Pixel);
             Bitmap = new Bitmap(GlyphSize * GlyphsHor, GlyphSize * GlyphsVert);
             
             GenerateBitmap();
@@ -196,7 +196,7 @@ namespace Seanuts.Framework
                 var x = (float)System.Math.Floor(((i / (float)GlyphsVert) - y) * (float)GlyphsHor);
                 var point = new PointF(x * GlyphSize, y * GlyphSize);
                 
-                grp.DrawString(chr.ToString(), Font, brush, point);
+                grp.DrawString(chr.ToString(), Font, brush, point, StringFormat.GenericTypographic);
             }
         }
         public void GenerateBounds()
@@ -205,6 +205,13 @@ namespace Seanuts.Framework
             {
                 var y = (float)System.Math.Floor(i / (float)GlyphsVert);
                 var x = (float)System.Math.Floor(((i / (float)GlyphsVert) - y) * (float)GlyphsHor);
+
+                // Special case for code 32, which represents space.
+                if (i == 32)
+                {
+                    Bounds[i] = new SNRectangle(0, 0, Font.Size / 2f, 0);
+                    continue;
+                }
 
                 Bounds[i] = CalculateGlyphBounds((int)x, (int)y, GlyphSize);
             }
@@ -269,8 +276,8 @@ namespace Seanuts.Framework
             // Calculate the differences
             result.X = smallest.X;
             result.Y = smallest.Y;
-            result.Width = biggest.X - smallest.X;
-            result.Height = biggest.Y - smallest.Y;
+            result.Width = biggest.X - smallest.X + 1;
+            result.Height = biggest.Y - smallest.Y + 1;
 
             if (result.X < 0) result.X = 0;
             if (result.Y < 0) result.Y = 0;

@@ -44,11 +44,21 @@ namespace FontViewer
         }
         static void Window_OnRender()
         {
+            // Draw grid
+            for (var x = 0; x < Data.GlyphsHor; x++)
+            {
+                SNDraw.Line(x * Data.GlyphSize, 0, x * Data.GlyphSize, Image.Height, 0, 0, 255, 255);
+            }
+            for (var y = 0; y < Data.GlyphsVert; y++)
+            {
+                SNDraw.Line(0, y * Data.GlyphSize, Image.Width, y * Data.GlyphSize, 0, 0, 255, 255);
+            }
+
             SNDraw.Image(Image, 0, 0, Image.Width, Image.Height, 0, 0, 0, 0, 0, Image.Width, Image.Height, 1, 1);
 
             foreach (var rect in Data.Bounds)
             {
-                SNDraw.Box(rect.X - 1, rect.Y - 1, rect.Width + 2, rect.Height + 2, 0, 0, 0, 255, 0, 255, 255, SNPolygonFillMode.Lines);
+                //SNDraw.Box(rect.X - 1, rect.Y - 1, rect.Width + 2, rect.Height + 2, 0, 0, 0, 0, 255, 0, 255, SNPolygonFillMode.Lines);
             }
         }
 
