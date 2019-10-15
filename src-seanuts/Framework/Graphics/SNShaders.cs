@@ -8,7 +8,6 @@ namespace Seanuts.Framework.Graphics
     {
         private static SNShader @default;
         private static SNShader sprite;
-        private static SNShader background;
 
         public static SNShader Default
         {
