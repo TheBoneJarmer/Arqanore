@@ -5,9 +5,9 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Seanuts.Framework.Math;
+using Seanuts.Math;
 
-namespace Seanuts.Framework
+namespace Seanuts
 {
     public class SNFontData
     {

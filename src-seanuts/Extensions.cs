@@ -1,4 +1,4 @@
-﻿using Seanuts.Framework.Math;
+﻿using Seanuts.Math;
 using System;
 using System.Collections.Generic;
 using System.Text;

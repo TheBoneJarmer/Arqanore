@@ -36,6 +36,11 @@ namespace Seanuts
         Center,
         Right
     }
+    public enum SNPositionType
+    {
+        Absolute,
+        Relative
+    }
 
     public enum SNMouseButton
     {

@@ -1,7 +1,7 @@
 using System;
 using TilarGL;
 
-namespace Seanuts.Framework
+namespace Seanuts
 {
     public unsafe static class SNDevice
     {

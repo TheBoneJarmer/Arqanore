@@ -2,11 +2,11 @@ using System;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
-using Seanuts.Framework.Graphics;
-using Seanuts.Framework.Input;
+using Seanuts.Graphics;
+using Seanuts.Input;
 using TilarGL;
 
-namespace Seanuts.Framework
+namespace Seanuts
 {
     public class SNWindow
     {

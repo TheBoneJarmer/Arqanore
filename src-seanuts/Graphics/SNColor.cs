@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Seanuts.Framework.Graphics
+namespace Seanuts.Graphics
 {
     public class SNColor
     {

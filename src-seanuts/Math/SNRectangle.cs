@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Seanuts.Framework.Math
+namespace Seanuts.Math
 {
     public class SNRectangle
     {

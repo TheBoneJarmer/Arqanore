@@ -5,7 +5,7 @@ using System.Text;
 using System.Drawing.Imaging;
 using TilarGL;
 
-namespace Seanuts.Framework.Graphics
+namespace Seanuts.Graphics
 {
     public class SNImage
     {

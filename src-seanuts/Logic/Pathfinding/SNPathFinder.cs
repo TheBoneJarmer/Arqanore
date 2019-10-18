@@ -158,8 +158,8 @@ namespace Seanuts.Logic.PathFinding
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static float ManhattanDistance(SNPosition p0, SNPosition p1)
         {
-            var dx = Math.Abs(p0.X - p1.X);
-            var dy = Math.Abs(p0.Y - p1.Y);
+            var dx = System.Math.Abs(p0.X - p1.X);
+            var dy = System.Math.Abs(p0.Y - p1.Y);
             return dx + dy;
         }
     }

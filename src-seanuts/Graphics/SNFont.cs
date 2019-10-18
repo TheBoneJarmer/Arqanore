@@ -2,10 +2,10 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using Seanuts.Framework.Math;
+using Seanuts.Math;
 using TilarGL;
 
-namespace Seanuts.Framework.Graphics
+namespace Seanuts.Graphics
 {
     public class SNFont
     {

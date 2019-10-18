@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TilarGL;
 
-namespace Seanuts.Framework.Graphics
+namespace Seanuts.Graphics
 {
     public class SNShader
     {

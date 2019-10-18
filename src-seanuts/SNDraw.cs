@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Seanuts.Framework.Graphics;
-using Seanuts.Framework.Math;
+using Seanuts.Graphics;
+using Seanuts.Math;
 using TilarGL;
 
-namespace Seanuts.Framework
+namespace Seanuts
 {
     public static class SNDraw
     {

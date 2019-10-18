@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Seanuts.Framework.Input
+namespace Seanuts.Input
 {
     public static class SNKeyboard
     {
