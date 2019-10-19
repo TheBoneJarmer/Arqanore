@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Seanuts
 {
-    public static class SNExtensions
+    public static class Extensions
     {
         public static byte ToByte(this string str)
         {
@@ -36,11 +36,11 @@ namespace Seanuts
             return (double)i;
         }
 
-        public static float[] ToFloatArray(this SNVector2 v)
+        public static float[] ToFloatArray(this Vector2 v)
         {
             return new float[2] { v.X, v.Y };
         }
-        public static float[] ToFloatArray(this SNVector2[] array)
+        public static float[] ToFloatArray(this Vector2[] array)
         {
             List<float> result = new List<float>();
 
@@ -64,7 +64,7 @@ namespace Seanuts
             return result.ToArray();
         }
 
-        public static float Width(this SNVector2[] array)
+        public static float Width(this Vector2[] array)
         {
             float biggestNegative = 0;
             float biggestPositive = 0;
@@ -75,9 +75,9 @@ namespace Seanuts
                 if (v.X < 0 && v.X < biggestNegative) biggestNegative = v.X;
             }
 
-            return SNMath.DistanceBetweenVectors(biggestNegative, 0, biggestPositive, 0);
+            return MathHelper.DistanceBetweenVectors(biggestNegative, 0, biggestPositive, 0);
         }
-        public static float Height(this SNVector2[] array)
+        public static float Height(this Vector2[] array)
         {
             float biggestNegative = 0;
             float biggestPositive = 0;
@@ -88,7 +88,7 @@ namespace Seanuts
                 if (v.Y < 0 && v.Y < biggestNegative) biggestNegative = v.Y;
             }
 
-            return SNMath.DistanceBetweenVectors(biggestNegative, 0, biggestPositive, 0);
+            return MathHelper.DistanceBetweenVectors(biggestNegative, 0, biggestPositive, 0);
         }
 
         public static T[] Push<T>(this T[] source, T[] dest)
@@ -107,9 +107,9 @@ namespace Seanuts
             return result;
         }
         
-        public static void Add(this List<SNVector2> list, float x, float y)
+        public static void Add(this List<Vector2> list, float x, float y)
         {
-            list.Add(new SNVector2(x, y));
+            list.Add(new Vector2(x, y));
         }
     }
 }
