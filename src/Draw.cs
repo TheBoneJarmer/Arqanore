@@ -160,21 +160,7 @@ namespace Seanuts
 
         public static void Text(Font font, string text, float x, float y)
         {
-            var xx = x;
-            var yy = y;
-            var width = font.Size * 2;
-            var height = font.Size * 2;
-
-            for (var i = 0; i < text.Length; i++)
-            {
-                var chr = (char)text[i];
-                var code = (byte)chr;
-                var bounds = font.Bounds[(int)code];
-
-                Draw.Image(font.Image, xx, yy - bounds.Height, bounds.Width, bounds.Height, 0, 0, 0, bounds.X, bounds.Y, bounds.Width, bounds.Height, 1, 1);
-
-                xx += bounds.Width;
-            }
+            
         }
     }
 }
