@@ -3,7 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 
-namespace Seanuts.Net.Http
+namespace Arqanore.Net.Http
 {
     public class HttpConnectionInfo
     {

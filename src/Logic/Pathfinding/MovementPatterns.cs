@@ -1,4 +1,4 @@
-﻿namespace Seanuts.Logic.PathFinding
+﻿namespace Arqanore.Logic.PathFinding
 {
     /// <summary>
     /// Predefined ranges of motions for your agent.

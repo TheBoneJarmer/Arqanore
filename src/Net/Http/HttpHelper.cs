@@ -1,7 +1,7 @@
 using System;
 using System.Net;
 
-namespace Seanuts.Net.Http
+namespace Arqanore.Net.Http
 {
     public static class HttpHelper
     {

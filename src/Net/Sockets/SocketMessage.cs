@@ -3,7 +3,7 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 
-namespace Seanuts.Net.Sockets
+namespace Arqanore.Net.Sockets
 {
     public class SocketMessage
     {

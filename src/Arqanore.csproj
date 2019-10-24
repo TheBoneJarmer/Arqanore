@@ -10,8 +10,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="TilarGL">
-			<HintPath>../lib/TilarGL.dll</HintPath>
+		<Reference Include="Arqan">
+			<HintPath>../lib/Arqan.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 </Project>

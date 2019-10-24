@@ -2,11 +2,11 @@ using System;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
-using Seanuts.Graphics;
-using Seanuts.Input;
-using TilarGL;
+using Arqanore.Graphics;
+using Arqanore.Input;
+using Arqan;
 
-namespace Seanuts
+namespace Arqanore
 {
     public class Window
     {

@@ -1,4 +1,4 @@
-﻿namespace Seanuts.Logic.PathFinding
+﻿namespace Arqanore.Logic.PathFinding
 {   
     /// <summary>
     /// Heap which keeps the node with the minimal expected path cost on the head position

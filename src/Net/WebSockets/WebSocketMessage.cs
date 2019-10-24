@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Seanuts.Net.WebSockets
+namespace Arqanore.Net.WebSockets
 {
     public class WebSocketMessage
     {

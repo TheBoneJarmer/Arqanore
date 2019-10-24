@@ -1,4 +1,4 @@
-﻿namespace Seanuts.Logic.PathFinding
+﻿namespace Arqanore.Logic.PathFinding
 {
     /// <summary>
     /// Node in a heap

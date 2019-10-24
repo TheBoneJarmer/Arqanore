@@ -1,4 +1,4 @@
-﻿using Seanuts.Net.Sockets;
+﻿using Arqanore.Net.Sockets;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Seanuts.Net.Http
+namespace Arqanore.Net.Http
 {
     public class HttpClient
     {

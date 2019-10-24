@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Seanuts.Logic.PathFinding
+namespace Arqanore.Logic.PathFinding
 {
     /// <summary>
     /// A 2D position structure

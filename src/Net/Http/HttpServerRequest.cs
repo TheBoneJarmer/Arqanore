@@ -5,7 +5,7 @@ using System.Text;
 using System.Net;
 using System.Net.Http;
 
-namespace Seanuts.Net.Http
+namespace Arqanore.Net.Http
 {
     public class HttpServerRequest
     {

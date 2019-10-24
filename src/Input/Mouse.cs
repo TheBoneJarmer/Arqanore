@@ -1,9 +1,9 @@
-﻿using Seanuts.Math;
+﻿using Arqanore.Math;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Seanuts.Input
+namespace Arqanore.Input
 {
     public static class Mouse
     {

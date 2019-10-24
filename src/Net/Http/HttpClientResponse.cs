@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 
-namespace Seanuts.Net.Http
+namespace Arqanore.Net.Http
 {
     public class HttpClientResponse
     {

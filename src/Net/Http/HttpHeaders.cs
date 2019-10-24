@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Seanuts.Net.Http
+namespace Arqanore.Net.Http
 {
     public class HttpHeaders
     {

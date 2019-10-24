@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Viewer")]
 
-namespace Seanuts.Logic.PathFinding
+namespace Arqanore.Logic.PathFinding
 {
     
     internal static partial class PathFinder

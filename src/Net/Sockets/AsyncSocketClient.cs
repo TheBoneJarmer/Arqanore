@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace Seanuts.Net.Sockets
+namespace Arqanore.Net.Sockets
 {
     public class AsyncSocketClient
     {

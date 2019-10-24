@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 
-namespace Seanuts
+namespace Arqanore
 {
     public class WebSocketException : Exception
     {
@@ -34,9 +34,9 @@ namespace Seanuts
             this.Description = description;
         }
     }
-    public class SeanutsException : Exception
+    public class ArqanoreException : Exception
     {
-        public SeanutsException(string message) : base(message)
+        public ArqanoreException(string message) : base(message)
         {
             
         }

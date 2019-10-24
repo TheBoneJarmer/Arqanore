@@ -2,7 +2,7 @@ using System;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace Seanuts.Net.Sockets
+namespace Arqanore.Net.Sockets
 {
     public class SocketAccept
     {

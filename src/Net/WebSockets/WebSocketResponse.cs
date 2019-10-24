@@ -5,9 +5,9 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Security.Cryptography;
-using Seanuts.Net.Sockets;
+using Arqanore.Net.Sockets;
 
-namespace Seanuts.Net.WebSockets
+namespace Arqanore.Net.WebSockets
 {
     public class WebSocketResponse
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Seanuts.Graphics
+namespace Arqanore.Graphics
 {
     public class Color
     {

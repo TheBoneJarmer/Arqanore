@@ -1,9 +1,9 @@
-﻿using Seanuts.Math;
+﻿using Arqanore.Math;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Seanuts
+namespace Arqanore
 {
     public static class Extensions
     {

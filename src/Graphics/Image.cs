@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using TilarGL;
+using Arqan;
 
-namespace Seanuts.Graphics
+namespace Arqanore.Graphics
 {
     public class Image
     {

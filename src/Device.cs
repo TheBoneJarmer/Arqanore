@@ -1,7 +1,7 @@
 using System;
-using TilarGL;
+using Arqan;
 
-namespace Seanuts
+namespace Arqanore
 {
     public unsafe static class Device
     {

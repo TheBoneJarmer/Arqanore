@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using Seanuts.Math;
-using TilarGL;
+using Arqanore.Math;
+using Arqan;
 
-namespace Seanuts.Graphics
+namespace Arqanore.Graphics
 {
     public class Font
     {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
-using Seanuts.Net.Sockets;
+using Arqanore.Net.Sockets;
 
-namespace Seanuts.Net.WebSockets
+namespace Arqanore.Net.WebSockets
 {
     public class WebSocketRequest
     {

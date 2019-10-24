@@ -5,12 +5,12 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-using Seanuts.Net.WebSockets;
-using Seanuts.Net.Http;
-using Seanuts.Net.Sockets;
+using Arqanore.Net.WebSockets;
+using Arqanore.Net.Http;
+using Arqanore.Net.Sockets;
 using Newtonsoft.Json;
 
-namespace Seanuts.Net.WebSockets
+namespace Arqanore.Net.WebSockets
 {
     public class Client
     {

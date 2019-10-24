@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace Seanuts.Logic.PathFinding
+namespace Arqanore.Logic.PathFinding
 {
     /// <summary>
     /// Representation of your world for the pathfinding algorithm.

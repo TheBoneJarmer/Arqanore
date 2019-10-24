@@ -5,10 +5,10 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-using Seanuts.Net.Sockets;
-using Seanuts.Net.WebSockets;
+using Arqanore.Net.Sockets;
+using Arqanore.Net.WebSockets;
 
-namespace Seanuts.Net.WebSockets
+namespace Arqanore.Net.WebSockets
 {
     public class AsyncWebSocketClient
     {

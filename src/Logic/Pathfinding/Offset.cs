@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Seanuts.Logic.PathFinding
+namespace Arqanore.Logic.PathFinding
 {
     /// <summary>
     /// A 2D offset structure. You can use an array of offsets to represent the movement pattern

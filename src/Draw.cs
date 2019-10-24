@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Seanuts.Graphics;
-using Seanuts.Math;
-using TilarGL;
+using Arqanore.Graphics;
+using Arqanore.Math;
+using Arqan;
 
-namespace Seanuts
+namespace Arqanore
 {
     public static class Draw
     {

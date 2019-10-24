@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Seanuts.Logic.PathFinding
+namespace Arqanore.Logic.PathFinding
 {
     /// <summary>
     /// Computes a path in a grid according to the A* algorithm

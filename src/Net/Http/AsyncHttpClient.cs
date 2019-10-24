@@ -5,9 +5,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using Seanuts.Net.Sockets;
+using Arqanore.Net.Sockets;
 
-namespace Seanuts.Net.Http
+namespace Arqanore.Net.Http
 {
     public class AsyncHttpClient
     {

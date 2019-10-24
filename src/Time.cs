@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Seanuts
+namespace Arqanore
 {
     public static class Time
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Seanuts.Math
+namespace Arqanore.Math
 {
     public static class MathHelper
     {
