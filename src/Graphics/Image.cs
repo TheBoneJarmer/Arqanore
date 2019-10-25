@@ -10,6 +10,7 @@ namespace Arqanore.Graphics
         public uint Id { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
+        public System.Drawing.Bitmap Bitmap { get; private set; }
 
         public Image(System.Drawing.Bitmap bmp)
         {
@@ -28,6 +29,7 @@ namespace Arqanore.Graphics
             // Set properties
             Width = bmp.Width;
             Height = bmp.Height;
+            Bitmap = bmp;
 
             // Generate 2D texture
             GL11.glGenTextures(1, ids);
