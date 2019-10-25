@@ -42,6 +42,12 @@ namespace Arqanore
         Relative
     }
 
+    public enum WindowState
+    {
+        Open,
+        Closed
+    }
+
     public enum MouseButton
     {
         Left,

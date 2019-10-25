@@ -12,6 +12,7 @@ namespace Arqanore
     {
         private IntPtr handle;
         private Color clearColor;
+        private WindowState state;
         private int width;
         private int height;
         private string title;
@@ -29,6 +30,10 @@ namespace Arqanore
         {
             get { return handle; }
             set { handle = value; }
+        }
+        public WindowState State
+        {
+            get { return state; }
         }
         public int Width
         {
@@ -92,8 +97,7 @@ namespace Arqanore
             InitEvents();
             InitSettings(vsync);
             InitFramework();
-
-            PrintInfo();                   
+                 
             Sync(pollEvents);
         }
         public void Close()
@@ -165,15 +169,11 @@ namespace Arqanore
             Draw.Init(this);
         }
 
-        private void PrintInfo()
-        {
-            Console.WriteLine($"GL Version: {Device.GLVersion}");
-            Console.WriteLine($"GLSL Version: {Device.GLSLVersion}");
-            Console.WriteLine();
-        }
-
         private void Sync(bool pollEvents)
         {
+            // Mark the window as open
+            state = WindowState.Open;
+
             // Execute onload event
             if (OnLoad != null)
             {
@@ -222,6 +222,9 @@ namespace Arqanore
                     GLFW.glfwWaitEvents();
                 }
             }
+
+            // Mark the window as closed
+            state = WindowState.Closed;
 
             GLFW.glfwDestroyWindow(Handle);
         }

@@ -25,7 +25,11 @@ namespace Arqanore.Math
 
         public bool Intersect(Rectangle other)
         {
-            return (X + Width > other.X && X < other.X + other.Width && Y + Height > other.Y && Y < other.Y + other.Height);
+            return X + Width > other.X && X < other.X + other.Width && Y + Height > other.Y && Y < other.Y + other.Height;
+        }
+        public bool Contains(Vector2 other)
+        {
+            return other.X >= X && other.Y >= Y && other.X < X + Width && other.Y < Y + Height;
         }
     }
 }

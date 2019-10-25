@@ -20,7 +20,7 @@ namespace Arqanore.Graphics
         public int B { get; set; }
         public int A { get; set; }
 
-        public Color(int r, int g, int b) : this(r, g, b, 1)
+        public Color(int r, int g, int b) : this(r, g, b, 255)
         {
 
         }

@@ -37,6 +37,18 @@ namespace Arqanore
 
             Polygon(vertices, x, y, angle, r, g, b, a, fillMode);
         }
+        public static void Box(float x, float y, float width, float height, float angle, float offsetX, float offsetY, Color color, PolygonFillMode fillMode)
+        {
+            Box(x, y, width, height, angle, offsetX, offsetY, color.R, color.G, color.B, color.A, fillMode);
+        }
+        public static void Box(Rectangle bounds, float angle, float offsetX, float offsetY, Color color, PolygonFillMode fillMode)
+        {
+            Box(bounds.X, bounds.Y, bounds.Width, bounds.Height, angle, offsetX, offsetY, color, fillMode);
+        }
+        public static void Box(Rectangle bounds, float angle, Vector2 offset, Color color, PolygonFillMode fillMode)
+        {
+            Box(bounds, angle, offset.X, offset.Y, color, fillMode);
+        }
 
         public static void Line(float x1, float y1, float x2, float y2, int r, int g, int b, int a)
         {
@@ -91,7 +103,7 @@ namespace Arqanore
             GL20.glUniform2f(rotationUniformLocation, (float)cos, (float)sin);
             GL20.glUniform2f(scaleUniformLocation, 1.0f, 1.0f);
             GL20.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
-            GL20.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+            GL20.glUniform4f(colorUniformLocation, (float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f, (float)a / 255.0f);
 
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
             GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
