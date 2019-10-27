@@ -50,9 +50,9 @@ namespace Arqanore
 
     public enum MouseButton
     {
-        Left,
-        Middle,
-        Right
+        Left = 0,
+        Middle = 2,
+        Right = 1
     }
     public enum KeyCode
     {

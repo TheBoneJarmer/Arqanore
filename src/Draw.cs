@@ -50,6 +50,93 @@ namespace Arqanore
             Box(bounds, angle, offset.X, offset.Y, color, fillMode);
         }
 
+        public static void RoundedBox(float x, float y, float width, float height, int radius, float angle, int r, int g, int b, int a, PolygonFillMode fillMode)
+        {
+            // var vertices = new float[(36 * 2) + 8];
+            var vertices = new float[80];
+            var i = 0;
+
+            // Top left
+            for (var j = 180; j < 270; j += 10)
+            {
+                vertices[i + 0] = radius + (MathHelper.XSpeed(j) * radius);
+                vertices[i + 1] = radius + (MathHelper.YSpeed(j) * radius);
+
+                i += 2;
+            }
+
+            // Top
+            vertices[i + 0] = radius;
+            vertices[i + 1] = 0;
+
+            i += 2;
+
+            // Top right
+            for (var j = 270; j < 360; j += 10)
+            {
+                vertices[i + 0] = (width - radius) + (MathHelper.XSpeed(j) * radius);
+                vertices[i + 1] = radius + (MathHelper.YSpeed(j) * radius);
+
+                i += 2;
+            }
+
+            // Right
+            vertices[i + 0] = width;
+            vertices[i + 1] = radius;
+
+            i += 2;
+
+            // Bottom right
+            for (var j = 0; j < 90; j += 10)
+            {
+                vertices[i + 0] = (width - radius) + (MathHelper.XSpeed(j) * radius);
+                vertices[i + 1] = (height - radius) + (MathHelper.YSpeed(j) * radius);
+
+                i += 2;
+            }
+
+            // Bottom
+            vertices[i + 0] = width - radius;
+            vertices[i + 1] = height;
+
+            i += 2;
+
+            // Bottom left
+            for (var j = 90; j < 180; j += 10)
+            {
+                vertices[i + 0] = radius + (MathHelper.XSpeed(j) * radius);
+                vertices[i + 1] = (height - radius) + (MathHelper.YSpeed(j) * radius);
+
+                i += 2;
+            }
+
+            // Left
+            vertices[i + 0] = 0;
+            vertices[i + 1] = height - radius;
+
+            Polygon(vertices, x, y, angle, r, g, b, a, fillMode);
+        }
+
+        public static void Circle(float x, float y, int radius, int steps, float angle, int r, int g, int b, int a, PolygonFillMode fillMode)
+        {
+            var vertices = new float[(360 / steps) * 2];
+            var i = 0;
+
+            for (var j = 0; j < 360; j += steps)
+            {
+                vertices[i + 0] = MathHelper.XSpeed(j) * radius;
+                vertices[i + 1] = MathHelper.YSpeed(j) * radius;
+
+                i += 2;
+            }
+
+            Polygon(vertices, x, y, angle, r, g, b, a, fillMode);
+        }
+        public static void Circle(float x, float y, int radius, int steps, float angle, Color color, PolygonFillMode fillMode)
+        {
+            Circle(x, y, radius, steps, angle, color.R, color.G, color.B, color.A, PolygonFillMode.Filled);
+        }
+
         public static void Line(float x1, float y1, float x2, float y2, int r, int g, int b, int a)
         {
             var positionAttribLocation = GL20.glGetAttribLocation(Shaders.Default.Id, "aposition");
@@ -169,10 +256,22 @@ namespace Arqanore
             GL10.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices.Length / 2);
         }
+        public static void Image(Image image, Rectangle bounds, float offsetX, float offsetY, float angle, float clipX, float clipY, float clipWidth, float clipHeight, float scaleX, float scaleY)
+        {
+            Image(image, bounds.X, bounds.Y, bounds.Width, bounds.Height, offsetX, offsetY, angle, clipX, clipY, clipWidth, clipHeight, scaleX, scaleY);
+        }
+        public static void Image(Image image, Rectangle bounds, float offsetX, float offsetY, float angle, Rectangle clip, float scaleX, float scaleY)
+        {
+            Image(image, bounds, offsetX, offsetY, angle, clip.X, clip.Y, clip.Width, clip.Height, scaleX, scaleY);
+        }
+        public static void Image(Image image, Rectangle bounds, Vector2 offset, float angle, Rectangle clip, Vector2 scale)
+        {
+            Image(image, bounds, offset.X, offset.Y, angle, clip, scale.X, scale.Y);
+        }
 
         public static void Text(Font font, string text, float x, float y)
         {
-            
+
         }
     }
 }

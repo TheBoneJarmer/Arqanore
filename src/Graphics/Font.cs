@@ -11,6 +11,7 @@ namespace Arqanore.Graphics
     {
         public Rectangle[] GlyphBounds { get; private set; }
         public byte[] GlyphCodes { get; private set; }
+        public float[] GlyphBases { get; private set; }
         public int GlyphSize { get; private set; }
         public int GlyphsHor { get; private set; }
         public int GlyphsVert { get; private set; }
@@ -23,6 +24,7 @@ namespace Arqanore.Graphics
         {
             GlyphCodes = new byte[94];
             GlyphBounds = new Rectangle[94];
+            GlyphBases = new float[94];
             GlyphSize = 24;
             GlyphsHor = 10;
             GlyphsVert = 10;

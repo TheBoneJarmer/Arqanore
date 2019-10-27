@@ -12,7 +12,7 @@ namespace Arqanore.Input
 
         internal static void Init()
         {
-            Position = new Vector2(0, 0);
+            Position = new Vector2(-1, -1);
             ButtonState = new int[15];
         }
 
