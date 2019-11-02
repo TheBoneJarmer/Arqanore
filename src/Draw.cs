@@ -213,7 +213,7 @@ namespace Arqanore
             GL11.glDrawArrays(GL11.GL_POLYGON, 0, vertices.Length / 2);
         }
 
-        public static void Image(Image image, float x, float y, float width, float height, float offsetX, float offsetY, float angle, float clipX, float clipY, float clipWidth, float clipHeight, float scaleX, float scaleY)
+        public static void Texture(Texture image, float x, float y, float width, float height, float offsetX, float offsetY, float angle, float clipX, float clipY, float clipWidth, float clipHeight, float scaleX, float scaleY)
         {
             var cos = System.Math.Cos(MathHelper.ToRadians(angle + 90));
             var sin = System.Math.Sin(MathHelper.ToRadians(angle + 90));
@@ -256,17 +256,17 @@ namespace Arqanore
             GL10.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices.Length / 2);
         }
-        public static void Image(Image image, Rectangle bounds, float offsetX, float offsetY, float angle, float clipX, float clipY, float clipWidth, float clipHeight, float scaleX, float scaleY)
+        public static void Texture(Texture image, Rectangle bounds, float offsetX, float offsetY, float angle, float clipX, float clipY, float clipWidth, float clipHeight, float scaleX, float scaleY)
         {
-            Image(image, bounds.X, bounds.Y, bounds.Width, bounds.Height, offsetX, offsetY, angle, clipX, clipY, clipWidth, clipHeight, scaleX, scaleY);
+            Texture(image, bounds.X, bounds.Y, bounds.Width, bounds.Height, offsetX, offsetY, angle, clipX, clipY, clipWidth, clipHeight, scaleX, scaleY);
         }
-        public static void Image(Image image, Rectangle bounds, float offsetX, float offsetY, float angle, Rectangle clip, float scaleX, float scaleY)
+        public static void Texture(Texture image, Rectangle bounds, float offsetX, float offsetY, float angle, Rectangle clip, float scaleX, float scaleY)
         {
-            Image(image, bounds, offsetX, offsetY, angle, clip.X, clip.Y, clip.Width, clip.Height, scaleX, scaleY);
+            Texture(image, bounds, offsetX, offsetY, angle, clip.X, clip.Y, clip.Width, clip.Height, scaleX, scaleY);
         }
-        public static void Image(Image image, Rectangle bounds, Vector2 offset, float angle, Rectangle clip, Vector2 scale)
+        public static void Texture(Texture image, Rectangle bounds, Vector2 offset, float angle, Rectangle clip, Vector2 scale)
         {
-            Image(image, bounds, offset.X, offset.Y, angle, clip, scale.X, scale.Y);
+            Texture(image, bounds, offset.X, offset.Y, angle, clip, scale.X, scale.Y);
         }
 
         public static void Text(Font font, string text, float x, float y)

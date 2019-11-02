@@ -4,124 +4,100 @@ using Arqanore.Math;
 using Arqan;
 using System.IO;
 using System.Text;
+using System.Collections.Generic;
+using Arqanore.Utils;
 
 namespace Arqanore.Graphics
 {
     public class Font
     {
-        public Rectangle[] GlyphBounds { get; private set; }
-        public byte[] GlyphCodes { get; private set; }
-        public float[] GlyphBases { get; private set; }
-        public int GlyphSize { get; private set; }
-        public int GlyphsHor { get; private set; }
-        public int GlyphsVert { get; private set; }
-
-        public Image Image { get; set; }
-        public string Family { get; private set; }
-        public int Size { get; private set; }
+        public List<Texture> Textures { get; private set; }
+        public List<Glyph> Glyphs { get; private set; }
+        public int LineHeight { get; private set; }
+        public int BaseHeight { get; private set; }
 
         public Font()
         {
-            GlyphCodes = new byte[94];
-            GlyphBounds = new Rectangle[94];
-            GlyphBases = new float[94];
-            GlyphSize = 24;
-            GlyphsHor = 10;
-            GlyphsVert = 10;
+            Textures = new List<Texture>();
+            Glyphs = new List<Glyph>();
+        }
+        public Font(string path) : this()
+        {
+            Load(path);
+        }
 
-            // Fill the list of codes
-            for (byte i = 32; i < 127; i++)
+        private void Load(string path)
+        {
+            var data = new byte[0];
+
+            // Check the file
+            if (!path.EndsWith(".arqfnt"))
             {
-                GlyphCodes[i - 32] = i;
+                throw new ArqanoreException("Not a valid Arqanore font");
             }
+
+            // Load the data
+            data = File.ReadAllBytes(path);
+
+            // Parse the data
+            Parse(data.ToList());
         }
-
-        public void Save(string filename)
+        private void Parse(List<byte> bytes)
         {
+            var parser = new ByteParser(bytes);
+            var bmpCount = parser.GetInt(8);
+            var dataLength = parser.GetInt(8);
+            var bmpLengths = parser.GetInts(8, bmpCount);
+            var data = parser.GetString(dataLength).Split(';');
+            var images = parser.GetImages(bmpLengths, bmpCount);
 
-        }
-
-        public void GenerateBounds()
-        {
-            for (var i = 0; i < GlyphBounds.Length; i++)
+            // Parse the font data
+            for (var i = 0; i < data.Length; i++)
             {
-                var y = (float)System.Math.Floor(i / (float)GlyphsVert);
-                var x = (float)System.Math.Floor(((i / (float)GlyphsVert) - y) * (float)GlyphsHor);
-
-
-
-                GlyphBounds[i] = CalculateGlyphBounds((int)x, (int)y, GlyphSize);
-            }
-        }
-
-        private Rectangle CalculateGlyphBounds(int cellX, int cellY, int cellSize)
-        {
-            var result = new Rectangle();
-            var smallest = new Vector2(-1, -1);
-            var biggest = new Vector2(-1, -1);
-
-            var x1 = cellX * cellSize;
-            var y1 = cellY * cellSize;
-            var x2 = (cellX + 1) * cellSize;
-            var y2 = (cellY + 1) * cellSize;
-
-            for (var x = x1; x < x2; x++)
-            {
-                for (var y = y1; y < y2; y++)
+                if (i == 0)
                 {
-                    var pixel = Image.Bitmap.GetPixel(x, y);
+                    LineHeight = int.Parse(data[i]);
+                }
+                else if (i == 1)
+                {
+                    BaseHeight = int.Parse(data[i]);
+                }
+                else
+                {
+                    var glyph = new Glyph();
+                    glyph.Id = short.Parse(data[i].Split(',')[0]);
+                    glyph.Page = short.Parse(data[i].Split(',')[1]);
+                    glyph.X = int.Parse(data[i].Split(',')[2]);
+                    glyph.Y = int.Parse(data[i].Split(',')[3]);
+                    glyph.Width = int.Parse(data[i].Split(',')[4]);
+                    glyph.Height = int.Parse(data[i].Split(',')[5]);
+                    glyph.OffsetX = int.Parse(data[i].Split(',')[6]);
+                    glyph.OffsetY = int.Parse(data[i].Split(',')[7]);
+                    glyph.Advance = int.Parse(data[i].Split(',')[8]);
 
-                    // Transparant pixels mean unexisting pixels
-                    if (pixel.A == 0)
-                    {
-                        continue;
-                    }
-
-                    // Compare the pixel locations with one another
-                    if (smallest.X == -1 && smallest.Y == -1)
-                    {
-                        smallest.X = x;
-                        smallest.Y = y;
-                    }
-                    else if (biggest.X == -1 && biggest.Y == -1)
-                    {
-                        biggest.X = x;
-                        biggest.Y = y;
-                    }
-                    else
-                    {
-                        if (x < smallest.X)
-                        {
-                            smallest.X = x;
-                        }
-                        if (x > biggest.X)
-                        {
-                            biggest.X = x;
-                        }
-                        if (y < smallest.Y)
-                        {
-                            smallest.Y = y;
-                        }
-                        if (y > biggest.Y)
-                        {
-                            biggest.Y = y;
-                        }
-                    }
+                    Glyphs.Add(glyph);
                 }
             }
 
-            // Calculate the differences
-            result.X = smallest.X;
-            result.Y = smallest.Y;
-            result.Width = biggest.X - smallest.X + 1;
-            result.Height = biggest.Y - smallest.Y + 1;
+            // Add all the textures
+            foreach (var img in images)
+            {
+                Textures.Add(new Texture(img));
+            }
+        }
 
-            if (result.X < 0) result.X = 0;
-            if (result.Y < 0) result.Y = 0;
-            if (result.Width < 0) result.Width = 0;
-            if (result.Height < 0) result.Height = 0;
+        public class Glyph
+        {
+            public short Id { get; set; }
+            public short Page { get; set; }
+            public int OffsetX { get; set; }
+            public int OffsetY { get; set; }
+            public int Advance { get; set; }
 
-            return result;
+            public int X { get; set; }
+            public int Y { get; set; }
+            public int Width { get; set; }
+            public int Height { get; set; }
         }
     }
 }

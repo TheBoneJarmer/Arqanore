@@ -1,30 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Text;
 using Arqan;
 
 namespace Arqanore.Graphics
 {
-    public class Image
+    public class Texture
     {
         public uint Id { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
-        public System.Drawing.Bitmap Bitmap { get; private set; }
+        public Bitmap Bitmap { get; private set; }
 
-        public Image(System.Drawing.Bitmap bmp)
+        public Texture(Image img)
+        {
+            Load(new Bitmap(img));
+        }
+        public Texture(Bitmap bmp)
         {
             Load(bmp);
         }
-        public Image(string filename)
+        public Texture(string filename)
         {
-            Load(new System.Drawing.Bitmap(System.Drawing.Image.FromFile(filename)));
+            Load(new Bitmap(Image.FromFile(filename)));
         }
 
-        private void Load(System.Drawing.Bitmap bmp)
+        private void Load(Bitmap bmp)
         {
             var ids = new uint[1];
-            var data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
             // Set properties
             Width = bmp.Width;
