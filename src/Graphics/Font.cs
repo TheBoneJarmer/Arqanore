@@ -35,6 +35,10 @@ namespace Arqanore.Graphics
             {
                 throw new ArqanoreException("Not a valid Arqanore font");
             }
+            if (!File.Exists(path))
+            {
+                throw new ArqanoreException($"Unable to find font {path}");
+            }
 
             // Load the data
             data = File.ReadAllBytes(path);
