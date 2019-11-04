@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Seanuts
+namespace Arqanore
 {
-    public enum SNWebSocketStatus
+    public enum WebSocketStatus
     {
         None,
         Opening,
@@ -13,37 +13,48 @@ namespace Seanuts
         Closed
     }
 
-    public enum SNWebSocketMessageType
+    public enum WebSocketMessageType
     {
         Text = 1,
         CloseConnection = 8
     }
 
-    public enum SNHttpVersion
+    public enum HttpVersion
     {
         Http11
     }
     
-    public enum SNPolygonFillMode
+    public enum PolygonFillMode
     {
         Filled,
         Lines,
         Points
     }
-    public enum SNTextAlign
+    public enum TextAlign
     {
         Left,
         Center,
         Right
     }
-
-    public enum SNMouseButton
+    public enum PositionType
     {
-        Left,
-        Middle,
-        Right
+        Absolute,
+        Relative
     }
-    public enum SNKeyCode
+
+    public enum WindowState
+    {
+        Open,
+        Closed
+    }
+
+    public enum MouseButton
+    {
+        Left = 0,
+        Middle = 2,
+        Right = 1
+    }
+    public enum KeyCode
     {
         UNKNOWN = -1,
         SPACE = 32,

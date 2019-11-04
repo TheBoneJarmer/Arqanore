@@ -1,15 +1,6 @@
-# Visual Studio
 .vs/
 .vscode/
-
-# Dotnet Core
 bin/
 obj/
 packages/
-
-# Seanuts
 lib/
-tools/
-
-# 3rd party libraries
-glfw3.dll
