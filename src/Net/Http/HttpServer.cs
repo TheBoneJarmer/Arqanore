@@ -12,7 +12,7 @@ using Arqanore.Net.Sockets;
 
 namespace Arqanore.Net.Http
 {
-    public class AsyncHttpServer
+    public class HttpServer
     {
         private Thread thread1;
         private Thread thread2;
@@ -35,11 +35,11 @@ namespace Arqanore.Net.Http
             }
         }
 
-        public AsyncHttpServer() : this(80)
+        public HttpServer() : this(80)
         {
 
         }
-        public AsyncHttpServer(int port)
+        public HttpServer(int port)
         {
             this.port = port;
             this.maxConnections = 1000000;
@@ -180,14 +180,14 @@ namespace Arqanore.Net.Http
                     }
                     else
                     {
-                        HttpServerRequest request = null;
-                        HttpServerResponse response = null;
+                        HttpRequest request = null;
+                        HttpResponse response = null;
                         HttpConnectionInfo info = null;
 
                         try
                         {
                             info = new HttpConnectionInfo(socketMessage.Socket);
-                            response = new HttpServerResponse(socketMessage.Socket);
+                            response = new HttpResponse(socketMessage.Socket);
 
                             if (!CheckFilter(info.IPAddress))
                             {
@@ -211,11 +211,11 @@ namespace Arqanore.Net.Http
                             // Create the request object
                             if (MaxUploadSize == 0)
                             {
-                                request = new HttpServerRequest(socketMessage.Data);
+                                request = new HttpRequest(socketMessage.Data);
                             }
                             else
                             {
-                                request = new HttpServerRequest(socketMessage.Data, MaxUploadSize);
+                                request = new HttpRequest(socketMessage.Data, MaxUploadSize);
                             }
 
                             // Handle OPTIONS request
@@ -302,7 +302,7 @@ namespace Arqanore.Net.Http
         }
 
         /* EVENTS */
-        public delegate void OnRequestHandler(HttpServerRequest request, HttpServerResponse response, HttpConnectionInfo info);
+        public delegate void OnRequestHandler(HttpRequest request, HttpResponse response, HttpConnectionInfo info);
         public event OnRequestHandler OnRequest;
     }
 }

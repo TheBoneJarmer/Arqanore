@@ -7,7 +7,7 @@ using System.Net.Http;
 
 namespace Arqanore.Net.Http
 {
-    public class HttpServerRequest
+    public class HttpRequest
     {
         public HttpMethod Method { get; set; }
         public HttpVersion Version { get; set; }
@@ -19,7 +19,7 @@ namespace Arqanore.Net.Http
         public string Path { get; set; }
         public string Raw { get; set; }
         
-        public HttpServerRequest()
+        public HttpRequest()
         {
             this.Headers = new HttpHeaders();
             this.Cookies = new Dictionary<string, string>();
@@ -27,12 +27,12 @@ namespace Arqanore.Net.Http
             this.Query = new Dictionary<string, string>();
         }
 
-        public HttpServerRequest(byte[] data) : this()
+        public HttpRequest(byte[] data) : this()
         {
             Raw = Encoding.ASCII.GetString(data);
             this.Parse(data, 2 * 1024 * 1024);
         }
-        public HttpServerRequest(byte[] data, int maxContentLength) : this()
+        public HttpRequest(byte[] data, int maxContentLength) : this()
         {
             Raw = Encoding.ASCII.GetString(data);
             this.Parse(data, maxContentLength);

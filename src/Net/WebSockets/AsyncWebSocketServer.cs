@@ -172,12 +172,12 @@ namespace Arqanore.Net.WebSockets
                         }
                         catch (WebSocketException ex)
                         {
-                            HttpServerResponse response = new HttpServerResponse(handler);
+                            HttpResponse response = new HttpResponse(handler);
                             response.BadRequest(ex.Message);
                         }
                         catch (Exception ex)
                         {
-                            HttpServerResponse response = new HttpServerResponse(handler);
+                            HttpResponse response = new HttpResponse(handler);
                             response.InternalServerError(ex.Message);
                         }
                     }

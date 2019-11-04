@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace Arqanore.Net.Http
 {
-    public class HttpServerResponse
+    public class HttpResponse
     {
         public HttpHeaders Headers { get; set; }
         public Dictionary<string, string> Cookies { get; set; }
@@ -19,7 +19,7 @@ namespace Arqanore.Net.Http
         public string Body { get; set; }
         public Socket Socket { get; private set; }
 
-        public HttpServerResponse(Socket socket)
+        public HttpResponse(Socket socket)
         {
             this.Version = HttpVersion.Http11;
             this.StatusCode = HttpStatusCode.OK;
