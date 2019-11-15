@@ -152,6 +152,17 @@ namespace Arqanore.Net.Http
             StatusCode = HttpStatusCode.MethodNotAllowed;
             SendJson(obj);
         }
+        public void UnsupportedMediaType(string data = "")
+        {
+            StatusCode = HttpStatusCode.UnsupportedMediaType;
+            Body = data;
+            Send();
+        }
+        public void UnsupportedMediaType(object obj)
+        {
+            StatusCode = HttpStatusCode.UnsupportedMediaType;
+            SendJson(obj);
+        }
 
         private void SendCallback(IAsyncResult result)
         {
