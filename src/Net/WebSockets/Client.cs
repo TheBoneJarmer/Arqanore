@@ -205,10 +205,10 @@ namespace Arqanore.Net.WebSockets
         }
 
         /* EVENTS */
-        public event AsyncWebSocketServer.OnConnectDelegate OnConnect;
-        public event AsyncWebSocketServer.OnMessageDelegate OnMessage;
-        public event AsyncWebSocketServer.OnErrorDelegate OnError;
-        public event AsyncWebSocketServer.OnFatalDelegate OnFatal;
-        public event AsyncWebSocketServer.OnDisconnectDelegate OnDisconnect;
+        public event WebSocketServer.OnConnectDelegate OnConnect;
+        public event WebSocketServer.OnMessageDelegate OnMessage;
+        public event WebSocketServer.OnErrorDelegate OnError;
+        public event WebSocketServer.OnFatalDelegate OnFatal;
+        public event WebSocketServer.OnDisconnectDelegate OnDisconnect;
     }
 }

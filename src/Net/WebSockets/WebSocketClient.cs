@@ -10,7 +10,7 @@ using Arqanore.Net.WebSockets;
 
 namespace Arqanore.Net.WebSockets
 {
-    public class AsyncWebSocketClient
+    public class WebSocketClient
     {
         private Thread Thread { get; set; }
         private Socket Socket { get; set; }
@@ -19,7 +19,7 @@ namespace Arqanore.Net.WebSockets
 
         public WebSocketStatus Status { get; private set; }
 
-        public AsyncWebSocketClient()
+        public WebSocketClient()
         {
             Status = WebSocketStatus.None;
             Request = new WebSocketRequest();

@@ -10,7 +10,7 @@ using Arqanore.Net.Sockets;
 
 namespace Arqanore.Net.WebSockets
 {
-    public class AsyncWebSocketServer
+    public class WebSocketServer
     {
         public List<Client> Clients { get; private set; }
 
@@ -24,11 +24,11 @@ namespace Arqanore.Net.WebSockets
         private int port;
         private int clientCount;
 
-        public AsyncWebSocketServer() : this(5000)
+        public WebSocketServer() : this(5000)
         {
 
         }
-        public AsyncWebSocketServer(int port)
+        public WebSocketServer(int port)
         {
             this.port = port;
             this.resetEvent1 = new ManualResetEvent(false);
@@ -173,12 +173,16 @@ namespace Arqanore.Net.WebSockets
                         catch (WebSocketException ex)
                         {
                             HttpResponse response = new HttpResponse(handler);
-                            response.BadRequest(ex.Message);
+
+                            response.StatusCode = HttpStatusCode.BadRequest;
+                            response.Send(ex.Message);
                         }
                         catch (Exception ex)
                         {
                             HttpResponse response = new HttpResponse(handler);
-                            response.InternalServerError(ex.Message);
+                            
+                            response.StatusCode = HttpStatusCode.InternalServerError;
+                            response.Send(ex.Message);
                         }
                     }
                 }

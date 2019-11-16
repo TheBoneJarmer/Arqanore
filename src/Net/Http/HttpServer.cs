@@ -192,7 +192,10 @@ namespace Arqanore.Net.Http
                             if (!CheckFilter(info.IPAddress))
                             {
                                 Console.WriteLine("Blocked connection attempt for " + info.IPAddress);
-                                response.Forbidden();
+
+                                response.StatusCode = HttpStatusCode.Forbidden;
+                                response.Send();
+
                                 return;
                             }
                         }
@@ -244,15 +247,15 @@ namespace Arqanore.Net.Http
                         catch (HttpException ex)
                         {
                             response.StatusCode = ex.StatusCode;
-                            response.Body = ex.ResponseText;
-                            response.Send();
+                            response.Send(ex.ResponseText);
                         }
                         catch (Exception ex)
                         {
                             Console.Error.WriteLine(ex.Message);
                             Console.Error.WriteLine(ex.StackTrace);
 
-                            response.InternalServerError();
+                            response.StatusCode = HttpStatusCode.InternalServerError;
+                            response.Send();
                         }
                     }
                 }

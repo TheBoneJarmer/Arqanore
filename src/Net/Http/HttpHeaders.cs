@@ -12,22 +12,27 @@ namespace Arqanore.Net.Http
         public string Accept
         {
             get { return this["Accept"]; }
+            set { this["Accept"] = value; }
         }
         public string AcceptEncoding
         {
             get { return this["Accept-Encoding"]; }
+            set { this["Accept-Encoding"] = value; }
         }
         public string Authorization
         {
             get { return this["Authorization"]; }
+            set { this["Authorization"] = value; }
         }
         public string CacheControl
         {
             get { return this["Cache-Control"]; }
+            set { this["Cache-Control"] = value; }
         }
         public string Connection
         {
             get { return this["Connection"]; }
+            set { this["Connection"] = value; }
         }
         public int ContentLength
         {
@@ -44,22 +49,27 @@ namespace Arqanore.Net.Http
                     return int.Parse(value);
                 }
             }
+            set
+            {
+                this["Content-Length"] = value.ToString();
+            }
         }
         public string ContentType
         {
             get { return this["Content-Type"]; }
+            set { this["Content-Type"] = value; }
         }
         public string Host
         {
             get { return this["Host"]; }
+            set { this["Host"] = value; }
         }
         public string UserAgent
         {
             get { return this["User-Agent"]; }
+            set { this["User-Agent"] = value; }
         }
 
-
-        // Indexer
         public string this[string key]
         {
             get

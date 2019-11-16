@@ -183,17 +183,13 @@ namespace Arqanore.Net.Http
                 contentType = Headers["content-type"].Replace(" ", "").Replace("\r\n", "").Split(';');
             }
 
-            if (contentType[0] == "application/json")
-            {
-                Body = new HttpRequestBody(Encoding.ASCII.GetString(data.ToArray()), contentType[0]);
-            }
-            if (contentType[0] == "application/x-www-form-urlencoded")
-            {
-                Body = new HttpRequestBody(Encoding.ASCII.GetString(data.ToArray()), contentType[0]);
-            }
             if (contentType.Contains("multipart/form-data"))
             {
                 ParseBodyMultipartFormData(data, contentType[1].Replace("boundary=", "").Replace("\r", "").Replace("\n", ""));
+            }
+            else
+            {
+                Body = new HttpRequestBody(Encoding.ASCII.GetString(data.ToArray()), contentType[0]);
             }
         }
 
