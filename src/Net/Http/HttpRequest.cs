@@ -365,12 +365,12 @@ namespace Arqanore.Net.Http
                 // If the header is still not valid, send a 415 Unsupported media type
                 if (!valid)
                 {
-                    throw new HttpException(HttpStatusCode.UnsupportedMediaType, $"Content type {contentType[0]} not supported");
+                    throw new HttpException(HttpStatusCode.UnsupportedMediaType, $"Content type \"{contentType[0]}\" not supported");
                 }
             }
             else
             {
-                throw new HttpException(HttpStatusCode.UnsupportedMediaType, $"Header 'content-type' missing");
+                throw new HttpException(HttpStatusCode.UnsupportedMediaType, $"Header \"Content-Type\" missing");
             }
         }
         private void ValidateContentLength(int maxLength)

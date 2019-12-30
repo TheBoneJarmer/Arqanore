@@ -25,6 +25,8 @@ namespace Arqanore.Net.Http
                     return "Forbidden";
                 case 404:
                     return "Not found";
+                case 415:
+                    return "Unsupported Media Type";
                 case 500:
                     return "Internal Server Error";
             }
