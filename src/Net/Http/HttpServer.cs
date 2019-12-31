@@ -221,7 +221,7 @@ namespace Arqanore.Net.Http
                             if (request.Method == HttpMethod.Options)
                             {
                                 response.Headers.Add("Access-Control-Allow-Method", "GET, POST, OPTIONS, PUT, DELETE");
-                                //response.Headers.Add("Access-Control-Allow-Headers", "");
+                                response.Headers.Add("Access-Control-Allow-Headers", "*");
                                 response.Send();
 
                                 return;
