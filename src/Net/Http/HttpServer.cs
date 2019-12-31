@@ -207,10 +207,6 @@ namespace Arqanore.Net.Http
 
                         try
                         {
-                            // Let the console know the request
-                            //Console.WriteLine(socketMessage.ToString());
-                            //Console.WriteLine("");
-
                             // Create the request object
                             if (MaxUploadSize == 0)
                             {
@@ -225,7 +221,7 @@ namespace Arqanore.Net.Http
                             if (request.Method == HttpMethod.Options)
                             {
                                 response.Headers.Add("Access-Control-Allow-Method", "GET, POST, OPTIONS, PUT, DELETE");
-                                response.Headers.Add("Access-Control-Allow-Headers", "Ecredia-Auth");
+                                //response.Headers.Add("Access-Control-Allow-Headers", "");
                                 response.Send();
 
                                 return;
@@ -239,10 +235,6 @@ namespace Arqanore.Net.Http
                             {
                                 response.Send();
                             }
-
-                            // Let the console know the response
-                            //Console.WriteLine(response.ToString());
-                            //Console.WriteLine("------------------------------------------------------");
                         }
                         catch (HttpException ex)
                         {
