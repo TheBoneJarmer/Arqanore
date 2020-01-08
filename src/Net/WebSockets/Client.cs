@@ -19,11 +19,7 @@ namespace Arqanore.Net.WebSockets
         public Thread Thread { get; set; }
         public Socket Socket { get; set; }
         public WebSocketStatus Status { get; set; }
-
-        public IPAddress IPAddress
-        {
-            get { return ((IPEndPoint)(Socket.RemoteEndPoint)).Address; }
-        }
+        public IPAddress IPAddress { get; set; }
 
         public Client(int id)
         {
@@ -35,6 +31,7 @@ namespace Arqanore.Net.WebSockets
         {
             Socket = socket;
             Status = WebSocketStatus.Open;
+            IPAddress = ((IPEndPoint)(socket.RemoteEndPoint)).Address;
 
             // Parse the request
             var request = new WebSocketRequest();
