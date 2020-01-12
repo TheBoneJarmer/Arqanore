@@ -298,7 +298,7 @@ namespace Arqanore.Net.WebSockets
         /* EVENTS */
         public delegate void OnConnectDelegate(Client client);
         public event OnConnectDelegate OnConnect;
-        public delegate void OnMessageDelegate(Client client, string message);
+        public delegate void OnMessageDelegate(Client client, byte[] message);
         public event OnMessageDelegate OnMessage;
         public delegate void OnErrorDelegate(Client client, Exception exception);
         public event OnErrorDelegate OnError;
