@@ -21,7 +21,7 @@ namespace Arqanore.Net.WebSockets
 
         public WebSocketClient()
         {
-            Status = WebSocketStatus.None;
+            Status = WebSocketStatus.Closed;
             Request = new WebSocketRequest();
             Response = new WebSocketResponse();
         }
