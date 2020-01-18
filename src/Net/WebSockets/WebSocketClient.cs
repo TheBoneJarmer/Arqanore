@@ -44,9 +44,16 @@ namespace Arqanore.Net.WebSockets
             ReceiveHandshake();
         }
 
+        public void Send(byte[] data)
+        {
+            var message = new WebSocketMessage(data, WebSocketMessageType.Text);
+            message.Encode(true);
+
+            Socket.BeginSend(message.Buffer, 0, message.Buffer.Length, SocketFlags.None, SendCallback, Socket);
+        }
         public void Send(string data)
         {
-            WebSocketMessage message = new WebSocketMessage(data, WebSocketMessageType.Text);
+            var message = new WebSocketMessage(data, WebSocketMessageType.Text);
             message.Encode(true);
 
             Socket.BeginSend(message.Buffer, 0, message.Buffer.Length, SocketFlags.None, SendCallback, Socket);
@@ -54,7 +61,7 @@ namespace Arqanore.Net.WebSockets
 
         public void Disconnect()
         {
-            WebSocketMessage message = new WebSocketMessage("", WebSocketMessageType.CloseConnection);
+            var message = new WebSocketMessage("", WebSocketMessageType.CloseConnection);
             message.Encode();
 
             Status = WebSocketStatus.Closing;
