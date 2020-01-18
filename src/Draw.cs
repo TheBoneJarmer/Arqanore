@@ -276,8 +276,7 @@ namespace Arqanore
 
             for (var i = 0; i < text.Length; i++)
             {
-                var chr = (char)text[i];
-                var code = (short)chr;
+                var code = (short)text[i];
                 var glyph = font.Glyphs.FirstOrDefault(z => z.Id == code);
 
                 if (glyph == null)
