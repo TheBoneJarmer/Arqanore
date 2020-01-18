@@ -196,6 +196,15 @@ namespace Arqanore
                     OnUpdate();
                 }
 
+                // Update input
+                for (var i=0; i<Mouse.ButtonState.Length; i++)
+                {
+                    if (Mouse.ButtonState[i] == 1)
+                    {
+                        Mouse.ButtonState[i] = 2;
+                    }
+                }
+
                 // Render
                 GL10.glEnable(GL11.GL_BLEND);
                 GL10.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -278,8 +287,6 @@ namespace Arqanore
         }
         private void OnKeyFunction(IntPtr windowHandle, int key, int scanCode, int action, int mods)
         {
-            Console.WriteLine($"{key}: {action}");
-
             Keyboard.KeyState[key] = action;
         }
         private void OnCharFunction(IntPtr windowHandle, uint codepoint)

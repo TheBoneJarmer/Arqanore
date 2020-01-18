@@ -22,13 +22,7 @@ namespace Arqanore.Input
         }
         public static bool ButtonPressed(MouseButton button)
         {
-            if (ButtonState[(int)button] == 1)
-            {
-                ButtonState[(int)button] = 2;
-                return true;
-            }
-
-            return false;
+            return ButtonState[(int)button] == 1;
         }
     }
 }
