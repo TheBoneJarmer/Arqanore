@@ -278,6 +278,8 @@ namespace Arqanore
         }
         private void OnKeyFunction(IntPtr windowHandle, int key, int scanCode, int action, int mods)
         {
+            Console.WriteLine($"{key}: {action}");
+
             Keyboard.KeyState[key] = action;
         }
         private void OnCharFunction(IntPtr windowHandle, uint codepoint)
