@@ -249,8 +249,8 @@ namespace Arqanore
         }
         private void OnWindowSizeFunction(IntPtr windowHandle, int width, int height)
         {
-            Width = width;
-            Height = height;
+            this.width = width;
+            this.height = height;
 
             if (OnResize != null)
             {
