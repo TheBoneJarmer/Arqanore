@@ -301,7 +301,10 @@ namespace Arqanore
         }
         private void OnKeyFunction(IntPtr windowHandle, int key, int scanCode, int action, int mods)
         {
-            Keyboard.KeyState[key] = action;
+            if (key < Keyboard.KeyState.Length)
+            {
+                Keyboard.KeyState[key] = action;
+            }
         }
         private void OnCharFunction(IntPtr windowHandle, uint codepoint)
         {
