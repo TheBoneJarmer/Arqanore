@@ -18,7 +18,11 @@ namespace Arqanore.Input
 
         public static bool ButtonDown(MouseButton button)
         {
-            return ButtonState[(int)button] > 0;
+            return ButtonState[(int)button] > 0 && ButtonState[(int)button] < 3;
+        }
+        public static bool ButtonUp(MouseButton button)
+        {
+            return ButtonState[(int)button] == 3;
         }
         public static bool ButtonPressed(MouseButton button)
         {

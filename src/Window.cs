@@ -91,13 +91,13 @@ namespace Arqanore
         }
 
         public void Open(bool fullscreen = false, bool vsync = true, bool pollEvents = true)
-        {            
+        {
             InitGLFW();
             InitWindow(fullscreen);
             InitEvents();
             InitSettings(vsync);
             InitFramework();
-                 
+
             Sync(pollEvents);
         }
         public void Close()
@@ -197,11 +197,15 @@ namespace Arqanore
                 }
 
                 // Update input
-                for (var i=0; i<Mouse.ButtonState.Length; i++)
+                for (var i = 0; i < Mouse.ButtonState.Length; i++)
                 {
                     if (Mouse.ButtonState[i] == 1)
                     {
                         Mouse.ButtonState[i] = 2;
+                    }
+                    if (Mouse.ButtonState[i] == 3)
+                    {
+                        Mouse.ButtonState[i] = 0;
                     }
                 }
 
@@ -283,7 +287,17 @@ namespace Arqanore
         }
         private void OnMouseButtonFunction(IntPtr windowHandle, int button, int action, int mods)
         {
-            Mouse.ButtonState[button] = action;
+            if (action == 1)
+            {
+                Mouse.ButtonState[button] = 1;
+            }
+            if (action == 0)
+            {
+                if (Mouse.ButtonState[button] == 2)
+                {
+                    Mouse.ButtonState[button] = 3;
+                }
+            }
         }
         private void OnKeyFunction(IntPtr windowHandle, int key, int scanCode, int action, int mods)
         {
