@@ -37,18 +37,6 @@ namespace Arqanore
 
             Polygon(vertices, x, y, angle, r, g, b, a, fillMode);
         }
-        public static void Box(float x, float y, float width, float height, float angle, float offsetX, float offsetY, Color color, PolygonFillMode fillMode)
-        {
-            Box(x, y, width, height, angle, offsetX, offsetY, color.R, color.G, color.B, color.A, fillMode);
-        }
-        public static void Box(Rectangle bounds, float angle, float offsetX, float offsetY, Color color, PolygonFillMode fillMode)
-        {
-            Box(bounds.X, bounds.Y, bounds.Width, bounds.Height, angle, offsetX, offsetY, color, fillMode);
-        }
-        public static void Box(Rectangle bounds, float angle, Vector2 offset, Color color, PolygonFillMode fillMode)
-        {
-            Box(bounds, angle, offset.X, offset.Y, color, fillMode);
-        }
 
         public static void RoundedBox(float x, float y, float width, float height, int radius, float angle, int r, int g, int b, int a, PolygonFillMode fillMode)
         {
@@ -131,10 +119,6 @@ namespace Arqanore
             }
 
             Polygon(vertices, x, y, angle, r, g, b, a, fillMode);
-        }
-        public static void Circle(float x, float y, int radius, int steps, float angle, Color color, PolygonFillMode fillMode)
-        {
-            Circle(x, y, radius, steps, angle, color.R, color.G, color.B, color.A, PolygonFillMode.Filled);
         }
 
         public static void Line(float x1, float y1, float x2, float y2, int r, int g, int b, int a)
@@ -255,18 +239,6 @@ namespace Arqanore
 
             GL10.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices.Length / 2);
-        }
-        public static void Texture(Texture image, Rectangle bounds, float offsetX, float offsetY, float angle, float clipX, float clipY, float clipWidth, float clipHeight, float scaleX, float scaleY)
-        {
-            Texture(image, bounds.X, bounds.Y, bounds.Width, bounds.Height, offsetX, offsetY, angle, clipX, clipY, clipWidth, clipHeight, scaleX, scaleY);
-        }
-        public static void Texture(Texture image, Rectangle bounds, float offsetX, float offsetY, float angle, Rectangle clip, float scaleX, float scaleY)
-        {
-            Texture(image, bounds, offsetX, offsetY, angle, clip.X, clip.Y, clip.Width, clip.Height, scaleX, scaleY);
-        }
-        public static void Texture(Texture image, Rectangle bounds, Vector2 offset, float angle, Rectangle clip, Vector2 scale)
-        {
-            Texture(image, bounds, offset.X, offset.Y, angle, clip, scale.X, scale.Y);
         }
 
         public static void Text(Font font, string text, float x, float y, int r, int g, int b, int a)
