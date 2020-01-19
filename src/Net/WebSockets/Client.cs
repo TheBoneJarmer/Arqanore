@@ -58,12 +58,25 @@ namespace Arqanore.Net.WebSockets
 
                 Socket.BeginSend(message.Buffer, 0, message.Buffer.Length, SocketFlags.None, SendCallback, Socket);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.Error.WriteLine(ex.Message);
-                Console.Error.WriteLine(ex.StackTrace);
-
                 Status = WebSocketStatus.Closed;
+                throw;
+            }
+        }
+        public void Send(byte[] data)
+        {
+            try
+            {
+                WebSocketMessage message = new WebSocketMessage(data, WebSocketMessageType.Text);
+                message.Encode();
+
+                Socket.BeginSend(message.Buffer, 0, message.Buffer.Length, SocketFlags.None, SendCallback, Socket);
+            }
+            catch (Exception)
+            {
+                Status = WebSocketStatus.Closed;
+                throw;
             }
         }
 
@@ -78,12 +91,10 @@ namespace Arqanore.Net.WebSockets
 
                 Socket.BeginSend(message.Buffer, 0, message.Buffer.Length, SocketFlags.None, SendCallback, Socket);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.Error.WriteLine(ex.Message);
-                Console.Error.WriteLine(ex.StackTrace);
-
                 Status = WebSocketStatus.Closed;
+                throw;
             }
         }
 
@@ -96,12 +107,10 @@ namespace Arqanore.Net.WebSockets
                 Socket.Shutdown(SocketShutdown.Both);
                 Socket.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.Error.WriteLine(ex.Message);
-                Console.Error.WriteLine(ex.StackTrace);
-
                 Status = WebSocketStatus.Closed;
+                throw;
             }
         }
 
