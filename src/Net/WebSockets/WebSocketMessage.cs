@@ -159,9 +159,11 @@ namespace Arqanore.Net.WebSockets
                 }
                 if (Message.Length >= 126)
                 {
-                    result.Add((byte)BinaryStringToInt("1" + IntToBinaryString(126).PadLeft(7, '0')));
-                    result.Add((byte)BinaryStringToInt(IntToBinaryString(Message.Length).PadLeft(16, '0').Substring(0, 7)));
-                    result.Add((byte)BinaryStringToInt(IntToBinaryString(Message.Length).PadLeft(16, '0').Substring(8, 15)));
+                    var binaryString = IntToBinaryString(Message.Length).PadLeft(16, '0');
+
+                    result.Add((byte)BinaryStringToInt("11111110"));
+                    result.Add((byte)BinaryStringToInt(binaryString.Substring(0, 8)));
+                    result.Add((byte)BinaryStringToInt(binaryString.Substring(8, 8)));
                 }
 
                 // Masked bytes
