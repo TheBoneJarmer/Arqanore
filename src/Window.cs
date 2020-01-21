@@ -186,19 +186,20 @@ namespace Arqanore
             // Main loop
             while (GLFW.glfwWindowShouldClose(Handle) == 0)
             {
-                // Update time
                 Time.Then = Time.Now;
                 Time.Now = GLFW.glfwGetTime();
 
-                // Update
                 if (OnUpdate != null)
                 {
                     OnUpdate();
                 }
 
-                // Update input
+                // Update input states
                 for (var i = 0; i < Mouse.ButtonState.Length; i++)
                 {
+                    // 1 means being hold down
+                    // 2 means pressed
+                    // 3 means released
                     if (Mouse.ButtonState[i] == 1)
                     {
                         Mouse.ButtonState[i] = 2;
@@ -209,7 +210,7 @@ namespace Arqanore
                     }
                 }
 
-                // Render
+                // Render a background and enable some stuff for 2d rendering with alpha
                 GL10.glEnable(GL11.GL_BLEND);
                 GL10.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 GL10.glViewport(0, 0, Width, Height);
@@ -221,10 +222,8 @@ namespace Arqanore
                     OnRender();
                 }
 
-                // Swap buffers
                 GLFW.glfwSwapBuffers(Handle);
 
-                // Poll events or wait for events
                 if (pollEvents)
                 {
                     GLFW.glfwPollEvents();
@@ -236,9 +235,12 @@ namespace Arqanore
                 }
             }
 
-            // Mark the window as closed
-            state = WindowState.Closed;
+            if (OnClose != null)
+            {
+                OnClose();
+            }
 
+            state = WindowState.Closed;
             GLFW.glfwDestroyWindow(Handle);
         }
 
