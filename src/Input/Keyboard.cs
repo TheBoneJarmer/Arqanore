@@ -17,32 +17,15 @@ namespace Arqanore.Input
 
         public static bool KeyDown(KeyCode code)
         {
-            return KeyDown((int)code);
+            return KeyState[(int)code] > 0;
+        }
+        public static bool KeyUp(KeyCode code)
+        {
+            return KeyState[(int)code] == 4;
         }
         public static bool KeyPressed(KeyCode code)
         {
-            return KeyPressed((int)code);
-        }
-        public static bool KeyDown(int code)
-        {
-            if (KeyState[code] > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        public static bool KeyPressed(int code)
-        {
-            if (KeyState[code] == 1)
-            {
-                KeyState[code] = 2;
-                return true;
-            }
-
-            return false;
+            return KeyState[(int)code] == 1 || KeyState[(int)code] == 3;
         }
     }
 }

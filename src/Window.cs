@@ -209,6 +209,17 @@ namespace Arqanore
                         Mouse.ButtonState[i] = 0;
                     }
                 }
+                for (var i = 0; i < Keyboard.KeyState.Length; i++)
+                {
+                    if (Keyboard.KeyState[i] == 1)
+                    {
+                        Keyboard.KeyState[i] = 2;
+                    }
+                    if (Keyboard.KeyState[i] == 4)
+                    {
+                        Keyboard.KeyState[i] = 0;
+                    }
+                }
 
                 // Render a background and enable some stuff for 2d rendering with alpha
                 GL10.glEnable(GL11.GL_BLEND);
@@ -303,11 +314,20 @@ namespace Arqanore
         }
         private void OnKeyFunction(IntPtr windowHandle, int key, int scanCode, int action, int mods)
         {
-            Console.WriteLine($"{key}: {action}");
-
             if (key < Keyboard.KeyState.Length)
             {
-                Keyboard.KeyState[key] = action;
+                if (action == 1)
+                {
+                    Keyboard.KeyState[key] = 1;
+                }
+                if (action == 2)
+                {
+                    Keyboard.KeyState[key] = 3;
+                }
+                if (action == 0 && Keyboard.KeyState[key] > 0)
+                {
+                    Keyboard.KeyState[key] = 4;
+                }
             }
         }
         private void OnCharFunction(IntPtr windowHandle, uint codepoint)
