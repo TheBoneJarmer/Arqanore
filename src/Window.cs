@@ -303,6 +303,8 @@ namespace Arqanore
         }
         private void OnKeyFunction(IntPtr windowHandle, int key, int scanCode, int action, int mods)
         {
+            Console.WriteLine($"{key}: {action}");
+
             if (key < Keyboard.KeyState.Length)
             {
                 Keyboard.KeyState[key] = action;
