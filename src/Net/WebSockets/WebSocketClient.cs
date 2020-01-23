@@ -140,7 +140,7 @@ namespace Arqanore.Net.WebSockets
         {
             try
             {
-                byte[] buffer = new byte[1024];
+                byte[] buffer = new byte[4096];
 
                 if (this.OnConnect != null)
                 {
