@@ -180,9 +180,6 @@ namespace Arqanore
                 OnLoad();
             }
 
-            // Update time
-            Time.Now = GLFW.glfwGetTime();
-
             // Main loop
             while (GLFW.glfwWindowShouldClose(Handle) == 0)
             {
@@ -241,10 +238,6 @@ namespace Arqanore
                 {
                     GLFW.glfwWaitEvents();
                 }
-
-                Time.Then = Time.Now;
-                Time.Now = GLFW.glfwGetTime();
-                Time.DeltaTime = Time.Now - Time.Then;
             }
 
             if (OnClose != null)
