@@ -21,7 +21,7 @@ namespace Arqanore.Net.WebSockets
 
         public WebSocketClient()
         {
-            Status = WebSocketStatus.None;
+            Status = WebSocketStatus.Closed;
             Request = new WebSocketRequest();
             Response = new WebSocketResponse();
         }
@@ -44,9 +44,16 @@ namespace Arqanore.Net.WebSockets
             ReceiveHandshake();
         }
 
+        public void Send(byte[] data)
+        {
+            var message = new WebSocketMessage(data, WebSocketMessageType.Text);
+            message.Encode(true);
+
+            Socket.BeginSend(message.Buffer, 0, message.Buffer.Length, SocketFlags.None, SendCallback, Socket);
+        }
         public void Send(string data)
         {
-            WebSocketMessage message = new WebSocketMessage(data, WebSocketMessageType.Text);
+            var message = new WebSocketMessage(data, WebSocketMessageType.Text);
             message.Encode(true);
 
             Socket.BeginSend(message.Buffer, 0, message.Buffer.Length, SocketFlags.None, SendCallback, Socket);
@@ -54,7 +61,7 @@ namespace Arqanore.Net.WebSockets
 
         public void Disconnect()
         {
-            WebSocketMessage message = new WebSocketMessage("", WebSocketMessageType.CloseConnection);
+            var message = new WebSocketMessage("", WebSocketMessageType.CloseConnection);
             message.Encode();
 
             Status = WebSocketStatus.Closing;
@@ -133,7 +140,7 @@ namespace Arqanore.Net.WebSockets
         {
             try
             {
-                byte[] buffer = new byte[1024];
+                byte[] buffer = new byte[4096];
 
                 if (this.OnConnect != null)
                 {
@@ -188,7 +195,7 @@ namespace Arqanore.Net.WebSockets
 
         public delegate void OnConnectDelegate();
         public event OnConnectDelegate OnConnect;
-        public delegate void OnMessageDelegate(string message);
+        public delegate void OnMessageDelegate(byte[] message);
         public event OnMessageDelegate OnMessage;
         public delegate void OnErrorDelegate(Exception exception);
         public event OnErrorDelegate OnError;

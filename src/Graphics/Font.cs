@@ -90,6 +90,23 @@ namespace Arqanore.Graphics
             }
         }
 
+        public int MeasureText(string text)
+        {
+            var result = 0;
+
+            for (var i=0; i<text.Length; i++)
+            {
+                var glyph = Glyphs.FirstOrDefault(x => x.Id == (short)text[i]);
+
+                if (glyph != null)
+                {
+                    result += glyph.Advance;
+                }
+            }
+
+            return result;
+        }
+
         public class Glyph
         {
             public short Id { get; set; }

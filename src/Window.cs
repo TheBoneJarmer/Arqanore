@@ -90,15 +90,15 @@ namespace Arqanore
             this.ClearColor = Color.BLACK;
         }
 
-        public void Open(bool fullscreen = false, bool vsync = true, bool pollEvents = true)
-        {            
+        public void Open(bool fullscreen = false, bool vsync = true)
+        {
             InitGLFW();
             InitWindow(fullscreen);
             InitEvents();
             InitSettings(vsync);
             InitFramework();
-                 
-            Sync(pollEvents);
+
+            Sync();
         }
         public void Close()
         {
@@ -169,8 +169,11 @@ namespace Arqanore
             Draw.Init(this);
         }
 
-        private void Sync(bool pollEvents)
+        private void Sync()
         {
+            double dt = 1 / 60.0;
+            double currentTime = GLFW.glfwGetTime();
+
             // Mark the window as open
             state = WindowState.Open;
 
@@ -180,23 +183,57 @@ namespace Arqanore
                 OnLoad();
             }
 
-            // Update time
-            Time.Now = GLFW.glfwGetTime();
-
             // Main loop
             while (GLFW.glfwWindowShouldClose(Handle) == 0)
             {
-                // Update time
-                Time.Then = Time.Now;
-                Time.Now = GLFW.glfwGetTime();
+                double newTime = GLFW.glfwGetTime();
+                double frameTime = newTime - currentTime;
+                currentTime = newTime;
 
-                // Update
+                while (frameTime > 0)
+                {
+                    double deltaTime = System.Math.Min(frameTime, dt);
+                    frameTime -= deltaTime;
+
+                    if (this.OnTick != null)
+                    {
+                        this.OnTick(deltaTime);
+                    }
+                }
+
                 if (OnUpdate != null)
                 {
                     OnUpdate();
                 }
 
-                // Render
+                // Update input states
+                for (var i = 0; i < Mouse.ButtonState.Length; i++)
+                {
+                    // 1 means being hold down
+                    // 2 means pressed
+                    // 3 means released
+                    if (Mouse.ButtonState[i] == 1)
+                    {
+                        Mouse.ButtonState[i] = 2;
+                    }
+                    if (Mouse.ButtonState[i] == 3)
+                    {
+                        Mouse.ButtonState[i] = 0;
+                    }
+                }
+                for (var i = 0; i < Keyboard.KeyState.Length; i++)
+                {
+                    if (Keyboard.KeyState[i] == 1)
+                    {
+                        Keyboard.KeyState[i] = 2;
+                    }
+                    if (Keyboard.KeyState[i] == 4)
+                    {
+                        Keyboard.KeyState[i] = 0;
+                    }
+                }
+
+                // Render a background and enable some stuff for 2d rendering with alpha
                 GL10.glEnable(GL11.GL_BLEND);
                 GL10.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 GL10.glViewport(0, 0, Width, Height);
@@ -208,24 +245,16 @@ namespace Arqanore
                     OnRender();
                 }
 
-                // Swap buffers
                 GLFW.glfwSwapBuffers(Handle);
-
-                // Poll events or wait for events
-                if (pollEvents)
-                {
-                    GLFW.glfwPollEvents();
-                    Thread.Sleep(10);
-                }
-                else
-                {
-                    GLFW.glfwWaitEvents();
-                }
+                GLFW.glfwPollEvents();
             }
 
-            // Mark the window as closed
-            state = WindowState.Closed;
+            if (OnClose != null)
+            {
+                OnClose();
+            }
 
+            state = WindowState.Closed;
             GLFW.glfwDestroyWindow(Handle);
         }
 
@@ -236,8 +265,8 @@ namespace Arqanore
         }
         private void OnWindowSizeFunction(IntPtr windowHandle, int width, int height)
         {
-            Width = width;
-            Height = height;
+            this.width = width;
+            this.height = height;
 
             if (OnResize != null)
             {
@@ -274,11 +303,35 @@ namespace Arqanore
         }
         private void OnMouseButtonFunction(IntPtr windowHandle, int button, int action, int mods)
         {
-            Mouse.ButtonState[button] = action;
+            if (action == 1)
+            {
+                Mouse.ButtonState[button] = 1;
+            }
+            if (action == 0)
+            {
+                if (Mouse.ButtonState[button] == 2)
+                {
+                    Mouse.ButtonState[button] = 3;
+                }
+            }
         }
         private void OnKeyFunction(IntPtr windowHandle, int key, int scanCode, int action, int mods)
         {
-            Keyboard.KeyState[key] = action;
+            if (key < Keyboard.KeyState.Length)
+            {
+                if (action == 1)
+                {
+                    Keyboard.KeyState[key] = 1;
+                }
+                if (action == 2)
+                {
+                    Keyboard.KeyState[key] = 3;
+                }
+                if (action == 0 && Keyboard.KeyState[key] > 0)
+                {
+                    Keyboard.KeyState[key] = 4;
+                }
+            }
         }
         private void OnCharFunction(IntPtr windowHandle, uint codepoint)
         {
@@ -292,6 +345,7 @@ namespace Arqanore
         }
 
         /* EVENTS */
+        public delegate void OnTickDelegate(double deltaTime);
         public delegate void OnUpdateDelegate();
         public delegate void OnRenderDelegate();
         public delegate void OnRefreshDelegate();
@@ -301,6 +355,7 @@ namespace Arqanore
         public delegate void OnCloseDelegate();
         public delegate void OnCharDelegate(char c);
 
+        public event OnTickDelegate OnTick;
         public event OnUpdateDelegate OnUpdate;
         public event OnRenderDelegate OnRender;
         public event OnRefreshDelegate OnRefresh;

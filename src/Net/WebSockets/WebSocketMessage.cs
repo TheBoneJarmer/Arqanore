@@ -7,16 +7,22 @@ namespace Arqanore.Net.WebSockets
     public class WebSocketMessage
     {
         public byte[] Buffer { get; private set; }
-        public string Message { get; private set; }
+        public byte[] Message { get; private set; }
         public WebSocketMessageType Type { get; private set; }
 
         public WebSocketMessage(byte[] data)
         {
             this.Buffer = data;
+            this.Message = new byte[0];
+        }
+        public WebSocketMessage(byte[] message, WebSocketMessageType type)
+        {
+            this.Message = message;
+            this.Type = type;
         }
         public WebSocketMessage(string message, WebSocketMessageType type)
         {
-            this.Message = message;
+            this.Message = Encoding.ASCII.GetBytes(message);
             this.Type = type;
         }
 
@@ -80,31 +86,25 @@ namespace Arqanore.Net.WebSockets
                     byteIndex += 4;
 
                     // Payload bytes
-                    byte[] payload = new byte[payloadLength];
+                    Message = new byte[payloadLength];
 
                     for (int i=0; i<payloadLength; i++)
                     {
                         byte encoded = Buffer[byteIndex + i];
                         byte decoded = (byte)(encoded ^ maskBytes[i % 4]);
 
-                        payload[i] = decoded;
+                        Message[i] = decoded;
                     }
-
-                    // Convert the payload
-                    Message = Encoding.ASCII.GetString(payload);
                 }
                 else
                 {
                     // Payload bytes
-                    byte[] payload = new byte[payloadLength];
+                    Message = new byte[payloadLength];
 
                     for (int i=0; i<payloadLength; i++)
                     {
-                        payload[i] = Buffer[byteIndex + i];
+                        Message[i] = Buffer[byteIndex + i];
                     }
-
-                    // Convert the payload
-                    Message = Encoding.ASCII.GetString(payload);
                 }
             }
 
@@ -159,9 +159,11 @@ namespace Arqanore.Net.WebSockets
                 }
                 if (Message.Length >= 126)
                 {
-                    result.Add((byte)BinaryStringToInt("1" + IntToBinaryString(126).PadLeft(7, '0')));
-                    result.Add((byte)BinaryStringToInt(IntToBinaryString(Message.Length).PadLeft(16, '0').Substring(0, 7)));
-                    result.Add((byte)BinaryStringToInt(IntToBinaryString(Message.Length).PadLeft(16, '0').Substring(8, 15)));
+                    var binaryString = IntToBinaryString(Message.Length).PadLeft(16, '0');
+
+                    result.Add((byte)BinaryStringToInt("11111110"));
+                    result.Add((byte)BinaryStringToInt(binaryString.Substring(0, 8)));
+                    result.Add((byte)BinaryStringToInt(binaryString.Substring(8, 8)));
                 }
 
                 // Masked bytes
