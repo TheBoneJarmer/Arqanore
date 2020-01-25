@@ -90,7 +90,7 @@ namespace Arqanore
             this.ClearColor = Color.BLACK;
         }
 
-        public void Open(bool fullscreen = false, bool vsync = true, bool pollEvents = true)
+        public void Open(bool fullscreen = false, bool vsync = true)
         {
             InitGLFW();
             InitWindow(fullscreen);
@@ -98,7 +98,7 @@ namespace Arqanore
             InitSettings(vsync);
             InitFramework();
 
-            Sync(pollEvents);
+            Sync();
         }
         public void Close()
         {
@@ -169,8 +169,11 @@ namespace Arqanore
             Draw.Init(this);
         }
 
-        private void Sync(bool pollEvents)
+        private void Sync()
         {
+            double dt = 1 / 60.0;
+            double currentTime = GLFW.glfwGetTime();
+
             // Mark the window as open
             state = WindowState.Open;
 
@@ -183,6 +186,21 @@ namespace Arqanore
             // Main loop
             while (GLFW.glfwWindowShouldClose(Handle) == 0)
             {
+                double newTime = GLFW.glfwGetTime();
+                double frameTime = newTime - currentTime;
+                currentTime = newTime;
+
+                while (frameTime > 0)
+                {
+                    double deltaTime = System.Math.Min(frameTime, dt);
+                    frameTime -= deltaTime;
+
+                    if (this.OnTick != null)
+                    {
+                        this.OnTick(deltaTime);
+                    }
+                }
+
                 if (OnUpdate != null)
                 {
                     OnUpdate();
@@ -228,16 +246,7 @@ namespace Arqanore
                 }
 
                 GLFW.glfwSwapBuffers(Handle);
-
-                if (pollEvents)
-                {
-                    GLFW.glfwPollEvents();
-                    Thread.Sleep(10);
-                }
-                else
-                {
-                    GLFW.glfwWaitEvents();
-                }
+                GLFW.glfwPollEvents();
             }
 
             if (OnClose != null)
@@ -336,6 +345,7 @@ namespace Arqanore
         }
 
         /* EVENTS */
+        public delegate void OnTickDelegate(double deltaTime);
         public delegate void OnUpdateDelegate();
         public delegate void OnRenderDelegate();
         public delegate void OnRefreshDelegate();
@@ -345,6 +355,7 @@ namespace Arqanore
         public delegate void OnCloseDelegate();
         public delegate void OnCharDelegate(char c);
 
+        public event OnTickDelegate OnTick;
         public event OnUpdateDelegate OnUpdate;
         public event OnRenderDelegate OnRender;
         public event OnRefreshDelegate OnRefresh;
