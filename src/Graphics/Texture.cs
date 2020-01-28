@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Text;
 using Arqan;
+using Arqanore.Utils;
 
 namespace Arqanore.Graphics
 {
@@ -24,7 +26,32 @@ namespace Arqanore.Graphics
         }
         public Texture(string filename)
         {
-            Load(new Bitmap(Image.FromFile(filename)));
+            var data = new byte[0];
+
+            // Check the file
+            if (!filename.EndsWith(".arqtex"))
+            {
+                throw new ArqanoreException("Not a valid Arqanore texture");
+            }
+            if(!File.Exists(filename))
+            {
+                throw new ArqanoreException($"File {filename} not found");
+            }
+
+            // Load the data
+            data = File.ReadAllBytes(filename);
+
+            // Parse the data
+            Parse(data);
+        }
+
+        private void Parse(byte[] data)
+        {
+            var parser = new ByteParser(data);
+            var img = parser.GetImage(data.Length);
+            var bmp = new Bitmap(img);
+
+            Load(bmp);
         }
 
         private void Load(Bitmap bmp)
