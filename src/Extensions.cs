@@ -7,6 +7,50 @@ namespace Arqanore
 {
     public static class Extensions
     {
+        public static string ToBinaryString(this byte b)
+        {
+            return Convert.ToString(b, 2).PadLeft(8, '0');
+        }
+        public static int[] ToBinaryIntArray(this byte b)
+        {
+            var binaryCharArray = ToBinaryString(b);
+            var output = new int[8];
+
+            for (int i = 0; i < 8; i++)
+            {
+                output[i] = int.Parse(binaryCharArray[i].ToString());
+            }
+
+            return output;
+        }
+        public static string ToBinaryString(this int i)
+        {
+            return Convert.ToString(i, 2);
+        }
+        public static int BinaryToInt(this string s)
+        {
+            int output = 0;
+            int x = 1;
+
+            for (int i = s.Length - 1; i > -1; i--)
+            {
+                int value = (int)s[i];
+
+                if (value > 1)
+                {
+                    throw new InvalidOperationException($"Invalid binary string {s}");
+                }
+
+                if (value == 1)
+                {
+                    output += x;
+                }
+
+                x *= 2;
+            }
+
+            return output;
+        }
         public static byte ToByte(this string str)
         {
             return byte.Parse(str);
