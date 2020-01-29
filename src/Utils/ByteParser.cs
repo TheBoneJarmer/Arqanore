@@ -20,6 +20,13 @@ namespace Arqanore.Utils
             this.data = data;
         }
 
+        public byte GetByte()
+        {
+            var result = data[index];
+            index++;
+
+            return result;
+        }
         public byte[] GetBytes(int count)
         {
             var result = data.GetRange(index, count).ToArray();
