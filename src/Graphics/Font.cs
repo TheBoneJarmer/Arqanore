@@ -49,7 +49,7 @@ namespace Arqanore.Graphics
         private void Parse(List<byte> bytes)
         {
             var parser = new ByteParser(bytes);
-            var bmpCount = parser.GetInt(8);
+            var bmpCount = parser.GetByte();
             var dataLength = parser.GetInt(8);
             var bmpLengths = parser.GetInts(8, bmpCount);
             var data = parser.GetString(dataLength).Split(';');
