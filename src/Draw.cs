@@ -241,7 +241,7 @@ namespace Arqanore
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices.Length / 2);
         }
 
-        public static void Text(Font font, string text, float x, float y, int r, int g, int b, int a)
+        public static void Text(Font font, string text, float x, float y, int r, int g, int b, int a, float scaleX, float scaleY)
         {
             var cursorX = 0;
             var cursorY = 0;
@@ -284,7 +284,7 @@ namespace Arqanore
 
                 GL20.glUniform2f(translationUniformLocation, x + cursorX + glyph.OffsetX, y + cursorY + glyph.OffsetY);
                 GL20.glUniform2f(rotationUniformLocation, 0f, 1f);
-                GL20.glUniform2f(scaleUniformLocation, 1f, 1f);
+                GL20.glUniform2f(scaleUniformLocation, scaleX, scaleY);
                 GL20.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
                 GL20.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
@@ -300,9 +300,17 @@ namespace Arqanore
                 cursorX += glyph.Advance;
             }
         }
+        public static void Text(Font font, string text, float x, float y, int r, int g, int b, int a)
+        {
+            Draw.Text(font, text, x, y, r, g, b, a, 1, 1);
+        }
+        public static void Text(Font font, string text, float x, float y, float scaleX, float scaleY)
+        {
+            Text(font, text, x, y, 255, 255, 255, 255, scaleX, scaleY);
+        }
         public static void Text(Font font, string text, float x, float y)
         {
-            Text(font, text, x, y, 255, 255, 255, 255);
+            Text(font, text, x, y, 255, 255, 255, 255, 1, 1);
         }
     }
 }
