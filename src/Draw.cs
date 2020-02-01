@@ -241,10 +241,10 @@ namespace Arqanore
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices.Length / 2);
         }
 
-        public static void Text(Font font, string text, float x, float y, int r, int g, int b, int a)
+        public static void Text(Font font, string text, float x, float y, int r, int g, int b, int a, float scaleX, float scaleY, float glyphScaleX, float glyphScaleY)
         {
-            var cursorX = 0;
-            var cursorY = 0;
+            var cursorX = 0f;
+            var cursorY = 0f;
 
             for (var i = 0; i < text.Length; i++)
             {
@@ -260,7 +260,7 @@ namespace Arqanore
                 var texCoordY = (1f / (float)font.Textures[glyph.Page].Height) * glyph.Y;
                 var texCoordWidth = 1f / ((float)(font.Textures[glyph.Page].Width) / glyph.Width);
                 var texCoordHeight = 1f / ((float)(font.Textures[glyph.Page].Height) / glyph.Height);
-                var vertices = new float[12] { 0, 0, glyph.Width, 0, 0, glyph.Height, glyph.Width, 0, 0, glyph.Height, glyph.Width, glyph.Height };
+                var vertices = new float[12] { 0, 0, glyph.Width * glyphScaleX, 0, 0, glyph.Height * glyphScaleY, glyph.Width * glyphScaleX, 0, 0, glyph.Height * glyphScaleY, glyph.Width * glyphScaleX, glyph.Height * glyphScaleY };
                 var texcoords = new float[12] { texCoordX, texCoordY, texCoordX + texCoordWidth, texCoordY, texCoordX, texCoordY + texCoordHeight, texCoordX + texCoordWidth, texCoordY, texCoordX, texCoordY + texCoordHeight, texCoordX + texCoordWidth, texCoordY + texCoordHeight };
 
                 var positionAttribLocation = GL20.glGetAttribLocation(Shaders.Glyph.Id, "aposition");
@@ -282,9 +282,9 @@ namespace Arqanore
                 GL20.glEnableVertexAttribArray(positionAttribLocation);
                 GL20.glEnableVertexAttribArray(texcoordAttribLocation);
 
-                GL20.glUniform2f(translationUniformLocation, x + cursorX + glyph.OffsetX, y + cursorY + glyph.OffsetY);
+                GL20.glUniform2f(translationUniformLocation, x + cursorX + (glyph.OffsetX * glyphScaleX), y + cursorY + (glyph.OffsetY * glyphScaleY));
                 GL20.glUniform2f(rotationUniformLocation, 0f, 1f);
-                GL20.glUniform2f(scaleUniformLocation, 1f, 1f);
+                GL20.glUniform2f(scaleUniformLocation, scaleX, scaleY);
                 GL20.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
                 GL20.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
@@ -297,12 +297,8 @@ namespace Arqanore
                 GL10.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
                 GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices.Length / 2);
 
-                cursorX += glyph.Advance;
+                cursorX += glyph.Advance * glyphScaleX;
             }
-        }
-        public static void Text(Font font, string text, float x, float y)
-        {
-            Text(font, text, x, y, 255, 255, 255, 255);
         }
     }
 }
