@@ -282,7 +282,7 @@ namespace Arqanore
                 GL20.glEnableVertexAttribArray(positionAttribLocation);
                 GL20.glEnableVertexAttribArray(texcoordAttribLocation);
 
-                GL20.glUniform2f(translationUniformLocation, x + cursorX + glyph.OffsetX, y + cursorY + glyph.OffsetY);
+                GL20.glUniform2f(translationUniformLocation, x + cursorX + (glyph.OffsetX * glyphScaleX), y + cursorY + (glyph.OffsetY * glyphScaleY));
                 GL20.glUniform2f(rotationUniformLocation, 0f, 1f);
                 GL20.glUniform2f(scaleUniformLocation, scaleX, scaleY);
                 GL20.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
