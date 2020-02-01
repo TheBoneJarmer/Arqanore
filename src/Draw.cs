@@ -297,7 +297,7 @@ namespace Arqanore
                 GL10.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
                 GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices.Length / 2);
 
-                cursorX += glyph.Advance;
+                cursorX += glyph.Advance * (int)glyphScaleX;
             }
         }
     }
