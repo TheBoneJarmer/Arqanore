@@ -243,8 +243,8 @@ namespace Arqanore
 
         public static void Text(Font font, string text, float x, float y, int r, int g, int b, int a, float scaleX, float scaleY, float glyphScaleX, float glyphScaleY)
         {
-            var cursorX = 0;
-            var cursorY = 0;
+            var cursorX = 0f;
+            var cursorY = 0f;
 
             for (var i = 0; i < text.Length; i++)
             {
@@ -297,7 +297,7 @@ namespace Arqanore
                 GL10.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
                 GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices.Length / 2);
 
-                cursorX += glyph.Advance * (int)glyphScaleX;
+                cursorX += glyph.Advance * glyphScaleX;
             }
         }
     }
