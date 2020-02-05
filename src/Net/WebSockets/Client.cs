@@ -14,9 +14,10 @@ namespace Arqanore.Net.WebSockets
 {
     public class Client
     {
-        public int Id { get; private set; }
+        private Thread thread;
+        private ManualResetEvent reset;
 
-        public Thread Thread { get; set; }
+        public int Id { get; private set; }
         public Socket Socket { get; set; }
         public WebSocketStatus Status { get; set; }
         public IPAddress IPAddress { get; set; }
@@ -33,6 +34,8 @@ namespace Arqanore.Net.WebSockets
             Status = WebSocketStatus.Open;
             IPAddress = ((IPEndPoint)(socket.RemoteEndPoint)).Address;
 
+            reset = new ManualResetEvent(false);
+
             // Parse the request
             var request = new WebSocketRequest();
             request.Parse(webSocketRequestData);
@@ -45,8 +48,8 @@ namespace Arqanore.Net.WebSockets
             SendHandshake(response);
 
             // Create the thread and start it
-            Thread = new Thread(ThreadCallback);
-            Thread.Start();
+            thread = new Thread(ThreadCallback);
+            thread.Start();
         }
 
         public void Send(string data)
@@ -148,12 +151,61 @@ namespace Arqanore.Net.WebSockets
             }
         }
 
+        private void ReceiveCallback(IAsyncResult result)
+        {
+            var socketMessage = (SocketMessage)result.AsyncState;
+            var handler = socketMessage.Socket;
+
+            // Continue with the thread
+            reset.Set();
+
+            // Read the amount of received bytes
+            var bytesReceived = handler.EndReceive(result);
+
+            // Handle them
+            if (bytesReceived > 0)
+            {
+                try
+                {
+                    // Complete the package's data
+                    socketMessage.Data = socketMessage.Data.Push(socketMessage.Buffer.Slice(0, bytesReceived));
+
+                    if (bytesReceived == socketMessage.Buffer.Length)
+                    {
+                        handler.BeginReceive(socketMessage.Buffer, 0, socketMessage.Buffer.Length, SocketFlags.None, ReceiveCallback, socketMessage);
+                    }
+                    else
+                    {
+                        WebSocketMessage message = new WebSocketMessage(socketMessage.Buffer);
+                        message.Decode();
+
+                        if (message.Type == WebSocketMessageType.Text && this.OnMessage != null)
+                        {
+                            this.OnMessage(this, message.Message);
+                        }
+                        if (message.Type == WebSocketMessageType.CloseConnection)
+                        {
+                            if (Status == WebSocketStatus.Open)
+                            {
+                                Disconnect();
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (this.OnError != null)
+                    {
+                        this.OnError(this, ex);
+                    }
+                }
+            }
+        }
+
         private void ThreadCallback()
         {
             try
             {
-                byte[] buffer = new byte[1024];
-
                 if (this.OnConnect != null)
                 {
                     this.OnConnect(this);
@@ -162,36 +214,16 @@ namespace Arqanore.Net.WebSockets
                 // Go in a loop to wait for incoming messages
                 while (Status == WebSocketStatus.Open)
                 {
-                    // Wait for data
-                    int bytesReceived = Socket.Receive(buffer);
+                    reset.Reset();
 
-                    if (bytesReceived > 0)
-                    {
-                        try
-                        {
-                            WebSocketMessage message = new WebSocketMessage(buffer);
-                            message.Decode();
+                    // Create the package object
+                    SocketMessage socketMessage = new SocketMessage();
+                    socketMessage.Socket = Socket;
 
-                            if (message.Type == WebSocketMessageType.Text && this.OnMessage != null)
-                            {
-                                this.OnMessage(this, message.Message);
-                            }
-                            if (message.Type == WebSocketMessageType.CloseConnection)
-                            {
-                                if (Status == WebSocketStatus.Open)
-                                {
-                                    Disconnect();
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            if (this.OnError != null)
-                            {
-                                this.OnError(this, ex);
-                            }
-                        }
-                    }
+                    // Read the package
+                    Socket.BeginReceive(socketMessage.Buffer, 0, socketMessage.Buffer.Length, SocketFlags.None, ReceiveCallback, socketMessage);
+
+                    reset.WaitOne();
                 }
             }
             catch (Exception ex)
