@@ -13,7 +13,8 @@ namespace Arqanore.Net.Sockets
 
         public SocketMessage()
         {
-            this.Buffer = new byte[4096];
+            // Create a buffer of 1 MB
+            this.Buffer = new byte[1048576];
             this.Data = new byte[0];
         }
 
