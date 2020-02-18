@@ -31,7 +31,7 @@ namespace Arqanore.Net.WebSockets
         public void Connect(Socket socket, string webSocketRequestData)
         {
             Socket = socket;
-            Status = WebSocketStatus.Open;
+            Status = WebSocketStatus.Opening;
             IPAddress = ((IPEndPoint)(socket.RemoteEndPoint)).Address;
 
             reset = new ManualResetEvent(false);
@@ -150,6 +150,11 @@ namespace Arqanore.Net.WebSockets
             {
                 Socket handler = (Socket)result.AsyncState;
                 handler.EndSend(result);
+
+                if (Status == WebSocketStatus.Opening)
+                {
+                    Status = WebSocketStatus.Open;
+                }
 
                 if (Status == WebSocketStatus.Closing)
                 {
