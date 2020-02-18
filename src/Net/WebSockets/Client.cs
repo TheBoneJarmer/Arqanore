@@ -162,9 +162,9 @@ namespace Arqanore.Net.WebSockets
             }
             catch (Exception ex)
             {
-                if (this.OnFatal != null)
+                if (this.OnError != null)
                 {
-                    this.OnFatal(ex);
+                    this.OnError(this, ex);
                 }
 
                 Status = WebSocketStatus.Closed;
@@ -185,49 +185,38 @@ namespace Arqanore.Net.WebSockets
                 var bytesReceived = handler.EndReceive(result);
 
                 // Handle them
-                if (bytesReceived > 0)
+                if (bytesReceived == 0)
                 {
-                    try
+                    return;
+                }
+
+                // Complete the package's data
+                socketMessage.Data = socketMessage.Data.Push(socketMessage.Buffer.Slice(0, bytesReceived));
+
+                if (bytesReceived == socketMessage.Buffer.Length)
+                {
+                    handler.BeginReceive(socketMessage.Buffer, 0, socketMessage.Buffer.Length, SocketFlags.None, ReceiveCallback, socketMessage);
+                }
+                else
+                {
+                    WebSocketMessage message = new WebSocketMessage(socketMessage.Buffer);
+                    message.Decode();
+
+                    if (message.Type == WebSocketMessageType.Text && this.OnMessage != null)
                     {
-                        // Complete the package's data
-                        socketMessage.Data = socketMessage.Data.Push(socketMessage.Buffer.Slice(0, bytesReceived));
-
-                        if (bytesReceived == socketMessage.Buffer.Length)
-                        {
-                            handler.BeginReceive(socketMessage.Buffer, 0, socketMessage.Buffer.Length, SocketFlags.None, ReceiveCallback, socketMessage);
-                        }
-                        else
-                        {
-                            WebSocketMessage message = new WebSocketMessage(socketMessage.Buffer);
-                            message.Decode();
-
-                            if (message.Type == WebSocketMessageType.Text && this.OnMessage != null)
-                            {
-                                this.OnMessage(this, message.Message);
-                            }
-                            if (message.Type == WebSocketMessageType.CloseConnection)
-                            {
-                                if (Status == WebSocketStatus.Open)
-                                {
-                                    Disconnect();
-                                }
-                            }
-                        }
+                        OnMessage(this, message.Message);
                     }
-                    catch (Exception ex)
+                    if (message.Type == WebSocketMessageType.CloseConnection && Status == WebSocketStatus.Open)
                     {
-                        if (this.OnError != null)
-                        {
-                            this.OnError(this, ex);
-                        }
+                        Disconnect();
                     }
                 }
             }
             catch (Exception ex)
             {
-                if (this.OnFatal != null)
+                if (this.OnError != null)
                 {
-                    this.OnFatal(ex);
+                    this.OnError(this, ex);
                 }
 
                 Status = WebSocketStatus.Closed;
