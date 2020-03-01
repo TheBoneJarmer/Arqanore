@@ -9,7 +9,8 @@ namespace Arqanore
         Opening,
         Open,
         Closing,
-        Closed
+        Closed,
+        Lost
     }
 
     public enum WebSocketMessageType
