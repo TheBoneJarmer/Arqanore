@@ -152,7 +152,7 @@ namespace Arqanore.Net.WebSockets
                     result.Add(byte1);
                     result.Add(byte2);
                 }
-                else if ((uint)Message.Length < 4294967295)
+                else if ((uint)Message.Length < 4194304)
                 {
                     var binary = IntToBinaryString(Message.Length).PadLeft(32, '0');
                     var byte0 = (byte)BinaryStringToInt("01111111");
@@ -169,7 +169,7 @@ namespace Arqanore.Net.WebSockets
                 }
                 else
                 {
-                    throw new WebSocketException("Message length exceeds the maximum of 4294967295 bytes");
+                    throw new WebSocketException("Message length exceeds the maximum of 4 MB");
                 }
 
                 // Payload bytes
@@ -202,7 +202,7 @@ namespace Arqanore.Net.WebSockets
                     result.Add(byte1);
                     result.Add(byte2);
                 }
-                else if ((uint)Message.Length < 4294967295)
+                else if ((uint)Message.Length < 4194304)
                 {
                     var binary = IntToBinaryString(Message.Length).PadLeft(32, '0');
                     var byte0 = (byte)BinaryStringToInt("11111111");
@@ -219,7 +219,7 @@ namespace Arqanore.Net.WebSockets
                 }
                 else
                 {
-                    throw new WebSocketException("Message length exceeds the maximum of 4294967295 bytes");
+                    throw new WebSocketException("Message length exceeds the maximum of 4 MB");
                 }
 
                 // Masked bytes
