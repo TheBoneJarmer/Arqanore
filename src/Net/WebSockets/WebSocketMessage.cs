@@ -48,7 +48,7 @@ namespace Arqanore.Net.WebSockets
                 int payloadLength = 0;
 
                 // Correct the payload length
-                if (payloadLengthValue < 125)
+                if (payloadLengthValue < 126)
                 {
                     payloadLength = payloadLengthValue;
                     byteIndex += 1;
@@ -141,11 +141,35 @@ namespace Arqanore.Net.WebSockets
                 {
                     result.Add((byte)BinaryStringToInt("0" + IntToBinaryString(Message.Length).PadLeft(7, '0')));
                 }
-                if (Message.Length >= 126)
+                else if (Message.Length < 65535)
                 {
-                    result.Add((byte)BinaryStringToInt("0" + IntToBinaryString(126).PadLeft(7, '0')));
-                    result.Add((byte)BinaryStringToInt(IntToBinaryString(Message.Length).PadLeft(16, '0').Substring(0, 8)));
-                    result.Add((byte)BinaryStringToInt(IntToBinaryString(Message.Length).PadLeft(16, '0').Substring(8, 8)));
+                    var binary = IntToBinaryString(Message.Length).PadLeft(16, '0');
+                    var byte0 = (byte)BinaryStringToInt("01111110");
+                    var byte1 = (byte)BinaryStringToInt(binary.Substring(0, 8));
+                    var byte2 = (byte)BinaryStringToInt(binary.Substring(8, 8));
+
+                    result.Add(byte0);
+                    result.Add(byte1);
+                    result.Add(byte2);
+                }
+                else if ((uint)Message.Length < 4294967295)
+                {
+                    var binary = IntToBinaryString(Message.Length).PadLeft(32, '0');
+                    var byte0 = (byte)BinaryStringToInt("01111111");
+                    var byte1 = (byte)BinaryStringToInt(binary.Substring(0, 8));
+                    var byte2 = (byte)BinaryStringToInt(binary.Substring(8, 8));
+                    var byte3 = (byte)BinaryStringToInt(binary.Substring(16, 8));
+                    var byte4 = (byte)BinaryStringToInt(binary.Substring(24, 8));
+
+                    result.Add(byte0);
+                    result.Add(byte1);
+                    result.Add(byte2);
+                    result.Add(byte3);
+                    result.Add(byte4);
+                }
+                else
+                {
+                    throw new WebSocketException("Message length exceeds the maximum of 4294967295 bytes");
                 }
 
                 // Payload bytes
@@ -167,13 +191,35 @@ namespace Arqanore.Net.WebSockets
                 {
                     result.Add((byte)BinaryStringToInt("1" + IntToBinaryString(Message.Length).PadLeft(7, '0')));
                 }
-                if (Message.Length >= 126)
+                else if (Message.Length < 65535)
                 {
-                    var binaryString = IntToBinaryString(Message.Length).PadLeft(16, '0');
+                    var binary = IntToBinaryString(Message.Length).PadLeft(16, '0');
+                    var byte0 = (byte)BinaryStringToInt("11111110");
+                    var byte1 = (byte)BinaryStringToInt(binary.Substring(0, 8));
+                    var byte2 = (byte)BinaryStringToInt(binary.Substring(8, 8));
 
-                    result.Add((byte)BinaryStringToInt("11111110"));
-                    result.Add((byte)BinaryStringToInt(binaryString.Substring(0, 8)));
-                    result.Add((byte)BinaryStringToInt(binaryString.Substring(8, 8)));
+                    result.Add(byte0);
+                    result.Add(byte1);
+                    result.Add(byte2);
+                }
+                else if ((uint)Message.Length < 4294967295)
+                {
+                    var binary = IntToBinaryString(Message.Length).PadLeft(32, '0');
+                    var byte0 = (byte)BinaryStringToInt("11111111");
+                    var byte1 = (byte)BinaryStringToInt(binary.Substring(0, 8));
+                    var byte2 = (byte)BinaryStringToInt(binary.Substring(8, 8));
+                    var byte3 = (byte)BinaryStringToInt(binary.Substring(16, 8));
+                    var byte4 = (byte)BinaryStringToInt(binary.Substring(24, 8));
+
+                    result.Add(byte0);
+                    result.Add(byte1);
+                    result.Add(byte2);
+                    result.Add(byte3);
+                    result.Add(byte4);
+                }
+                else
+                {
+                    throw new WebSocketException("Message length exceeds the maximum of 4294967295 bytes");
                 }
 
                 // Masked bytes
