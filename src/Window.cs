@@ -173,66 +173,14 @@ namespace Arqanore
         {
             double dt = 1 / 60.0;
             double currentTime = GLFW.glfwGetTime();
+            bool loaded = false;
 
             // Mark the window as open
             state = WindowState.Open;
 
-            // Execute onload event
-            if (OnLoad != null)
-            {
-                OnLoad();
-            }
-
             // Main loop
             while (GLFW.glfwWindowShouldClose(Handle) == 0)
             {
-                double newTime = GLFW.glfwGetTime();
-                double frameTime = newTime - currentTime;
-                currentTime = newTime;
-
-                while (frameTime > 0)
-                {
-                    double deltaTime = System.Math.Min(frameTime, dt);
-                    frameTime -= deltaTime;
-
-                    if (this.OnTick != null)
-                    {
-                        this.OnTick(deltaTime);
-                    }
-                }
-
-                if (OnUpdate != null)
-                {
-                    OnUpdate();
-                }
-
-                // Update input states
-                for (var i = 0; i < Mouse.ButtonState.Length; i++)
-                {
-                    // 1 means being hold down
-                    // 2 means pressed
-                    // 3 means released
-                    if (Mouse.ButtonState[i] == 1)
-                    {
-                        Mouse.ButtonState[i] = 2;
-                    }
-                    if (Mouse.ButtonState[i] == 3)
-                    {
-                        Mouse.ButtonState[i] = 0;
-                    }
-                }
-                for (var i = 0; i < Keyboard.KeyState.Length; i++)
-                {
-                    if (Keyboard.KeyState[i] == 1)
-                    {
-                        Keyboard.KeyState[i] = 2;
-                    }
-                    if (Keyboard.KeyState[i] == 4)
-                    {
-                        Keyboard.KeyState[i] = 0;
-                    }
-                }
-
                 // Render a background and enable some stuff for 2d rendering with alpha
                 GL10.glEnable(GL11.GL_BLEND);
                 GL10.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -240,19 +188,62 @@ namespace Arqanore
                 GL10.glClearColor(clearColor.R / 255.0f, clearColor.G / 255.0f, clearColor.B / 255.0f, clearColor.A / 255.0f);
                 GL10.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
-                if (OnRender != null)
+                if (!loaded)
                 {
-                    OnRender();
+                    OnLoad?.Invoke();
+                    loaded = true;
                 }
+                else
+                {
+                    double newTime = GLFW.glfwGetTime();
+                    double frameTime = newTime - currentTime;
+                    currentTime = newTime;
+
+                    while (frameTime > 0)
+                    {
+                        double deltaTime = System.Math.Min(frameTime, dt);
+                        frameTime -= deltaTime;
+
+                        OnTick?.Invoke(deltaTime);
+                    }
+
+                    OnUpdate?.Invoke();
+
+                    // Update input states
+                    for (var i = 0; i < Mouse.ButtonState.Length; i++)
+                    {
+                        // 1 means being hold down
+                        // 2 means pressed
+                        // 3 means released
+                        if (Mouse.ButtonState[i] == 1)
+                        {
+                            Mouse.ButtonState[i] = 2;
+                        }
+                        if (Mouse.ButtonState[i] == 3)
+                        {
+                            Mouse.ButtonState[i] = 0;
+                        }
+                    }
+                    for (var i = 0; i < Keyboard.KeyState.Length; i++)
+                    {
+                        if (Keyboard.KeyState[i] == 1)
+                        {
+                            Keyboard.KeyState[i] = 2;
+                        }
+                        if (Keyboard.KeyState[i] == 4)
+                        {
+                            Keyboard.KeyState[i] = 0;
+                        }
+                    }
+                }
+
+                OnRender?.Invoke();
 
                 GLFW.glfwSwapBuffers(Handle);
                 GLFW.glfwPollEvents();
             }
 
-            if (OnClose != null)
-            {
-                OnClose();
-            }
+            OnClose?.Invoke();
 
             state = WindowState.Closed;
             GLFW.glfwDestroyWindow(Handle);

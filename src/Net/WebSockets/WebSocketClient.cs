@@ -143,10 +143,8 @@ namespace Arqanore.Net.WebSockets
                 // Create a buffer of 1 MB
                 byte[] buffer = new byte[1048576];
 
-                if (this.OnConnect != null)
-                {
-                    this.OnConnect();
-                }
+                // Execute the onconnect event
+                this.OnConnect?.Invoke();
 
                 // Go in a loop to wait for incoming messages
                 while (Status == WebSocketStatus.Open)
@@ -156,42 +154,30 @@ namespace Arqanore.Net.WebSockets
 
                     if (bytesReceived > 0)
                     {
-                        try
-                        {
-                            WebSocketMessage message = new WebSocketMessage(buffer);
-                            message.Decode();
+                        WebSocketMessage message = new WebSocketMessage(buffer);
+                        message.Decode();
 
-                            if (message.Type == WebSocketMessageType.Text && this.OnMessage != null)
-                            {
-                                this.OnMessage(message.Message);
-                            }
-                            if (message.Type == WebSocketMessageType.CloseConnection)
-                            {
-                                if (Status == WebSocketStatus.Open)
-                                {
-                                    Disconnect();
-                                }
-                            }
-                        }
-                        catch (Exception ex)
+                        if (message.Type == WebSocketMessageType.Text && this.OnMessage != null)
                         {
-                            if (this.OnError != null)
+                            OnMessage(message.Message);
+                        }
+                        if (message.Type == WebSocketMessageType.CloseConnection)
+                        {
+                            if (Status == WebSocketStatus.Open)
                             {
-                                this.OnError(ex);
+                                Disconnect();
                             }
                         }
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Status = WebSocketStatus.Closed;
+                OnError?.Invoke(ex);
+                Status = WebSocketStatus.Lost;
             }
 
-            if (this.OnDisconnect != null)
-            {
-                this.OnDisconnect();
-            }
+            OnDisconnect?.Invoke();
         }
 
         public delegate void OnConnectDelegate();
