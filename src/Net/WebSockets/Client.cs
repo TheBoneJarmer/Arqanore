@@ -9,6 +9,7 @@ using Arqanore.Net.WebSockets;
 using Arqanore.Net.Http;
 using Arqanore.Net.Sockets;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Arqanore.Net.WebSockets
 {
@@ -21,11 +22,13 @@ namespace Arqanore.Net.WebSockets
         public Socket Socket { get; set; }
         public WebSocketStatus Status { get; set; }
         public IPAddress IPAddress { get; set; }
+        public Dictionary<string, string> Properties { get; set; }
 
         public Client(int id)
         {
             Id = id;
             Status = WebSocketStatus.Opening;
+            Properties = new Dictionary<string, string>();
         }
 
         public void Connect(Socket socket, string webSocketRequestData)
