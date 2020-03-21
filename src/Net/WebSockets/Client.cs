@@ -16,73 +16,107 @@ namespace Arqanore.Net.WebSockets
     public class Client
     {
         private Thread thread;
-        private ManualResetEvent reset;
+        private Socket socket;
 
         public int Id { get; private set; }
-        public Socket Socket { get; set; }
-        public WebSocketStatus Status { get; set; }
-        public IPAddress IPAddress { get; set; }
-        public Dictionary<string, string> Properties { get; set; }
+        public WebSocketStatus Status { get; private set; }
+        public IPAddress IPAddress { get; private set; }
+        public Dictionary<string, string> Properties { get; private set; }
 
         public Client(int id)
         {
             Id = id;
-            Status = WebSocketStatus.Opening;
+            Status = WebSocketStatus.Closed;
             Properties = new Dictionary<string, string>();
         }
 
+        public void Connect(Socket socket, byte[] data)
+        {
+            Connect(socket, Encoding.ASCII.GetString(data));
+        }
         public void Connect(Socket socket, string webSocketRequestData)
         {
-            Socket = socket;
-            Status = WebSocketStatus.Opening;
-            IPAddress = ((IPEndPoint)(socket.RemoteEndPoint)).Address;
+            try
+            {
+                this.socket = socket;
+                this.Status = WebSocketStatus.Open;
+                this.IPAddress = ((IPEndPoint)(socket.RemoteEndPoint)).Address;
 
-            reset = new ManualResetEvent(false);
+                // Parse the request
+                var request = new WebSocketRequest();
+                request.Parse(webSocketRequestData);
 
-            // Parse the request
-            var request = new WebSocketRequest();
-            request.Parse(webSocketRequestData);
+                // Generate the response
+                var response = new WebSocketResponse();
+                response.Key = response.GenerateKey(request.Key);
 
-            // Generate the response
-            var response = new WebSocketResponse();
-            response.Key = response.GenerateKey(request.Key);
+                // Send the response
+                SendHandshake(response);
 
-            // Send the response
-            SendHandshake(response);
-
-            // Create the thread and start it
-            thread = new Thread(ThreadCallback);
-            thread.Start();
+                // Create the thread and start it
+                thread = new Thread(ThreadCallback);
+                thread.Start();
+            }
+            catch (SocketException ex)
+            {
+                Status = WebSocketStatus.Closed;
+                OnSocketError?.Invoke(this, ex);
+            }
+            catch (Exception ex)
+            {
+                Status = WebSocketStatus.Closed;
+                OnError?.Invoke(this, ex);
+            }
         }
 
         public void Send(string data)
         {
+            if (Status != WebSocketStatus.Open)
+            {
+                return;
+            }
+
             try
             {
                 WebSocketMessage message = new WebSocketMessage(data, WebSocketMessageType.Text);
                 message.Encode();
 
-                Socket.BeginSend(message.Buffer, 0, message.Buffer.Length, SocketFlags.None, SendCallback, Socket);
+                socket.Send(message.Buffer);
             }
-            catch (Exception)
+            catch (SocketException ex)
             {
                 Status = WebSocketStatus.Closed;
-                throw;
+                OnSocketError?.Invoke(this, ex);
+            }
+            catch (Exception ex)
+            {
+                Status = WebSocketStatus.Closed;
+                OnError?.Invoke(this, ex);
             }
         }
         public void Send(byte[] data)
         {
+            if (Status != WebSocketStatus.Open)
+            {
+                return;
+            }
+
             try
             {
                 WebSocketMessage message = new WebSocketMessage(data, WebSocketMessageType.Text);
                 message.Encode();
 
-                Socket.BeginSend(message.Buffer, 0, message.Buffer.Length, SocketFlags.None, SendCallback, Socket);
+                socket.Send(message.Buffer);
             }
-            catch (Exception)
+            catch (SocketException ex)
             {
                 Status = WebSocketStatus.Closed;
-                throw;
+                OnSocketError?.Invoke(this, ex);
+            }
+            catch (Exception ex)
+            {
+                Status = WebSocketStatus.Closed;
+                OnError?.Invoke(this, ex);
             }
         }
 
@@ -90,17 +124,24 @@ namespace Arqanore.Net.WebSockets
         {
             try
             {
-                Status = WebSocketStatus.Closing;
-
                 WebSocketMessage message = new WebSocketMessage("", WebSocketMessageType.CloseConnection);
                 message.Encode();
 
-                Socket.BeginSend(message.Buffer, 0, message.Buffer.Length, SocketFlags.None, SendCallback, Socket);
+                socket.Send(message.Buffer);
+                socket.Shutdown(SocketShutdown.Both);
+                socket.Close();
+
+                Status = WebSocketStatus.Closed;
             }
-            catch (Exception)
+            catch (SocketException ex)
             {
                 Status = WebSocketStatus.Closed;
-                throw;
+                OnSocketError?.Invoke(this, ex);
+            }
+            catch (Exception ex)
+            {
+                Status = WebSocketStatus.Closed;
+                OnError?.Invoke(this, ex);
             }
         }
 
@@ -108,15 +149,20 @@ namespace Arqanore.Net.WebSockets
         {
             try
             {
-                Status = WebSocketStatus.Closed;
+                socket.Shutdown(SocketShutdown.Both);
+                socket.Close();
 
-                Socket.Shutdown(SocketShutdown.Both);
-                Socket.Close();
+                Status = WebSocketStatus.Closed;
             }
-            catch (Exception)
+            catch (SocketException ex)
             {
                 Status = WebSocketStatus.Closed;
-                throw;
+                OnSocketError?.Invoke(this, ex);
+            }
+            catch (Exception ex)
+            {
+                Status = WebSocketStatus.Closed;
+                OnError?.Invoke(this, ex);
             }
         }
 
@@ -137,97 +183,17 @@ namespace Arqanore.Net.WebSockets
         {
             try
             {
-                byte[] httpResponse = response.ToHttpResponse();
-                Socket.BeginSend(httpResponse, 0, httpResponse.Length, SocketFlags.None, SendCallback, Socket);
+                socket.Send(response.ToHttpResponse());
             }
-            catch (Exception)
+            catch (SocketException ex)
             {
                 Status = WebSocketStatus.Closed;
-                throw;
-            }
-        }
-
-        private void SendCallback(IAsyncResult result)
-        {
-            try
-            {
-                Socket handler = (Socket)result.AsyncState;
-                handler.EndSend(result);
-
-                if (Status == WebSocketStatus.Opening)
-                {
-                    Status = WebSocketStatus.Open;
-                }
-
-                if (Status == WebSocketStatus.Closing)
-                {
-                    // Close the socket connection
-                    Socket.Shutdown(SocketShutdown.Both);
-                    Socket.Close();
-
-                    Status = WebSocketStatus.Closed;
-                }
+                OnSocketError?.Invoke(this, ex);
             }
             catch (Exception ex)
             {
-                if (this.OnError != null)
-                {
-                    this.OnError(this, ex);
-                }
-
                 Status = WebSocketStatus.Closed;
-            }
-        }
-
-        private void ReceiveCallback(IAsyncResult result)
-        {
-            try
-            {
-                var socketMessage = (SocketMessage)result.AsyncState;
-                var handler = socketMessage.Socket;
-
-                // Continue with the thread
-                reset.Set();
-
-                // Read the amount of received bytes
-                var bytesReceived = handler.EndReceive(result);
-
-                // Handle them
-                if (bytesReceived == 0)
-                {
-                    return;
-                }
-
-                // Complete the package's data
-                socketMessage.Data = socketMessage.Data.Push(socketMessage.Buffer.Slice(0, bytesReceived));
-
-                if (bytesReceived == socketMessage.Buffer.Length)
-                {
-                    handler.BeginReceive(socketMessage.Buffer, 0, socketMessage.Buffer.Length, SocketFlags.None, ReceiveCallback, socketMessage);
-                }
-                else
-                {
-                    WebSocketMessage message = new WebSocketMessage(socketMessage.Buffer);
-                    message.Decode();
-
-                    if (message.Type == WebSocketMessageType.Text && this.OnMessage != null)
-                    {
-                        OnMessage(this, message.Message);
-                    }
-                    if (message.Type == WebSocketMessageType.CloseConnection && Status == WebSocketStatus.Open)
-                    {
-                        Disconnect();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                if (this.OnError != null)
-                {
-                    this.OnError(this, ex);
-                }
-
-                Status = WebSocketStatus.Closed;
+                OnError?.Invoke(this, ex);
             }
         }
 
@@ -235,47 +201,50 @@ namespace Arqanore.Net.WebSockets
         {
             try
             {
-                if (this.OnConnect != null)
-                {
-                    this.OnConnect(this);
-                }
+                OnConnect?.Invoke(this);
 
                 // Go in a loop to wait for incoming messages
                 while (Status == WebSocketStatus.Open)
                 {
-                    reset.Reset();
+                    var buffer = new byte[4194304];
+                    var bytesReceived = socket.Receive(buffer);
 
-                    // Create the package object
-                    SocketMessage socketMessage = new SocketMessage();
-                    socketMessage.Socket = Socket;
+                    if (bytesReceived > 0)
+                    {
+                        var data = buffer.Slice(0, bytesReceived);
+                        var message = new WebSocketMessage(data);
+                        message.Decode();
 
-                    // Read the package
-                    Socket.BeginReceive(socketMessage.Buffer, 0, socketMessage.Buffer.Length, SocketFlags.None, ReceiveCallback, socketMessage);
-
-                    reset.WaitOne();
+                        if (message.Type == WebSocketMessageType.Text && this.OnMessage != null)
+                        {
+                            OnMessage(this, message.Message);
+                        }
+                        if (message.Type == WebSocketMessageType.CloseConnection)
+                        {
+                            Disconnect();
+                        }
+                    }
                 }
+            }
+            catch (SocketException ex)
+            {
+                Status = WebSocketStatus.Closed;
+                OnSocketError?.Invoke(this, ex);
             }
             catch (Exception ex)
             {
-                if (this.OnFatal != null)
-                {
-                    this.OnFatal(ex);
-                }
-
                 Status = WebSocketStatus.Closed;
+                OnError?.Invoke(this, ex);
             }
 
-            if (this.OnDisconnect != null)
-            {
-                this.OnDisconnect(this);
-            }
+            OnDisconnect?.Invoke(this);
         }
 
         /* EVENTS */
         public event WebSocketServer.OnConnectDelegate OnConnect;
         public event WebSocketServer.OnMessageDelegate OnMessage;
-        public event WebSocketServer.OnErrorDelegate OnError;
-        public event WebSocketServer.OnFatalDelegate OnFatal;
+        public event WebSocketServer.OnClientErrorDelegate OnError;
+        public event WebSocketServer.OnClientSocketErrorDelegate OnSocketError;
         public event WebSocketServer.OnDisconnectDelegate OnDisconnect;
     }
 }

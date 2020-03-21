@@ -6,9 +6,7 @@ namespace Arqanore
 {
     public enum WebSocketStatus
     {
-        Opening,
         Open,
-        Closing,
         Closed,
         Lost
     }

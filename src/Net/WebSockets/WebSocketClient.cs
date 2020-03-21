@@ -28,103 +28,121 @@ namespace Arqanore.Net.WebSockets
 
         public void Connect(string host, int port)
         {
-            // Setup local endpoint
-            var ipHostEntry = Dns.GetHostEntry(host);
-            var ipAddress = ipHostEntry.AddressList.First(x => x.AddressFamily == AddressFamily.InterNetwork);
-            var ipEndpoint = new IPEndPoint(ipAddress, port);
+            try
+            {
+                // Setup local endpoint
+                var ipHostEntry = Dns.GetHostEntry(host);
+                var ipAddress = ipHostEntry.AddressList.First(x => x.AddressFamily == AddressFamily.InterNetwork);
+                var ipEndpoint = new IPEndPoint(ipAddress, port);
 
-            // Create the client socket
-            Socket = new Socket(ipEndpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                // Create the client socket
+                Socket = new Socket(ipEndpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
-            // Connect the client socket
-            Socket.Connect(ipEndpoint);
+                // Connect the client socket
+                Socket.Connect(ipEndpoint);
 
-            // Handshake with server
-            SendHandshake();
-            ReceiveHandshake();
+                // Handshake with server
+                SendHandshake();
+                ReceiveHandshake();
+            }
+            catch (SocketException ex)
+            {
+                Status = WebSocketStatus.Closed;
+                OnSocketError?.Invoke(ex);
+            }
+            catch (Exception ex)
+            {
+                Status = WebSocketStatus.Closed;
+                OnError?.Invoke(ex);
+            }
         }
 
         public void Send(byte[] data)
         {
-            var message = new WebSocketMessage(data, WebSocketMessageType.Text);
-            message.Encode(true);
+            try
+            {
+                var message = new WebSocketMessage(data, WebSocketMessageType.Text);
+                message.Encode(true);
 
-            Socket.BeginSend(message.Buffer, 0, message.Buffer.Length, SocketFlags.None, SendCallback, Socket);
-        }
-        public void Send(string data)
-        {
-            var message = new WebSocketMessage(data, WebSocketMessageType.Text);
-            message.Encode(true);
-
-            Socket.BeginSend(message.Buffer, 0, message.Buffer.Length, SocketFlags.None, SendCallback, Socket);
+                Socket.Send(message.Buffer);
+            }
+            catch (SocketException ex)
+            {
+                Status = WebSocketStatus.Closed;
+                OnSocketError?.Invoke(ex);
+            }
+            catch (Exception ex)
+            {
+                Status = WebSocketStatus.Closed;
+                OnError?.Invoke(ex);
+            }
         }
 
         public void Disconnect()
         {
-            var message = new WebSocketMessage("", WebSocketMessageType.CloseConnection);
-            message.Encode();
-
-            Status = WebSocketStatus.Closing;
-            Socket.BeginSend(message.Buffer, 0, message.Buffer.Length, SocketFlags.None, SendCallback, Socket);
-        }
-
-        private void SendHandshake()
-        {
-            // Generate the request's key
-            Request.Host = "localhost";
-            Request.Origin = "localhost";
-            Request.Key = Request.GenerateKey();
-
-            // Move the status forward to opening
-            Status = WebSocketStatus.Opening;
-            Socket.BeginSend(Request.ToHttpRequest(), 0, Request.ToHttpRequest().Length, SocketFlags.None, SendCallback, Socket);
-        }
-        private void ReceiveHandshake()
-        {
-            SocketMessage socketMessage = new SocketMessage();
-            socketMessage.Socket = Socket;
-
-            Socket.BeginReceive(socketMessage.Buffer, 0, socketMessage.Buffer.Length, SocketFlags.None, ReceiveCallback, socketMessage);
-        }
-
-        private void SendCallback(IAsyncResult result)
-        {
-            Socket handler = (Socket)result.AsyncState;
-            handler.EndSend(result);
-
-            // Final step, closing the connection
-            if (Status == WebSocketStatus.Closing)
+            try
             {
+                var message = new WebSocketMessage("", WebSocketMessageType.CloseConnection);
+                message.Encode();
+
+                Socket.Send(message.Buffer);
                 Socket.Shutdown(SocketShutdown.Both);
                 Socket.Close();
 
                 Status = WebSocketStatus.Closed;
             }
+            catch (SocketException ex)
+            {
+                Status = WebSocketStatus.Closed;
+                OnSocketError?.Invoke(ex);
+            }
+            catch (Exception ex)
+            {
+                Status = WebSocketStatus.Closed;
+                OnError?.Invoke(ex);
+            }
         }
 
-        private void ReceiveCallback(IAsyncResult result)
+        private void SendHandshake()
         {
-            // Retrieve the package
-            SocketMessage socketMessage = (SocketMessage)result.AsyncState;
-            Socket handler = socketMessage.Socket;
-
-            // Read it
-            int bytesRead = handler.EndReceive(result);
-
-            if (bytesRead > 0)
+            try
             {
-                // Complete the package's data
-                socketMessage.Data = socketMessage.Data.Push(socketMessage.Buffer.Slice(0, bytesRead));
+                // Generate the request's key
+                Request.Host = "localhost";
+                Request.Origin = "localhost";
+                Request.Key = Request.GenerateKey();
 
-                // Continue until all data is received
-                if (bytesRead == socketMessage.Buffer.Length)
+                // Move the status forward to opening
+                Socket.Send(Request.ToHttpRequest());
+                Status = WebSocketStatus.Open;
+            }
+            catch (SocketException ex)
+            {
+                Status = WebSocketStatus.Closed;
+                OnSocketError?.Invoke(ex);
+            }
+            catch (Exception ex)
+            {
+                Status = WebSocketStatus.Closed;
+                OnError?.Invoke(ex);
+            }
+        }
+        private void ReceiveHandshake()
+        {
+            try
+            {
+                var buffer = new byte[4194304];
+                var bytesReceived = Socket.Receive(buffer);
+
+                // Again we are going to assume the client received data
+                // Not sure what I will do if that is not the case
+                if (bytesReceived > 0)
                 {
-                    handler.BeginReceive(socketMessage.Buffer, 0, socketMessage.Buffer.Length, SocketFlags.None, ReceiveCallback, socketMessage);
-                }
-                else
-                {
+                    // Set the data variable assuming all data was sent in 1 go
+                    var data = buffer.Slice(0, bytesReceived);
+                    
                     // Parse the response
-                    Response.Parse(socketMessage.ToString());
+                    Response.Parse(data);
 
                     // If all is well, set the status to open
                     Status = WebSocketStatus.Open;
@@ -133,6 +151,16 @@ namespace Arqanore.Net.WebSockets
                     Thread = new Thread(ThreadCallback);
                     Thread.Start();
                 }
+            }
+            catch (SocketException ex)
+            {
+                Status = WebSocketStatus.Closed;
+                OnSocketError?.Invoke(ex);
+            }
+            catch (Exception ex)
+            {
+                Status = WebSocketStatus.Closed;
+                OnError?.Invoke(ex);
             }
         }
 
@@ -144,7 +172,7 @@ namespace Arqanore.Net.WebSockets
                 byte[] buffer = new byte[1048576];
 
                 // Execute the onconnect event
-                this.OnConnect?.Invoke();
+                OnConnect?.Invoke();
 
                 // Go in a loop to wait for incoming messages
                 while (Status == WebSocketStatus.Open)
@@ -157,24 +185,26 @@ namespace Arqanore.Net.WebSockets
                         WebSocketMessage message = new WebSocketMessage(buffer);
                         message.Decode();
 
-                        if (message.Type == WebSocketMessageType.Text && this.OnMessage != null)
+                        if (message.Type == WebSocketMessageType.Text && OnMessage != null)
                         {
                             OnMessage(message.Message);
                         }
                         if (message.Type == WebSocketMessageType.CloseConnection)
                         {
-                            if (Status == WebSocketStatus.Open)
-                            {
-                                Disconnect();
-                            }
+                            Disconnect();
                         }
                     }
                 }
             }
+            catch (SocketException ex)
+            {
+                Status = WebSocketStatus.Lost;
+                OnSocketError?.Invoke(ex);
+            }
             catch (Exception ex)
             {
+                Status = WebSocketStatus.Closed;
                 OnError?.Invoke(ex);
-                Status = WebSocketStatus.Lost;
             }
 
             OnDisconnect?.Invoke();
@@ -186,6 +216,8 @@ namespace Arqanore.Net.WebSockets
         public event OnMessageDelegate OnMessage;
         public delegate void OnErrorDelegate(Exception exception);
         public event OnErrorDelegate OnError;
+        public delegate void OnSocketErrorDelegate(SocketException exception);
+        public event OnSocketErrorDelegate OnSocketError;
         public delegate void OnDisconnectDelegate();
         public event OnDisconnectDelegate OnDisconnect;
     }
