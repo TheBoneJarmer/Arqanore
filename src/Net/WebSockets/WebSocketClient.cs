@@ -169,8 +169,7 @@ namespace Arqanore.Net.WebSockets
         {
             try
             {
-                var buffer = new byte[1024];
-                var data = new List<byte>();
+                var buffer = new byte[1024 * 1024 * 4];
 
                 // Execute the onconnect event
                 OnConnect?.Invoke();
@@ -181,24 +180,14 @@ namespace Arqanore.Net.WebSockets
                     // Wait for data
                     int bytesReceived = Socket.Receive(buffer);
 
-                    while (true)
-                    {
-                        data.AddRange(buffer.Slice(0, bytesReceived));
-
-                        if (bytesReceived < buffer.Length)
-                        {
-                            break;
-                        }
-                    }
-
                     if (bytesReceived > 0)
                     {
-                        var bytes = data.ToArray();
+                        var data = buffer.Slice(0, bytesReceived);
 
-                        while (bytes != null)
+                        while (data != null)
                         {
-                            WebSocketMessage message = new WebSocketMessage(bytes);
-                            bytes = message.Decode();
+                            WebSocketMessage message = new WebSocketMessage(data);
+                            data = message.Decode();
 
                             if (message.Type == WebSocketMessageType.Text && OnMessage != null)
                             {
@@ -210,8 +199,6 @@ namespace Arqanore.Net.WebSockets
                             }
                         }
                     }
-
-                    data.Clear();
                 }
             }
             catch (SocketException ex)
