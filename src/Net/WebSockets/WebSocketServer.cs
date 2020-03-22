@@ -92,17 +92,15 @@ namespace Arqanore.Net.WebSockets
 
         private void Listen(IPEndPoint ipEndPoint)
         {
-            // Create a TCP/IP socket
-            Socket listener = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            var buffer = new byte[4194304];
+            var listener = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
-            // Start listening to incoming requests
             listener.Bind(ipEndPoint);
             listener.Listen(1000000);
 
             while (Running)
             {
                 var handler = listener.Accept();
-                var buffer = new byte[4194304];
                 var bytesReceived = handler.Receive(buffer);
 
                 if (bytesReceived > 0)

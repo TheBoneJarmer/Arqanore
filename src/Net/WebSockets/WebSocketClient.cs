@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -131,7 +132,7 @@ namespace Arqanore.Net.WebSockets
         {
             try
             {
-                var buffer = new byte[4194304];
+                var buffer = new byte[1024];
                 var bytesReceived = Socket.Receive(buffer);
 
                 // Again we are going to assume the client received data
@@ -140,7 +141,7 @@ namespace Arqanore.Net.WebSockets
                 {
                     // Set the data variable assuming all data was sent in 1 go
                     var data = buffer.Slice(0, bytesReceived);
-                    
+
                     // Parse the response
                     Response.Parse(data);
 
@@ -168,8 +169,8 @@ namespace Arqanore.Net.WebSockets
         {
             try
             {
-                // Create a buffer of 1 MB
-                byte[] buffer = new byte[1048576];
+                var buffer = new byte[1024];
+                var data = new List<byte>();
 
                 // Execute the onconnect event
                 OnConnect?.Invoke();
@@ -180,20 +181,37 @@ namespace Arqanore.Net.WebSockets
                     // Wait for data
                     int bytesReceived = Socket.Receive(buffer);
 
-                    if (bytesReceived > 0)
+                    while (true)
                     {
-                        WebSocketMessage message = new WebSocketMessage(buffer);
-                        message.Decode();
+                        data.AddRange(buffer.Slice(0, bytesReceived));
 
-                        if (message.Type == WebSocketMessageType.Text && OnMessage != null)
+                        if (bytesReceived < buffer.Length)
                         {
-                            OnMessage(message.Message);
-                        }
-                        if (message.Type == WebSocketMessageType.CloseConnection)
-                        {
-                            Disconnect();
+                            break;
                         }
                     }
+
+                    if (bytesReceived > 0)
+                    {
+                        var bytes = data.ToArray();
+
+                        while (bytes != null)
+                        {
+                            WebSocketMessage message = new WebSocketMessage(bytes);
+                            bytes = message.Decode();
+
+                            if (message.Type == WebSocketMessageType.Text && OnMessage != null)
+                            {
+                                OnMessage(message.Message);
+                            }
+                            if (message.Type == WebSocketMessageType.CloseConnection)
+                            {
+                                Disconnect();
+                            }
+                        }
+                    }
+
+                    data.Clear();
                 }
             }
             catch (SocketException ex)

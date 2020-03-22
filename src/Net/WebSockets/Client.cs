@@ -201,29 +201,47 @@ namespace Arqanore.Net.WebSockets
         {
             try
             {
+                var buffer = new byte[1024];
+                var data = new List<byte>();
+
                 OnConnect?.Invoke(this);
 
                 // Go in a loop to wait for incoming messages
                 while (Status == WebSocketStatus.Open)
                 {
-                    var buffer = new byte[4194304];
                     var bytesReceived = socket.Receive(buffer);
+                   
+                    while (true)
+                    {
+                        data.AddRange(buffer.Slice(0, bytesReceived));
+
+                        if (bytesReceived < buffer.Length)
+                        {
+                            break;
+                        }
+                    }
 
                     if (bytesReceived > 0)
                     {
-                        var data = buffer.Slice(0, bytesReceived);
-                        var message = new WebSocketMessage(data);
-                        message.Decode();
+                        var bytes = data.ToArray();
 
-                        if (message.Type == WebSocketMessageType.Text && this.OnMessage != null)
+                        while (bytes != null)
                         {
-                            OnMessage(this, message.Message);
-                        }
-                        if (message.Type == WebSocketMessageType.CloseConnection)
-                        {
-                            Disconnect();
+                            var message = new WebSocketMessage(bytes);
+                            bytes = message.Decode();
+
+                            if (message.Type == WebSocketMessageType.Text && OnMessage != null)
+                            {
+                                OnMessage(this, message.Message);
+                            }
+                            if (message.Type == WebSocketMessageType.CloseConnection)
+                            {
+                                Disconnect();
+                            }
                         }
                     }
+
+                    data.Clear();
                 }
             }
             catch (SocketException ex)

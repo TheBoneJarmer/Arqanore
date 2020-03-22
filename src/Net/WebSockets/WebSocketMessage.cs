@@ -26,16 +26,16 @@ namespace Arqanore.Net.WebSockets
             this.Type = type;
         }
 
-        public void Decode()
+        public byte[] Decode()
         {
-            int byteIndex = 0;
+            var byteIndex = 0;
 
             // Primary byte
-            int finished = ByteToBinaryIntArray(Buffer[byteIndex])[0];
-            int rsv1 = ByteToBinaryIntArray(Buffer[byteIndex])[1];
-            int rsv2 = ByteToBinaryIntArray(Buffer[byteIndex])[2];
-            int rsv3 = ByteToBinaryIntArray(Buffer[byteIndex])[3];
-            int opcode = BinaryStringToInt(ByteToBinaryString(Buffer[byteIndex]).Substring(4, 4));
+            var finished = ByteToBinaryIntArray(Buffer[byteIndex])[0];
+            var rsv1 = ByteToBinaryIntArray(Buffer[byteIndex])[1];
+            var rsv2 = ByteToBinaryIntArray(Buffer[byteIndex])[2];
+            var rsv3 = ByteToBinaryIntArray(Buffer[byteIndex])[3];
+            var opcode = BinaryStringToInt(ByteToBinaryString(Buffer[byteIndex]).Substring(4, 4));
 
             byteIndex += 1;
 
@@ -43,9 +43,11 @@ namespace Arqanore.Net.WebSockets
             if (opcode == 1)
             {
                 // Masked bool and payload length byte
-                int masked = ByteToBinaryIntArray(Buffer[byteIndex])[0];
-                int payloadLengthValue = BinaryStringToInt(ByteToBinaryString(Buffer[byteIndex]).Substring(1, 7));
-                int payloadLength = 0;
+                var masked = ByteToBinaryIntArray(Buffer[byteIndex])[0];
+                var payloadLengthValue = BinaryStringToInt(ByteToBinaryString(Buffer[byteIndex]).Substring(1, 7));
+                var payloadLength = 0;
+
+                Type = WebSocketMessageType.Text;
 
                 // Correct the payload length
                 if (payloadLengthValue < 126)
@@ -55,18 +57,18 @@ namespace Arqanore.Net.WebSockets
                 }
                 if (payloadLengthValue == 126)
                 {
-                    string value1 = ByteToBinaryString(Buffer[byteIndex + 1]);
-                    string value2 = ByteToBinaryString(Buffer[byteIndex + 2]);
+                    var value1 = ByteToBinaryString(Buffer[byteIndex + 1]);
+                    var value2 = ByteToBinaryString(Buffer[byteIndex + 2]);
 
                     payloadLength = BinaryStringToInt(value1 + value2);
                     byteIndex += 3;
                 }
                 if (payloadLengthValue == 127)
                 {
-                    string value1 = ByteToBinaryString(Buffer[byteIndex + 1]);
-                    string value2 = ByteToBinaryString(Buffer[byteIndex + 2]);
-                    string value3 = ByteToBinaryString(Buffer[byteIndex + 3]);
-                    string value4 = ByteToBinaryString(Buffer[byteIndex + 4]);
+                    var value1 = ByteToBinaryString(Buffer[byteIndex + 1]);
+                    var value2 = ByteToBinaryString(Buffer[byteIndex + 2]);
+                    var value3 = ByteToBinaryString(Buffer[byteIndex + 3]);
+                    var value4 = ByteToBinaryString(Buffer[byteIndex + 4]);
 
                     payloadLength = BinaryStringToInt(value1 + value2 + value3 + value4);
                     byteIndex += 5;
@@ -81,7 +83,7 @@ namespace Arqanore.Net.WebSockets
                         throw new WebSocketException("Payload size exceeds 1048576 bytes");
                     }
 
-                    byte[] maskBytes = new byte[4];
+                    var maskBytes = new byte[4];
                     maskBytes[0] = Buffer[byteIndex + 0];
                     maskBytes[1] = Buffer[byteIndex + 1];
                     maskBytes[2] = Buffer[byteIndex + 2];
@@ -94,8 +96,8 @@ namespace Arqanore.Net.WebSockets
 
                     for (int i = 0; i < payloadLength; i++)
                     {
-                        byte encoded = Buffer[byteIndex + i];
-                        byte decoded = (byte)(encoded ^ maskBytes[i % 4]);
+                        var encoded = Buffer[byteIndex + i];
+                        var decoded = (byte)(encoded ^ maskBytes[i % 4]);
 
                         Message[i] = decoded;
                     }
@@ -116,16 +118,23 @@ namespace Arqanore.Net.WebSockets
                         Message[i] = Buffer[byteIndex + i];
                     }
                 }
+
+                if (Buffer.Length > byteIndex + payloadLength)
+                {
+                    var index = byteIndex + payloadLength;
+                    var length = Buffer.Length - index;
+
+                    return Buffer.Slice(index, length);
+                }
             }
 
             // Closing connection
             if (opcode == 8)
             {
-
+                Type = WebSocketMessageType.CloseConnection;
             }
 
-            // Set the message type
-            Type = (WebSocketMessageType)opcode;
+            return null;
         }
         public void Encode(bool masked = false)
         {
