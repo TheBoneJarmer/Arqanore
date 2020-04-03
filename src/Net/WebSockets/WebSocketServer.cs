@@ -19,7 +19,6 @@ namespace Arqanore.Net.WebSockets
         private Thread threadListen1;
         private Thread threadListen2;
         private int port;
-        private int clientCount;
 
         public WebSocketServer(int port)
         {
@@ -108,7 +107,7 @@ namespace Arqanore.Net.WebSockets
                     var data = buffer.Slice(0, bytesReceived);
 
                     // Create the client
-                    var client = new Client(clientCount);
+                    var client = new Client();
                     client.OnConnect += OnConnect;
                     client.OnMessage += OnMessage;
                     client.OnError += OnClientError;
@@ -117,9 +116,6 @@ namespace Arqanore.Net.WebSockets
 
                     // Add the client to our list of clients
                     Clients.Add(client);
-
-                    // Increase the client count variable for future id generation
-                    clientCount += 1;
                 }
             }
         }

@@ -18,14 +18,14 @@ namespace Arqanore.Net.WebSockets
         private Thread thread;
         private Socket socket;
 
-        public int Id { get; private set; }
+        public string Id { get; private set; }
         public WebSocketStatus Status { get; private set; }
         public IPAddress IPAddress { get; private set; }
         public Dictionary<string, string> Properties { get; private set; }
 
-        public Client(int id)
+        public Client()
         {
-            Id = id;
+            Id = Guid.NewGuid().ToString();
             Status = WebSocketStatus.Closed;
             Properties = new Dictionary<string, string>();
         }
