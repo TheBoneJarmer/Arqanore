@@ -18,6 +18,10 @@ namespace Arqanore.Net.WebSockets
 
         }
 
+        public void Parse(byte[] data)
+        {
+            Parse(Encoding.ASCII.GetString(data));
+        }
         public void Parse(string data)
         {
             // For validation
