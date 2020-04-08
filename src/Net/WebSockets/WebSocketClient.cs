@@ -81,6 +81,11 @@ namespace Arqanore.Net.WebSockets
 
         public void Disconnect()
         {
+            if (Status != WebSocketStatus.Open)
+            {
+                throw new WebSocketException("Unable to disconnect. WebSocket is not open");
+            }
+
             try
             {
                 var message = new WebSocketMessage("", WebSocketMessageType.CloseConnection);
