@@ -124,13 +124,8 @@ namespace Arqanore.Net.WebSockets
         {
             try
             {
-                WebSocketMessage message = new WebSocketMessage("", WebSocketMessageType.CloseConnection);
-                message.Encode();
-
-                socket.Send(message.Buffer);
                 socket.Shutdown(SocketShutdown.Both);
                 socket.Close();
-
                 Status = WebSocketStatus.Closed;
             }
             catch (SocketException ex)

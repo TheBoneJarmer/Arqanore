@@ -8,7 +8,8 @@ namespace Arqanore
     {
         Open,
         Closed,
-        Lost
+        Lost,
+        Closing
     }
 
     public enum WebSocketMessageType

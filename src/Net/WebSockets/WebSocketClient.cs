@@ -87,10 +87,7 @@ namespace Arqanore.Net.WebSockets
                 message.Encode();
 
                 Socket.Send(message.Buffer);
-                Socket.Shutdown(SocketShutdown.Both);
-                Socket.Close();
-
-                Status = WebSocketStatus.Closed;
+                Status = WebSocketStatus.Closing;
             }
             catch (SocketException ex)
             {
@@ -193,13 +190,12 @@ namespace Arqanore.Net.WebSockets
                             {
                                 OnMessage(message.Message);
                             }
-                            if (message.Type == WebSocketMessageType.CloseConnection)
-                            {
-                                Disconnect();
-                            }
                         }
                     }
                 }
+
+                // Set the status to closed
+                Status = WebSocketStatus.Closed;
             }
             catch (SocketException ex)
             {
