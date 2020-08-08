@@ -20,7 +20,7 @@ sudo apt-get install libc6-dev libgdiplus libx11-dev
 Unlike with Arqan, you don't need to build a source per operating system. I configured the csproj file in such a way that dotnet will conditionally use the Arqan package per operating system.
 
 ## Installation
-Because of Arqan I need to maintain two packages for Arqanore too. However, I won't need to maintain two sources which I need to with Arqan. Therefore in order to install Arqanore you need to run either one of these commands, depending on your operating system. You could also create a conditional section in your csproj, just like I did with Arqanore. Either ways are fine.
+Just like with Arqan I need to maintain two packages for Arqanore too. Therefore in order to install Arqanore you need to run either one of these commands, depending on your operating system. You could also create a conditional section in your csproj, just like I did with Arqanore. Either ways are fine.
 
 ```
 dotnet add package Arqanore.Windows
