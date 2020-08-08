@@ -1,8 +1,5 @@
 # Arqanore
-Arqanore is an 2D OpenGL framework that focusses on multiplayer games
-
-## Installation
-This library has not yet a NuGet package, once I believe it is solid enough, I will start creating and pushing packages. For now, build it and add it as reference to your project.
+Arqanore is an 2D OpenGL framework for creating desktop games for Windows and Linux
 
 ## Requirements
 
@@ -10,9 +7,33 @@ This library has not yet a NuGet package, once I believe it is solid enough, I w
 Arqanore requires dotnet core 2.1 or higher to compile.
 
 ### Arqan
-Arqanore is built on top of my other library, Arqan, which can be found at https://github.com/TheBoneJarmer/Arqan. In order to run applications using the Arqanore framework, 
-you need to have a copy of Arqan.dll in your binaries folder. And of course the dependencies of Arqan, but please read the README in the Arqan repo for more info about that. 
-To build Arqanore itself, you need to make a 'lib' folder in the root of the repository and copy Arqan.dll over there.
+Arqanore is built on top of my other library, Arqan, which can be found at https://github.com/TheBoneJarmer/Arqan. **Please make sure you read the readme within the repo of Arqan as you will need to install several dependencies.**
+
+## Building
+Unlike with Arqan, you don't need to build a source per operating system. I configured the csproj file in such a way that dotnet will conditionally use the Arqan package per operating system.
+
+## Installation
+Because of Arqan I need to maintain two packages for Arqanore too. However, I won't need to maintain two sources which I need to with Arqan. Therefore in order to install Arqanore you need to run either one of these commands, depending on your operating system. You could also create a conditional section in your csproj, just like I did with Arqanore. Either ways are fine.
+
+```
+dotnet add package Arqanore.Windows
+dotnet add package Arqanore.Linux
+```
+
+```
+<Choose>
+    <When Condition=" '$(OS)' == 'Windows_NT' ">
+      <ItemGroup>
+        <PackageReference Include="Arqanore.Windows" Version="0.1.0" />
+      </ItemGroup>
+    </When>
+    <When Condition=" '$(OS)' == 'UNIX' ">
+      <ItemGroup>
+        <PackageReference Include="Arqanore.Linux" Version="0.1.0" />
+      </ItemGroup>
+    </When>
+</Choose>
+```
 
 ## Usage
 Below code for showing a basic window. For more examples, please look in the 'examples' folder in the root of this repository.
@@ -27,7 +48,7 @@ namespace example
     {
         static void Main(string[] args)
         {
-            var window = new GameWindow(800, 600, "Basic Window");
+            var window = new Window(800, 600, "Basic Window");
             window.Open();
         }
     }
