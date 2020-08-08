@@ -1,4 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Authors>Ruben Labruyere</Authors>
+        <Company>Ruben Labruyere</Company>
+        <Version>0.1.0</Version>
+        <Description>
+            Arqanore is a 2D OpenGL framework used to make video games for Linux desktop and Windows desktop. It is built on top of my other library, Arqan, and therefore makes use of the GLFW window and input system.
+        </Description>
+        <Copyright>Copyright 2020 Ruben Labruyere</Copyright>
+        <PackageLicenseFile>../LICENSE</PackageLicenseFile>
+        <RepositoryUrl>https://github.com/TheBoneJarmer/arqanore.git</RepositoryUrl>
+        <PackageTags>arqanore, opengl, 2d, framework, glfw, arqan</PackageTags>
+        <AssemblyVersion>0.1.0.0</AssemblyVersion>
+        <FileVersion>0.1.0.0</FileVersion>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    </PropertyGroup>
+
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -7,11 +23,13 @@
 	<ItemGroup>
 		<PackageReference Include="System.Drawing.Common" Version="4.5.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+		<PackageReference Include="Arqan.Linux" Version="0.1.3" />
 	</ItemGroup>
-
+	
 	<ItemGroup>
-		<Reference Include="Arqan">
-			<HintPath>../lib/Arqan.dll</HintPath>
-		</Reference>
-	</ItemGroup>
+        <None Include="../LICENSE">
+          <Pack>True</Pack>
+          <PackagePath></PackagePath>
+        </None>
+  </ItemGroup>
 </Project>
