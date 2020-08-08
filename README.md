@@ -1,13 +1,20 @@
 # Arqanore
 Arqanore is an 2D OpenGL framework for creating desktop games for Windows and Linux
 
-## Requirements
+## Dependencies
 
 ### Dotnet core
 Arqanore requires dotnet core 2.1 or higher to compile.
 
 ### Arqan
-Arqanore is built on top of my other library, Arqan, which can be found at https://github.com/TheBoneJarmer/Arqan. **Please make sure you read the readme within the repo of Arqan as you will need to install several dependencies.**
+Arqanore is built on top of my other library, Arqan, which can be found at https://github.com/TheBoneJarmer/Arqan. **Please make sure you read the readme within the repo of Arqan as you will need to download and install several dependencies.**
+
+### Linux 
+Arqanore makes use of the System.Drawing package from Microsoft, this requires however several extra packages which are not required by Windows. Execute the following command to install them.
+
+```
+sudo apt-get install libc6-dev libgdiplus libx11-dev
+```
 
 ## Building
 Unlike with Arqan, you don't need to build a source per operating system. I configured the csproj file in such a way that dotnet will conditionally use the Arqan package per operating system.
@@ -24,12 +31,12 @@ dotnet add package Arqanore.Linux
 <Choose>
     <When Condition=" '$(OS)' == 'Windows_NT' ">
       <ItemGroup>
-        <PackageReference Include="Arqanore.Windows" Version="0.1.0" />
+        <PackageReference Include="Arqanore.Windows" Version="0.1.1" />
       </ItemGroup>
     </When>
     <When Condition=" '$(OS)' == 'UNIX' ">
       <ItemGroup>
-        <PackageReference Include="Arqanore.Linux" Version="0.1.0" />
+        <PackageReference Include="Arqanore.Linux" Version="0.1.1" />
       </ItemGroup>
     </When>
 </Choose>
