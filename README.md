@@ -16,8 +16,26 @@ Arqanore makes use of the System.Drawing package from Microsoft, this requires h
 sudo apt-get install libc6-dev libgdiplus libx11-dev
 ```
 
-## Building
-Unlike with Arqan, you don't need to build a source per operating system. I configured the csproj file in such a way that dotnet will conditionally use the Arqan package per operating system.
+## Tools
+Along with the framework I introduced some command line tools for generating assets. I go more into detail about assets later, but for now 
+
+### FontGenerator
+The font generator toos allows you to generate Arqanore font files (.arqfnt) from TrueType font files (.ttf) using fontbm, a very very nice tool created by [Vladimir Gamalyan](https://github.com/vladimirgamalyan/). I managed to include fontbm within the NuGet packages so you don't need to install it seperately. In fact, I prefer if you don't. The fontgenerator just starts a C# Process and picks which "fontbm" he can find on the command line. Although I am not doing crazy stuff with fontbm, it would be better if the font generator uses the fontbm that is bundled along with it.
+
+#### Installation
+```
+dotnet tool install Arqanore.FontGenerator.Windows
+dotnet tool install Arqanore.FontGenerator.Linux
+```
+
+### TexGenerator
+The tex generator tool allows you to generate Arqanore texture images from bitmaps, png images, jpeg and what not. In this case whatever the System.Drawing.Bitmap supports actually. If you look at the source you may wonder why the hell I introduced this tool as I only change the file extension. And to answer that question, quite simple: Just in case. I have some futuristic plans about introducing animated sprites and having a format and a tool already present only makes it easier to do so.
+
+#### Installation
+```
+dotnet tool install Arqanore.TexGenerator.Windows
+dotnet tool install Arqanore.TexGenerator.Linux
+```
 
 ## Installation
 Just like with Arqan I need to maintain two packages for Arqanore too. Therefore in order to install Arqanore you need to run either one of these commands, depending on your operating system. You could also create a conditional section in your csproj, just like I did with Arqanore. Either ways are fine.
@@ -64,6 +82,9 @@ namespace example
 
 ## Contribution
 Feel free to send in pull requests at any time!
+
+## Credits
+I already mentioned him but I would like to take this opportunity to thank [Vladimir Gamalyan](https://github.com/vladimirgamalyan/) again for his outstanding work with fontbm. That small tool made it possible for me not only to introduce fonts but create a generator tool for it as well. I mean for real, fonts are difficult. I tried all sorts of stuff to render text the right way and I could not figure it out. But he did, so thanks and well done!
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

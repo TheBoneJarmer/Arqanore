@@ -23,28 +23,56 @@ namespace TexGenerator
 
         static void Run(string[] args)
         {
-            var filename = args[0];
+            string filename = null;
+            string output = null;
 
-            if (!File.Exists(filename))
+            for (int i=0; i<args.Length; i++)
             {
-                throw new FileNotFoundException($"Unable to find image {filename}");
+                string arg = args[i];
+
+                if (arg == "-f")
+                {
+                    filename = args[i+1];
+                    i++;
+                }
+                if (arg == "-o")
+                {
+                    output = args[i+1];
+                    i++;
+                }
             }
 
-            GenerateTexture(filename);
+            if (filename == null || output == null)
+            {
+                Console.Error.WriteLine("Missing required parameters");
+                Environment.Exit(1);
+            }
+            if (!File.Exists(filename))
+            {
+                Console.Error.WriteLine($"Unable to find image {filename}");
+                Environment.Exit(1);
+            }
+            if (!Directory.Exists(output))
+            {
+                Console.Error.WriteLine($"Directory {output} not found");
+                Environment.Exit(1);
+            }
+
+            GenerateTexture(filename, output);
         }
 
-        static void GenerateTexture(string path)
+        static void GenerateTexture(string path, string output)
         {
-            var extension = path.Substring(path.LastIndexOf("."));
-            var filename = path.Substring(path.Replace("\\", "/").LastIndexOf("/") + 1).Replace(extension, "");
+            string extension = path.Substring(path.LastIndexOf("."));
+            string filename = path.Substring(path.Replace("\\", "/").LastIndexOf("/") + 1).Replace(extension, "");
 
             // For now it will do if the file extension is changed
-            File.Copy(path, $"{filename}.arqtex", true);
+            File.Copy(path, $"{output}/{filename}.arqtex", true);
         }
 
         static void DisplayHelp()
         {
-            Console.WriteLine("Usage: tex-generator <FILENAME>");
+            Console.WriteLine("Usage: arqanore-texgenerator -f <FILENAME> -o <OUTPUT_FOLDER>");
             Console.WriteLine();
             Console.WriteLine("ABOUT");
             Console.WriteLine("This tool generates an a texture file from an image");
