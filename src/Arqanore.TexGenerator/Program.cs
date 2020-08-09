@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace TexGenerator
+namespace Arqanore.TexGenerator
 {
     class Program
     {
