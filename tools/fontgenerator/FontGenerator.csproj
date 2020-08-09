@@ -27,13 +27,12 @@
     <ItemGroup>
         <PackageReference Include="System.Drawing.Common" Version="4.6.0" />
     </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\framework\Arqanore.csproj" />
-    </ItemGroup>
-    
     <ItemGroup>
         <Content Include="fontbm/linux/*" Condition=" '$(OS)' == 'UNIX' ">
+            <Pack>True</Pack>
+            <PackagePath>tools/netcoreapp3.1/any/</PackagePath>
+        </Content>
+        <Content Include="fontbm/windows/*" Condition=" '$(OS)' == 'Windows_NT' ">
             <Pack>True</Pack>
             <PackagePath>tools/netcoreapp3.1/any/</PackagePath>
         </Content>
