@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <PackageId Condition=" '$(OS)' == 'Windows_NT' ">Arqanore.TexGenerator.Windows</PackageId>
+        <PackageId Condition=" '$(OS)' == 'UNIX' ">Arqanore.TexGenerator.Linux</PackageId>
+        <Authors>Ruben Labruyere</Authors>
+        <Company>Ruben Labruyere</Company>
+        <Version>0.1.0</Version>
+        <Description>
+        The tex generator of arqanore converts png images to arqtex files, which are used by Arqanore
+        </Description>
+        <RepositoryUrl>https://github.com/TheBoneJarmer/arqanore.git</RepositoryUrl>
+        <PackageTags>arqanore, opengl, 2d, framework, glfw, arqan</PackageTags>
+        <AssemblyVersion>0.1.0.0</AssemblyVersion>
+        <FileVersion>0.1.0.0</FileVersion>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <AssemblyName>arqanore-texgenerator</AssemblyName>
+        <PackAsTool>true</PackAsTool>
+        <ToolCommandName>arqanore-texgenerator</ToolCommandName>
+    </PropertyGroup>
+
+</Project>

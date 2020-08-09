@@ -1,18 +1,64 @@
 # Arqanore
-Arqanore is an 2D OpenGL framework that focusses on multiplayer games
+Arqanore is an 2D OpenGL framework for creating desktop games for Windows and Linux
 
-## Installation
-This library has not yet a NuGet package, once I believe it is solid enough, I will start creating and pushing packages. For now, build it and add it as reference to your project.
-
-## Requirements
+## Dependencies
 
 ### Dotnet core
 Arqanore requires dotnet core 2.1 or higher to compile.
 
 ### Arqan
-Arqanore is built on top of my other library, Arqan, which can be found at https://github.com/TheBoneJarmer/Arqan. In order to run applications using the Arqanore framework, 
-you need to have a copy of Arqan.dll in your binaries folder. And of course the dependencies of Arqan, but please read the README in the Arqan repo for more info about that. 
-To build Arqanore itself, you need to make a 'lib' folder in the root of the repository and copy Arqan.dll over there.
+Arqanore is built on top of my other library, Arqan, which can be found at https://github.com/TheBoneJarmer/Arqan. **Please make sure you read the readme within the repo of Arqan as you will need to download and install several dependencies.**
+
+### Linux 
+Arqanore makes use of the System.Drawing package from Microsoft, this requires however several extra packages which are not required by Windows. Execute the following command to install them.
+
+```
+sudo apt-get install libc6-dev libgdiplus libx11-dev
+```
+
+## Tools
+Along with the framework I introduced some command line tools for generating assets. I go more into detail about assets later, but for now 
+
+### FontGenerator
+The font generator toos allows you to generate Arqanore font files (.arqfnt) from TrueType font files (.ttf) using fontbm, a very very nice tool created by [Vladimir Gamalyan](https://github.com/vladimirgamalyan/). I managed to include fontbm within the NuGet packages so you don't need to install it seperately. In fact, I prefer if you don't. The fontgenerator just starts a C# Process and picks which "fontbm" he can find on the command line. Although I am not doing crazy stuff with fontbm, it would be better if the font generator uses the fontbm that is bundled along with it.
+
+#### Installation
+```
+dotnet tool install Arqanore.FontGenerator.Windows
+dotnet tool install Arqanore.FontGenerator.Linux
+```
+
+### TexGenerator
+The tex generator tool allows you to generate Arqanore texture images from bitmaps, png images, jpeg and what not. In this case whatever the System.Drawing.Bitmap supports actually. If you look at the source you may wonder why the hell I introduced this tool as I only change the file extension. And to answer that question, quite simple: Just in case. I have some futuristic plans about introducing animated sprites and having a format and a tool already present only makes it easier to do so.
+
+#### Installation
+```
+dotnet tool install Arqanore.TexGenerator.Windows
+dotnet tool install Arqanore.TexGenerator.Linux
+```
+
+## Installation
+Just like with Arqan I need to maintain two packages for Arqanore too. Therefore in order to install Arqanore you need to run either one of these commands, depending on your operating system. You could also create a conditional section in your csproj, just like I did with Arqanore. Either ways are fine.
+
+```
+dotnet add package Arqanore.Windows
+dotnet add package Arqanore.Linux
+```
+
+```
+<Choose>
+    <When Condition=" '$(OS)' == 'Windows_NT' ">
+      <ItemGroup>
+        <PackageReference Include="Arqanore.Windows" Version="0.1.1" />
+      </ItemGroup>
+    </When>
+    <When Condition=" '$(OS)' == 'UNIX' ">
+      <ItemGroup>
+        <PackageReference Include="Arqanore.Linux" Version="0.1.1" />
+      </ItemGroup>
+    </When>
+</Choose>
+```
 
 ## Usage
 Below code for showing a basic window. For more examples, please look in the 'examples' folder in the root of this repository.
@@ -27,7 +73,7 @@ namespace example
     {
         static void Main(string[] args)
         {
-            var window = new GameWindow(800, 600, "Basic Window");
+            var window = new Window(800, 600, "Basic Window");
             window.Open();
         }
     }
@@ -36,6 +82,9 @@ namespace example
 
 ## Contribution
 Feel free to send in pull requests at any time!
+
+## Credits
+I already mentioned him but I would like to take this opportunity to thank [Vladimir Gamalyan](https://github.com/vladimirgamalyan/) again for his outstanding work with fontbm. That small tool made it possible for me not only to introduce fonts but create a generator tool for it as well. I mean for real, fonts are difficult. I tried all sorts of stuff to render text the right way and I could not figure it out. But he did, so thanks and well done!
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
