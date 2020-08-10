@@ -47,8 +47,8 @@ namespace Arqanore
             // Top left
             for (var j = 180; j < 270; j += 10)
             {
-                vertices[i + 0] = radius + (MathHelper.XSpeed(j) * radius);
-                vertices[i + 1] = radius + (MathHelper.YSpeed(j) * radius);
+                vertices[i + 0] = radius + (MathHelper.MoveX(j) * radius);
+                vertices[i + 1] = radius + (MathHelper.MoveY(j) * radius);
 
                 i += 2;
             }
@@ -62,8 +62,8 @@ namespace Arqanore
             // Top right
             for (var j = 270; j < 360; j += 10)
             {
-                vertices[i + 0] = (width - radius) + (MathHelper.XSpeed(j) * radius);
-                vertices[i + 1] = radius + (MathHelper.YSpeed(j) * radius);
+                vertices[i + 0] = (width - radius) + (MathHelper.MoveX(j) * radius);
+                vertices[i + 1] = radius + (MathHelper.MoveY(j) * radius);
 
                 i += 2;
             }
@@ -77,8 +77,8 @@ namespace Arqanore
             // Bottom right
             for (var j = 0; j < 90; j += 10)
             {
-                vertices[i + 0] = (width - radius) + (MathHelper.XSpeed(j) * radius);
-                vertices[i + 1] = (height - radius) + (MathHelper.YSpeed(j) * radius);
+                vertices[i + 0] = (width - radius) + (MathHelper.MoveX(j) * radius);
+                vertices[i + 1] = (height - radius) + (MathHelper.MoveY(j) * radius);
 
                 i += 2;
             }
@@ -92,8 +92,8 @@ namespace Arqanore
             // Bottom left
             for (var j = 90; j < 180; j += 10)
             {
-                vertices[i + 0] = radius + (MathHelper.XSpeed(j) * radius);
-                vertices[i + 1] = (height - radius) + (MathHelper.YSpeed(j) * radius);
+                vertices[i + 0] = radius + (MathHelper.MoveX(j) * radius);
+                vertices[i + 1] = (height - radius) + (MathHelper.MoveY(j) * radius);
 
                 i += 2;
             }
@@ -112,8 +112,8 @@ namespace Arqanore
 
             for (var j = 0; j < 360; j += steps)
             {
-                vertices[i + 0] = MathHelper.XSpeed(j) * radius;
-                vertices[i + 1] = MathHelper.YSpeed(j) * radius;
+                vertices[i + 0] = MathHelper.MoveX(j) * radius;
+                vertices[i + 1] = MathHelper.MoveY(j) * radius;
 
                 i += 2;
             }

@@ -1,18 +1,19 @@
 ﻿using Arqanore.Math;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace Arqanore.Input
 {
     public static class Mouse
     {
-        public static Vector2 Position { get; internal set; }
+        public static int X { get; set; }
+        public static int Y { get; set; }
         internal static int[] ButtonState { get; set; }
 
         internal static void Init()
         {
-            Position = new Vector2(-1, -1);
             ButtonState = new int[15];
         }
 

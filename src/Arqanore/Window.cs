@@ -289,8 +289,8 @@ namespace Arqanore
         /* INPUT FUNCTIONS */
         private void OnCursorPositionFunction(IntPtr windowHandle, double x, double y)
         {
-            Mouse.Position.X = (int)x;
-            Mouse.Position.Y = (int)y;
+            Mouse.X = (int)x;
+            Mouse.Y = (int)y;
         }
         private void OnMouseButtonFunction(IntPtr windowHandle, int button, int action, int mods)
         {

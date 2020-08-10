@@ -27,7 +27,7 @@
             </PropertyGroup>
             
             <ItemGroup>
-                <PackageReference Include="Arqan.Windows" Version="0.1.3" />
+                <PackageReference Include="Arqan.Windows" Version="0.2.1" />
             </ItemGroup>
         </When>
         <When Condition=" '$(OS)' == 'UNIX' ">
@@ -36,7 +36,7 @@
             </PropertyGroup>
             
             <ItemGroup>
-                <PackageReference Include="Arqan.Linux" Version="0.1.3" />
+                <PackageReference Include="Arqan.Linux" Version="0.2.1" />
             </ItemGroup>
         </When>
     </Choose>
