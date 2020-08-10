@@ -5,22 +5,22 @@ namespace Arqanore.Examples.Pong
 {
     public class Ball
     {
-        private Vector2 origin;
         private int timer;
 
+        public Vector2 Origin { get; set; }
         public Vector2 Velocity { get; set; }
         public Vector2 Position { get; set; }
 
         public Ball(float x, float y)
         {
-            origin = new Vector2(x, y);
+            Origin = new Vector2(x, y);
 
             Reset();
         }
 
         public void Tick(double delta, Window window)
         {
-            float speed = (float)delta * 300;
+            float speed = (float)delta * 400;
 
             if (timer < 10)
             {
@@ -69,7 +69,7 @@ namespace Arqanore.Examples.Pong
             if (rand.Next(0,100) > 50) Velocity.X = -1;
             if (rand.Next(0, 100) > 50) Velocity.Y = -1;
 
-            Position = new Vector2(origin.X, origin.Y);
+            Position = new Vector2(Origin.X, Origin.Y);
 
             timer = 0;
         }

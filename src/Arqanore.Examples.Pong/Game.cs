@@ -23,6 +23,7 @@ namespace Arqanore.Examples.Pong
             window.OnTick += Window_OnTick;
             window.OnUpdate += Window_OnUpdate;
             window.OnRender += Window_OnRender;
+            window.OnResize += Window_OnResize;
         }
 
         public void Start()
@@ -34,8 +35,8 @@ namespace Arqanore.Examples.Pong
             score1 = 0;
             score2 = 0;
 
-            player1 = new Player(1, Color.BLUE, new Vector2(64, window.Height / 2), false);
-            player2 = new Player(2, Color.RED, new Vector2(window.Width - 80, window.Height / 2), true);
+            player1 = new Player(1, Color.BLUE, new Vector2(64, window.Height / 2), false, window.Height / 5);
+            player2 = new Player(2, Color.RED, new Vector2(window.Width - 80, window.Height / 2), true, window.Height / 5);
             ball = new Ball(window.Width / 2, window.Height / 2);
         }
 
@@ -116,6 +117,15 @@ namespace Arqanore.Examples.Pong
 
             Draw.Text(font, score1.ToString(), 16, 16, 255, 255, 255, 255, 1, 1, 1, 1);
             Draw.Text(font, score2.ToString(), window.Width - 48, 16, 255, 255, 255, 255, 1, 1, 1, 1);
+        }
+
+        private void Window_OnResize(int width, int height)
+        {
+            player1.Height = height / 5;
+            player2.Height = height / 5;
+            player2.Position.X = width - 80;   
+            
+            ball.Origin = new Vector2(width / 2, height / 2);
         }
     }
 }

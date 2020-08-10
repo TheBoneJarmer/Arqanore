@@ -12,14 +12,16 @@ namespace Arqanore.Examples.Pong
         public Vector2 Position { get; private set; }
         public Vector2 Velocity { get; private set; }
         public bool Computer { get; private set; }
+        public int Height { get; set; }
 
-        public Player(int id, Color color, Vector2 position, bool computer)
+        public Player(int id, Color color, Vector2 position, bool computer, int height)
         {
             this.Id = id;
             this.Color = color;
             this.Position = position;
             this.Computer = computer;
             this.Velocity = new Vector2();
+            this.Height = height;
         }
 
         public void Tick(double delta, Window window, Ball ball)
@@ -33,10 +35,10 @@ namespace Arqanore.Examples.Pong
                 TickHuman(delta);
             }
 
-            Position += Velocity * (float)delta * 200;
+            Position += Velocity * (float)delta * 300;
 
-            if (Position.Y < 64) Position.Y = 64;
-            if (Position.Y > window.Height - 64) Position.Y = window.Height - 64;
+            if (Position.Y < Height / 2) Position.Y = Height / 2;
+            if (Position.Y > window.Height - (Height / 2)) Position.Y = window.Height - (Height / 2);
         }
 
         private void TickComputer(double delta)
@@ -57,7 +59,7 @@ namespace Arqanore.Examples.Pong
 
         public void Update(Ball ball)
         {
-            if (ball.Position.Y > Position.Y - 64 && ball.Position.Y < Position.Y + 64 && ball.Position.X < Position.X + 8 && ball.Position.X > Position.X - 8)
+            if (ball.Position.Y > Position.Y - (Height / 2) && ball.Position.Y < Position.Y + (Height / 2) && ball.Position.X < Position.X + 8 && ball.Position.X > Position.X - 8)
             {
                 if (ball.Velocity.X > 0)
                 {
@@ -86,7 +88,7 @@ namespace Arqanore.Examples.Pong
 
         public void Render()
         {
-            Draw.Box(Position.X, Position.Y, 16, 128, 0, -8, -64, Color.R, Color.G, Color.B, Color.A, PolygonFillMode.Filled);
+            Draw.Box(Position.X, Position.Y, 16, Height, 0, -8, -(Height / 2), Color.R, Color.G, Color.B, Color.A, PolygonFillMode.Filled);
         }
     }
 }
