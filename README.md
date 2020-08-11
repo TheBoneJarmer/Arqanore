@@ -38,7 +38,7 @@ dotnet tool install Arqanore.TexGenerator.Linux
 ```
 
 ## Installation
-Just like with Arqan I need to maintain two packages for Arqanore too. Therefore in order to install Arqanore you need to run either one of these commands, depending on your operating system. You could also create a conditional section in your csproj, just like I did with Arqanore. Either ways are fine.
+Just like with Arqan I need to maintain two packages for Arqanore too. Therefore you can decide to either install Arqanore using the dotnet cli or you could modify your csproj and include a conditional packagereference. Whetever you choose is fine, that is up to you.
 
 ```
 dotnet add package Arqanore.Windows
@@ -46,18 +46,8 @@ dotnet add package Arqanore.Linux
 ```
 
 ```
-<Choose>
-    <When Condition=" '$(OS)' == 'Windows_NT' ">
-      <ItemGroup>
-        <PackageReference Include="Arqanore.Windows" Version="0.1.1" />
-      </ItemGroup>
-    </When>
-    <When Condition=" '$(OS)' == 'UNIX' ">
-      <ItemGroup>
-        <PackageReference Include="Arqanore.Linux" Version="0.1.1" />
-      </ItemGroup>
-    </When>
-</Choose>
+<PackageReference Include="Arqan.Linux" Version="0.2.1" Condition=" '$(OS)' == 'UNIX' " />
+<PackageReference Include="Arqan.Windows" Version="0.2.4" Condition=" '$(OS)' == 'Windows_NT' " />
 ```
 
 ## Usage

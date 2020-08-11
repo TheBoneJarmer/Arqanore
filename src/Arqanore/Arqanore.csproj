@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
+        <PackageId Condition=" '$(OS)' == 'Windows_NT' ">Arqanore.Windows</PackageId>
+        <PackageId Condition=" '$(OS)' == 'UNIX' ">Arqanore.Linux</PackageId>
         <Authors>Ruben Labruyere</Authors>
         <Company>Ruben Labruyere</Company>
         <Version>0.3.1</Version>
@@ -19,31 +21,12 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
-	
-    <Choose>
-        <When Condition=" '$(OS)' == 'Windows_NT' ">
-            <PropertyGroup>
-                <PackageId>Arqanore.Windows</PackageId>
-            </PropertyGroup>
-            
-            <ItemGroup>
-                <PackageReference Include="Arqan.Windows" Version="0.2.4" />
-            </ItemGroup>
-        </When>
-        <When Condition=" '$(OS)' == 'UNIX' ">
-            <PropertyGroup>
-                <PackageId>Arqanore.Linux</PackageId>
-            </PropertyGroup>
-            
-            <ItemGroup>
-                <PackageReference Include="Arqan.Linux" Version="0.2.1" />
-            </ItemGroup>
-        </When>
-    </Choose>
 
     <ItemGroup>
 	    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
 	    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+	    <PackageReference Include="Arqan.Linux" Version="0.2.1" Condition=" '$(OS)' == 'UNIX' " />
+	    <PackageReference Include="Arqan.Windows" Version="0.2.4" Condition=" '$(OS)' == 'Windows_NT' " />
     </ItemGroup>
 	
 	<ItemGroup>
