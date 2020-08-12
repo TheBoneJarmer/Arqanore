@@ -5,14 +5,14 @@
         <PackageId Condition=" '$(OS)' == 'UNIX' ">Arqanore.FontGenerator.Linux</PackageId>
         <Authors>Ruben Labruyere</Authors>
         <Company>Ruben Labruyere</Company>
-        <Version>0.2.0</Version>
+        <Version>0.3.1</Version>
         <Description>
             The font generator tool of Arqanore converts .ttf files into .arqfnt files, which Arqanore requires for font loading
         </Description>
         <RepositoryUrl>https://github.com/TheBoneJarmer/arqanore.git</RepositoryUrl>
         <PackageTags>arqanore, opengl, 2d, framework, glfw, arqan</PackageTags>
-        <AssemblyVersion>0.2.0.0</AssemblyVersion>
-        <FileVersion>0.2.0.0</FileVersion>
+        <AssemblyVersion>0.3.1.0</AssemblyVersion>
+        <FileVersion>0.3.1.0</FileVersion>
         <IncludeBuildOutput>True</IncludeBuildOutput>
     </PropertyGroup>
     
