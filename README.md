@@ -46,8 +46,8 @@ dotnet add package Arqanore.Linux
 ```
 
 ```
-<PackageReference Include="Arqan.Linux" Version="0.2.1" Condition=" '$(OS)' == 'UNIX' " />
-<PackageReference Include="Arqan.Windows" Version="0.2.4" Condition=" '$(OS)' == 'Windows_NT' " />
+<PackageReference Include="Arqanore.Linux" Version="0.3.1" Condition=" '$(OS)' == 'UNIX' " />
+<PackageReference Include="Arqanore.Windows" Version="0.3.1" Condition=" '$(OS)' == 'Windows_NT' " />
 ```
 
 ## Usage
