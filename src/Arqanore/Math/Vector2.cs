@@ -34,7 +34,11 @@ namespace Arqanore.Math
 
         public static float Angle(Vector2 v1, Vector2 v2)
         {
-            double theta = System.Math.Atan2((v2.Y - v1.Y), (v2.X - v1.X));
+            return Angle(v1.X, v1.Y, v2.X, v2.Y);
+        }
+        public static float Angle(float x1, float y1, float x2, float y2)
+        {
+            double theta = System.Math.Atan2((y2 - y1), (x2 - x1));
 
             if (theta < 0)
             {
@@ -45,14 +49,22 @@ namespace Arqanore.Math
         }
         public static float Distance(Vector2 v1, Vector2 v2)
         {
-            float x = v1.X - v2.X;
-            float y = v1.Y - v2.Y;
+            return Distance(v1.X, v1.Y, v2.X, v2.Y);
+        }
+        public static float Distance(float x1, float y1, float x2, float y2)
+        {
+            float x = x1 - x2;
+            float y = y1 - y2;
 
             return (float)System.Math.Sqrt((x * x) + (y * y));
         }
         public static float Dot(Vector2 v1, Vector2 v2)
         {
-            return (v1.X * v2.X) + (v1.Y * v2.Y);
+            return Dot(v1.X, v1.Y, v2.X, v2.Y);
+        }
+        public static float Dot(float x1, float y1, float x2, float y2)
+        {
+            return (x1 * x2) + (y1 * y2);
         }
         public static Vector2 Normalize(Vector2 v)
         {
