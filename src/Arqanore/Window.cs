@@ -90,10 +90,10 @@ namespace Arqanore
             this.ClearColor = Color.BLACK;
         }
 
-        public void Open(bool fullscreen = false, bool vsync = true)
+        public void Open(bool fullscreen = false, bool resizable = true, bool maximized = false, bool vsync = true)
         {
             InitGLFW();
-            InitWindow(fullscreen);
+            InitWindow(fullscreen, resizable, maximized);
             InitEvents();
             InitSettings(vsync);
             InitFramework();
@@ -112,7 +112,7 @@ namespace Arqanore
                 throw new GLFWException(-1, "Unable to initialize");
             }
         }
-        private void InitWindow(bool fullscreen)
+        private void InitWindow(bool fullscreen, bool resizable, bool maximized)
         {
             if (fullscreen)
             {
@@ -120,6 +120,14 @@ namespace Arqanore
             }
             else
             {
+                GLFW.glfwDefaultWindowHints();
+                
+                if (resizable) GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_TRUE);
+                if (!resizable) GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_FALSE);
+
+                if (maximized) GLFW.glfwWindowHint(GLFW.GLFW_MAXIMIZED, GLFW.GLFW_TRUE);
+                if (!maximized) GLFW.glfwWindowHint(GLFW.GLFW_MAXIMIZED, GLFW.GLFW_FALSE);
+
                 Handle = GLFW.glfwCreateWindow(Width, Height, Encoding.ASCII.GetBytes(Title), IntPtr.Zero, IntPtr.Zero);
             }
 

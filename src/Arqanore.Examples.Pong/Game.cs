@@ -28,7 +28,7 @@ namespace Arqanore.Examples.Pong
 
         public void Start()
         {
-            window.Open();
+            window.Open(false, true, true);
         }
         public void Reset()
         {
