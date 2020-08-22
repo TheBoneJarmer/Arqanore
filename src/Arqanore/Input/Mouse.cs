@@ -1,4 +1,5 @@
-﻿using Arqanore.Math;
+﻿using Arqan;
+using Arqanore.Math;
 using System;
 using System.Collections.Generic;
 using System.Numerics;

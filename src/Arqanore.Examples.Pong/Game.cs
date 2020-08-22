@@ -43,7 +43,7 @@ namespace Arqanore.Examples.Pong
         private void Window_OnLoad()
         {
             font = new Font("assets/arial.arqfnt");
-
+            window.HideCursor();
             Reset();
         }
 

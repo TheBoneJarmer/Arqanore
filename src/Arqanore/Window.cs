@@ -249,6 +249,15 @@ namespace Arqanore
             GLFW.glfwDestroyWindow(Handle);
         }
 
+        public void HideCursor()
+        {
+            GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_HIDDEN);
+        }
+        public void ShowCursor()
+        {
+            GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
+        }
+
         /* GENERAL FUNCTIONS */
         private void OnErrorFunction(int errorCode, string description)
         {
