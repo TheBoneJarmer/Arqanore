@@ -38,16 +38,23 @@ dotnet tool install Arqanore.TexGenerator.Linux
 ```
 
 ## Installation
-Just like with Arqan I need to maintain two packages for Arqanore too. Therefore you can decide to either install Arqanore using the dotnet cli or you could modify your csproj and include a conditional packagereference. Whetever you choose is fine, that is up to you.
+Just like with Arqan I need to maintain several packages for Arqanore too. And the Windows package is also divided into two packages. One for the x64 architecture and one for the x86. Therefore you can decide to either install Arqanore using the dotnet cli or you could modify your csproj and include a conditional packagereference.
 
 ```
-dotnet add package Arqanore.Windows
+dotnet add package Arqanore.Windows.x64
+dotnet add package Arqanore.Windows.x86
 dotnet add package Arqanore.Linux
 ```
 
 ```
-<PackageReference Include="Arqanore.Linux" Version="0.3.1" Condition=" '$(OS)' == 'UNIX' " />
-<PackageReference Include="Arqanore.Windows" Version="0.3.1" Condition=" '$(OS)' == 'Windows_NT' " />
+<PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+    <PackageReference Include="Arqanore.Windows.x64" Version="0.6.2" Condition="'$(Platform)' == 'x64' />
+    <PackageReference Include="Arqanore.Windows.x86" Version="0.6.2" Condition="'$(Platform)' == 'x86' />
+</PropertyGroup>
+
+<PropertyGroup Condition="'$(OS)' == 'UNIX'">
+    <PackageReference Include="Arqanore.Linux" Version="0.6.2" />
+</PropertyGroup>
 ```
 
 ## Usage
