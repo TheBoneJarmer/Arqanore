@@ -251,9 +251,12 @@ namespace Arqanore
                 GLFW.glfwPollEvents();
             }
 
-            //OnClose?.Invoke();
+            if (state != WindowState.Closed)
+            {
+                OnClose?.Invoke();
+                state = WindowState.Closed;
+            }
 
-            state = WindowState.Closed;
             GLFW.glfwDestroyWindow(Handle);
         }
 
@@ -276,30 +279,22 @@ namespace Arqanore
             this.width = width;
             this.height = height;
 
-            if (OnResize != null)
-            {
-                OnResize(width, height);
-            }
+            OnResize?.Invoke(width, height);
         }
         private void OnWindowRefreshFunction(IntPtr windowHandle)
         {
-            if (OnRefresh != null)
-            {
-                OnRefresh();
-            }
+            OnRefresh?.Invoke();
         }
         private void OnPositionFunction(IntPtr windowHandle, int x, int y)
         {
-            if (OnPosition != null)
-            {
-                OnPosition(x, y);
-            }
+            OnPosition?.Invoke(x, y);
         }
         private void OnWindowCloseFunction(IntPtr windowHandle)
         {
-            if (OnClose != null)
+            if (state != WindowState.Closed)
             {
-                OnClose();
+                OnClose?.Invoke();
+                state = WindowState.Closed;
             }
         }
 
@@ -346,10 +341,7 @@ namespace Arqanore
             Keyboard.PressedChar = (char)codepoint;
             Keyboard.PressedCharCode = (int)codepoint;
 
-            if (OnChar != null)
-            {
-                OnChar((char)codepoint);
-            }
+            OnChar?.Invoke((char)codepoint);
         }
 
         /* EVENTS */
