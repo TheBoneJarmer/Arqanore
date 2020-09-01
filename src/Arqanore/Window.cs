@@ -251,7 +251,7 @@ namespace Arqanore
                 GLFW.glfwPollEvents();
             }
 
-            OnClose?.Invoke();
+            //OnClose?.Invoke();
 
             state = WindowState.Closed;
             GLFW.glfwDestroyWindow(Handle);
