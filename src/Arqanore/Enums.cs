@@ -4,49 +4,17 @@ using System.Text;
 
 namespace Arqanore
 {
-    public enum WebSocketStatus
-    {
-        Open,
-        Closed,
-        Lost,
-        Closing
-    }
-
-    public enum WebSocketMessageType
-    {
-        Text = 1,
-        CloseConnection = 8
-    }
-
-    public enum HttpVersion
-    {
-        Http11
-    }
-    
     public enum PolygonFillMode
     {
         Filled,
         Lines,
         Points
     }
-    public enum TextAlign
-    {
-        Left,
-        Center,
-        Right
-    }
-    public enum PositionType
-    {
-        Absolute,
-        Relative
-    }
-
     public enum WindowState
     {
         Open,
         Closed
     }
-
     public enum MouseButton
     {
         Left = 0,
