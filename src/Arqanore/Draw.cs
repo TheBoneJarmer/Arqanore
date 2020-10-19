@@ -196,8 +196,16 @@ namespace Arqanore
 
             GL11.glDrawArrays(GL11.GL_POLYGON, 0, vertices.Length / 2);
         }
-
+        
         public static void Texture(Texture image, float x, float y, float width, float height, float offsetX, float offsetY, float angle, float clipX, float clipY, float clipWidth, float clipHeight, float scaleX, float scaleY)
+        {
+            Texture(image, x, y, width, height, offsetX, offsetY, angle, clipX, clipY, clipWidth, clipHeight, scaleX, scaleY, 255, 255, 255, 255);
+        }
+        public static void Texture(Texture image, float x, float y, float width, float height, float offsetX, float offsetY, float angle, float clipX, float clipY, float clipWidth, float clipHeight, float scaleX, float scaleY, Color color)
+        {
+            Texture(image, x, y, width, height, offsetX, offsetY, angle, clipX, clipY, clipWidth, clipHeight, scaleX, scaleY, color.R, color.G, color.B, color.A);
+        }
+        public static void Texture(Texture image, float x, float y, float width, float height, float offsetX, float offsetY, float angle, float clipX, float clipY, float clipWidth, float clipHeight, float scaleX, float scaleY, int r, int g, int b, int a)
         {
             var cos = System.Math.Cos(MathHelper.ToRadians(angle + 90));
             var sin = System.Math.Sin(MathHelper.ToRadians(angle + 90));
@@ -214,6 +222,7 @@ namespace Arqanore
             var scaleUniformLocation = GL20.glGetUniformLocation(Shaders.Image.Id, "uscale");
             var translationUniformLocation = GL20.glGetUniformLocation(Shaders.Image.Id, "utranslation");
             var resolutionUniformLocation = GL20.glGetUniformLocation(Shaders.Image.Id, "uresolution");
+            var colorUniformLocation = GL20.glGetUniformLocation(Shaders.Glyph.Id, "ucolor");
 
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
             GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices.Length * 4, vertices, GL15.GL_STATIC_DRAW);
@@ -230,6 +239,7 @@ namespace Arqanore
             GL20.glUniform2f(rotationUniformLocation, (float)cos, (float)sin);
             GL20.glUniform2f(scaleUniformLocation, scaleX, scaleY);
             GL20.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
+            GL20.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
             GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
