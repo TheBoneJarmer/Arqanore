@@ -84,7 +84,7 @@ namespace Arqanore.Graphics
                     fSource.Add("uniform vec4 ucolor;\n");
                     fSource.Add("varying vec2 vtexcoord;\n");
                     fSource.Add("void main() {\n");
-                    fSource.Add("gl_FragColor = texture2D(uimage, vtexcoord) * color;\n");
+                    fSource.Add("gl_FragColor = texture2D(uimage, vtexcoord) * ucolor;\n");
                     fSource.Add("}");
 
                     texture = new Shader(vSource.ToArray(), fSource.ToArray());

@@ -222,7 +222,7 @@ namespace Arqanore
             var scaleUniformLocation = GL20.glGetUniformLocation(Shaders.Image.Id, "uscale");
             var translationUniformLocation = GL20.glGetUniformLocation(Shaders.Image.Id, "utranslation");
             var resolutionUniformLocation = GL20.glGetUniformLocation(Shaders.Image.Id, "uresolution");
-            var colorUniformLocation = GL20.glGetUniformLocation(Shaders.Glyph.Id, "ucolor");
+            var colorUniformLocation = GL20.glGetUniformLocation(Shaders.Image.Id, "ucolor");
 
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
             GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices.Length * 4, vertices, GL15.GL_STATIC_DRAW);
