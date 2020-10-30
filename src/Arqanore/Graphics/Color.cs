@@ -31,5 +31,19 @@ namespace Arqanore.Graphics
             this.B = b;
             this.A = a;
         }
+        public Color(System.Drawing.Color color)
+        {
+            this.R = color.R;
+            this.G = color.G;
+            this.B = color.B;
+            this.A = color.A;
+        }
+        public Color(Color color)
+        {
+            this.R = color.R;
+            this.G = color.G;
+            this.B = color.B;
+            this.A = color.A;
+        }
     }
 }

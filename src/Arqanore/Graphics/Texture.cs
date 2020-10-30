@@ -53,7 +53,6 @@ namespace Arqanore.Graphics
 
             Load(bmp);
         }
-
         private void Load(Bitmap bmp)
         {
             var ids = new uint[1];
@@ -79,6 +78,11 @@ namespace Arqanore.Graphics
 
             // Finish
             Id = ids[0];
+        }
+
+        public Color GetPixel(int x, int y)
+        {
+            return new Color(Bitmap.GetPixel(x, y));
         }
     }
 }
