@@ -3,6 +3,7 @@
     <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
         <PackageId Condition="'$(Configuration)' == 'x64'">Arqanore.Windows.x64</PackageId>
         <PackageId Condition="'$(Configuration)' == 'x86'">Arqanore.Windows.x86</PackageId>
+        <Configurations>Debug;Release;x64;x86</Configurations>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(OS)' == 'UNIX'">
