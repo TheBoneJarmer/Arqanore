@@ -12,8 +12,8 @@ namespace Arqanore.Graphics
     public class Texture
     {
         public uint Id { get; private set; }
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public float Width { get; private set; }
+        public float Height { get; private set; }
         public Bitmap Bitmap { get; private set; }
 
         public Texture(Image img)
@@ -26,8 +26,6 @@ namespace Arqanore.Graphics
         }
         public Texture(string filename)
         {
-            var data = new byte[0];
-
             // Check the file
             if (!filename.EndsWith(".arqtex"))
             {
@@ -38,11 +36,8 @@ namespace Arqanore.Graphics
                 throw new ArqanoreException($"File {filename} not found");
             }
 
-            // Load the data
-            data = File.ReadAllBytes(filename);
-
             // Parse the data
-            Parse(data);
+            Parse(File.ReadAllBytes(filename));
         }
 
         private void Parse(byte[] data)

@@ -28,8 +28,6 @@ namespace Arqanore.Graphics
 
         private void Load(string path)
         {
-            var data = new byte[0];
-
             // Check the file
             if (!path.EndsWith(".arqfnt"))
             {
@@ -40,13 +38,10 @@ namespace Arqanore.Graphics
                 throw new ArqanoreException($"Unable to find font {path}");
             }
 
-            // Load the data
-            data = File.ReadAllBytes(path);
-
             // Parse the data
-            Parse(data.ToList());
+            Parse(File.ReadAllBytes(path));
         }
-        private void Parse(List<byte> bytes)
+        private void Parse(byte[] bytes)
         {
             var parser = new ByteParser(bytes);
             var bmpCount = parser.GetByte();

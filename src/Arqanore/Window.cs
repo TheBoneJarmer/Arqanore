@@ -90,12 +90,11 @@ namespace Arqanore
             this.ClearColor = Color.BLACK;
         }
 
-        public void Open(bool fullscreen = false, bool resizable = true, bool maximized = false, bool vsync = true)
+        public void Open(bool fullscreen = false, bool resizable = true, bool maximized = false)
         {
             InitGLFW();
             InitWindow(fullscreen, resizable, maximized);
             InitEvents();
-            InitSettings(vsync);
             InitFramework();
 
             Sync();
@@ -158,17 +157,6 @@ namespace Arqanore
             GLFW.glfwSetMouseButtonCallback(Handle, this.glfwMouseButtonFunction);
             GLFW.glfwSetKeyCallback(Handle, this.glfwKeyFunction);
             GLFW.glfwSetCharCallback(Handle, this.glfwCharFunction);
-        }
-        private void InitSettings(bool vsync)
-        {
-            if (vsync)
-            {
-                GLFW.glfwSwapInterval(1);
-            }
-            else
-            {
-                GLFW.glfwSwapInterval(0);
-            }
         }
         private void InitFramework()
         {
@@ -247,6 +235,7 @@ namespace Arqanore
 
                 OnRender?.Invoke();
 
+                GLFW.glfwSwapInterval(1);
                 GLFW.glfwSwapBuffers(Handle);
                 GLFW.glfwPollEvents();
             }

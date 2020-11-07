@@ -181,133 +181,153 @@ namespace Arqanore
 
             if (fillMode == PolygonFillMode.Filled)
             {
-                GL10.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
+                GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_FILL);
             }
 
             if (fillMode == PolygonFillMode.Lines)
             {
-                GL10.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+                GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_LINE);
             }
 
             if (fillMode == PolygonFillMode.Points)
             {
-                GL10.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_POINT);
+                GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_POINT);
             }
 
             GL11.glDrawArrays(GL11.GL_POLYGON, 0, vertices.Length / 2);
         }
         
-        public static void Texture(Texture image, float x, float y, float width, float height, float offsetX, float offsetY, float angle, float clipX, float clipY, float clipWidth, float clipHeight, float scaleX, float scaleY)
+        public static void Texture(Texture image, float x, float y, float width, float height, float offsetX, float offsetY, float angle, float clipX, float clipY, float clipWidth, float clipHeight, int r, int g, int b, int a)
         {
-            Texture(image, x, y, width, height, offsetX, offsetY, angle, clipX, clipY, clipWidth, clipHeight, scaleX, scaleY, 255, 255, 255, 255);
-        }
-        public static void Texture(Texture image, float x, float y, float width, float height, float offsetX, float offsetY, float angle, float clipX, float clipY, float clipWidth, float clipHeight, float scaleX, float scaleY, Color color)
-        {
-            Texture(image, x, y, width, height, offsetX, offsetY, angle, clipX, clipY, clipWidth, clipHeight, scaleX, scaleY, color.R, color.G, color.B, color.A);
-        }
-        public static void Texture(Texture image, float x, float y, float width, float height, float offsetX, float offsetY, float angle, float clipX, float clipY, float clipWidth, float clipHeight, float scaleX, float scaleY, int r, int g, int b, int a)
-        {
-            var cos = System.Math.Cos(MathHelper.ToRadians(angle + 90));
-            var sin = System.Math.Sin(MathHelper.ToRadians(angle + 90));
-            var texCoordX = (1f / (float)image.Width) * clipX;
-            var texCoordY = (1f / (float)image.Height) * clipY;
-            var texCoordWidth = 1f / ((float)(image.Width) / clipWidth);
-            var texCoordHeight = 1f / ((float)(image.Height) / clipHeight);
-            var vertices = new float[12] { offsetX, offsetY, offsetX + width, offsetY, offsetX, offsetY + height, offsetX + width, offsetY, offsetX, offsetY + height, offsetX + width, offsetY + height };
-            var texcoords = new float[12] { texCoordX, texCoordY, texCoordX + texCoordWidth, texCoordY, texCoordX, texCoordY + texCoordHeight, texCoordX + texCoordWidth, texCoordY, texCoordX, texCoordY + texCoordHeight, texCoordX + texCoordWidth, texCoordY + texCoordHeight };
+            double cos = System.Math.Cos(MathHelper.ToRadians(angle + 90));
+            double sin = System.Math.Sin(MathHelper.ToRadians(angle + 90));
+
+            float tcX = (1f / image.Width) * clipX;
+            float tcY = (1f / image.Height) * clipY;
+            float tcWidth = 1f / (image.Width / clipWidth);
+            float tcHeight = 1f / (image.Height / clipHeight);
+
+            var vertices = new float[12] {
+                offsetX, offsetY, 
+                offsetX + width, offsetY,
+                offsetX, offsetY + height,
+                offsetX + width, offsetY,
+                offsetX, offsetY + height,
+                offsetX + width, 
+                offsetY + height
+            };
+
+            var texcoords = new float[12] {
+                tcX, tcY,
+                tcX + tcWidth, tcY,
+                tcX, tcY + tcHeight,
+                tcX + tcWidth, tcY,
+                tcX, tcY + tcHeight, 
+                tcX + tcWidth, tcY + tcHeight
+            };
 
             var positionAttribLocation = GL20.glGetAttribLocation(Shaders.Image.Id, "aposition");
             var texcoordAttribLocation = GL20.glGetAttribLocation(Shaders.Image.Id, "atexcoord");
             var rotationUniformLocation = GL20.glGetUniformLocation(Shaders.Image.Id, "urotation");
-            var scaleUniformLocation = GL20.glGetUniformLocation(Shaders.Image.Id, "uscale");
             var translationUniformLocation = GL20.glGetUniformLocation(Shaders.Image.Id, "utranslation");
             var resolutionUniformLocation = GL20.glGetUniformLocation(Shaders.Image.Id, "uresolution");
             var colorUniformLocation = GL20.glGetUniformLocation(Shaders.Image.Id, "ucolor");
 
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices.Length * 4, vertices, GL15.GL_STATIC_DRAW);
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, tcbuffer);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, texcoords.Length * 4, texcoords, GL15.GL_STATIC_DRAW);
-
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, image.Id);
-            GL20.glUseProgram(Shaders.Image.Id);
-
             GL20.glEnableVertexAttribArray(positionAttribLocation);
             GL20.glEnableVertexAttribArray(texcoordAttribLocation);
 
-            GL20.glUniform2f(translationUniformLocation, x, y);
-            GL20.glUniform2f(rotationUniformLocation, (float)cos, (float)sin);
-            GL20.glUniform2f(scaleUniformLocation, scaleX, scaleY);
-            GL20.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
-            GL20.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
-
+            // Bind the VBO's for vertices and texcoords and update them
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
+            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices.Length * 4, vertices, GL15.GL_STATIC_DRAW);
             GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
 
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, tcbuffer);
+            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, texcoords.Length * 4, texcoords, GL15.GL_STATIC_DRAW);
             GL20.glVertexAttribPointer(texcoordAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
 
-            GL10.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
+            // Bind our texture and our shader
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, image.Id);
+            GL20.glUseProgram(Shaders.Image.Id);
+
+            // Set some shader values
+            GL20.glUniform2f(translationUniformLocation, x, y);
+            GL20.glUniform2f(rotationUniformLocation, (float)cos, (float)sin);
+            GL20.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
+            GL20.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+
+            // Draw the texture
+            GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_FILL);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices.Length / 2);
         }
 
-        public static void Text(Font font, string text, float x, float y, int r, int g, int b, int a, float scaleX, float scaleY, float glyphScaleX, float glyphScaleY)
+        public static void Text(Font font, string text, float x, float y, int r, int g, int b, int a)
         {
-            var cursorX = 0f;
-            var cursorY = 0f;
+            float advance = 0f;
+
+            var positionAttribLocation = GL20.glGetAttribLocation(Shaders.Glyph.Id, "aposition");
+            var texcoordAttribLocation = GL20.glGetAttribLocation(Shaders.Glyph.Id, "atexcoord");
+            var translationUniformLocation = GL20.glGetUniformLocation(Shaders.Glyph.Id, "utranslation");
+            var resolutionUniformLocation = GL20.glGetUniformLocation(Shaders.Glyph.Id, "uresolution");
+            var colorUniformLocation = GL20.glGetUniformLocation(Shaders.Glyph.Id, "ucolor");
+
+            GL20.glUseProgram(Shaders.Glyph.Id);
+            GL20.glEnableVertexAttribArray(positionAttribLocation);
+            GL20.glEnableVertexAttribArray(texcoordAttribLocation);
+            GL20.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
+            GL20.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
             for (var i = 0; i < text.Length; i++)
             {
-                var code = (short)text[i];
-                var glyph = font.Glyphs.FirstOrDefault(z => z.Id == code);
+                Font.Glyph glyph = font.Glyphs.FirstOrDefault(z => z.Id == (short)text[i]);
+                Texture texture = font.Textures[glyph.Page];
 
                 if (glyph == null)
                 {
                     continue;
                 }
 
-                var texCoordX = (1f / (float)font.Textures[glyph.Page].Width) * glyph.X;
-                var texCoordY = (1f / (float)font.Textures[glyph.Page].Height) * glyph.Y;
-                var texCoordWidth = 1f / ((float)(font.Textures[glyph.Page].Width) / glyph.Width);
-                var texCoordHeight = 1f / ((float)(font.Textures[glyph.Page].Height) / glyph.Height);
-                var vertices = new float[12] { 0, 0, glyph.Width * glyphScaleX, 0, 0, glyph.Height * glyphScaleY, glyph.Width * glyphScaleX, 0, 0, glyph.Height * glyphScaleY, glyph.Width * glyphScaleX, glyph.Height * glyphScaleY };
-                var texcoords = new float[12] { texCoordX, texCoordY, texCoordX + texCoordWidth, texCoordY, texCoordX, texCoordY + texCoordHeight, texCoordX + texCoordWidth, texCoordY, texCoordX, texCoordY + texCoordHeight, texCoordX + texCoordWidth, texCoordY + texCoordHeight };
+                float tcX = (1f / texture.Width) * glyph.X;
+                float tcY = (1f / texture.Height) * glyph.Y;
+                float tcWidth = 1f / (texture.Width / glyph.Width);
+                float tcHeight = 1f / (texture.Height / glyph.Height);
+                float vx = x + advance + glyph.OffsetX;
+                float vy = y + glyph.OffsetY;
 
-                var positionAttribLocation = GL20.glGetAttribLocation(Shaders.Glyph.Id, "aposition");
-                var texcoordAttribLocation = GL20.glGetAttribLocation(Shaders.Glyph.Id, "atexcoord");
-                var rotationUniformLocation = GL20.glGetUniformLocation(Shaders.Glyph.Id, "urotation");
-                var scaleUniformLocation = GL20.glGetUniformLocation(Shaders.Glyph.Id, "uscale");
-                var translationUniformLocation = GL20.glGetUniformLocation(Shaders.Glyph.Id, "utranslation");
-                var resolutionUniformLocation = GL20.glGetUniformLocation(Shaders.Glyph.Id, "uresolution");
-                var colorUniformLocation = GL20.glGetUniformLocation(Shaders.Glyph.Id, "ucolor");
+                float[] vertices = new float[12] {
+                    vx, vy, 
+                    vx + glyph.Width, vy,
+                    vx, vy + glyph.Height,
+                    vx + glyph.Width, vy,
+                    vx, vy + glyph.Height,
+                    vx + glyph.Width, vy + glyph.Height 
+                };
 
+                float[] texcoords = new float[12] {
+                    tcX, tcY, 
+                    tcX + tcWidth, tcY, 
+                    tcX, tcY + tcHeight, 
+                    tcX + tcWidth, tcY,
+                    tcX, tcY + tcHeight,
+                    tcX + tcWidth, tcY + tcHeight
+                };
+
+                // Bind the correct texture depending on which page the glyph is located
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, font.Textures[glyph.Page].Id);
+
+                // Bind the vbo's for the vertices and texture coords
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
                 GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices.Length * 4, vertices, GL15.GL_STATIC_DRAW);
-                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, tcbuffer);
-                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, texcoords.Length * 4, texcoords, GL15.GL_STATIC_DRAW);
-
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, font.Textures[glyph.Page].Id);
-                GL20.glUseProgram(Shaders.Glyph.Id);
-
-                GL20.glEnableVertexAttribArray(positionAttribLocation);
-                GL20.glEnableVertexAttribArray(texcoordAttribLocation);
-
-                GL20.glUniform2f(translationUniformLocation, x + cursorX + (glyph.OffsetX * glyphScaleX), y + cursorY + (glyph.OffsetY * glyphScaleY));
-                GL20.glUniform2f(rotationUniformLocation, 0f, 1f);
-                GL20.glUniform2f(scaleUniformLocation, scaleX, scaleY);
-                GL20.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
-                GL20.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
-
-                GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
                 GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
 
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, tcbuffer);
-                GL20.glVertexAttribPointer(texcoordAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
+                GL15.glBufferData(GL15.GL_ARRAY_BUFFER, texcoords.Length * 4, texcoords, GL15.GL_STATIC_DRAW);
+                GL20.glVertexAttribPointer(texcoordAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);            
 
-                GL10.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
+                // And draw the vertices
+                GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_FILL);
                 GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices.Length / 2);
 
-                cursorX += glyph.Advance * glyphScaleX;
+                advance += glyph.Advance;
             }
         }
     }
