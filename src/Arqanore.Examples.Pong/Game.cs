@@ -18,7 +18,7 @@ namespace Arqanore.Examples.Pong
 
         public Game()
         {
-            window = new Window(800, 600, "Pong");
+            window = new Window(1024, 768, "Pong");
             window.OnLoad += Window_OnLoad;
             window.OnTick += Window_OnTick;
             window.OnUpdate += Window_OnUpdate;
@@ -28,7 +28,7 @@ namespace Arqanore.Examples.Pong
 
         public void Start()
         {
-            window.Open(false, true, false);
+            window.Open(false, false, false);
         }
         public void Reset()
         {
@@ -54,8 +54,8 @@ namespace Arqanore.Examples.Pong
                 return;
             }
 
-            player1.Tick(deltaTime, window, ball);
-            player2.Tick(deltaTime, window, ball);
+            player1.Tick(deltaTime, window);
+            player2.Tick(deltaTime, window);
             ball.Tick(deltaTime, window);
         }
 
@@ -105,8 +105,8 @@ namespace Arqanore.Examples.Pong
                 float text2X = (window.Width / 2) - (width2 / 2);
                 float text2Y = text1Y + 64;
 
-                Draw.Text(font, text1, text1X, text1Y, 255, 255, 255, 255, 1, 1, 2, 2);
-                Draw.Text(font, text2, text2X, text2Y, 255, 255, 255, 255, 1, 1, 1, 1);
+                font.RenderText(text1, new Vector2(text1X, text1Y), Color.WHITE);
+                font.RenderText(text2, new Vector2(text2X, text2Y), Color.WHITE);
 
                 return;
             }
@@ -115,16 +115,13 @@ namespace Arqanore.Examples.Pong
             player2.Render();
             ball.Render();
 
-            Draw.Text(font, score1.ToString(), 16, 16, 255, 255, 255, 255, 1, 1, 1, 1);
-            Draw.Text(font, score2.ToString(), window.Width - 48, 16, 255, 255, 255, 255, 1, 1, 1, 1);
+            font.RenderText(score1.ToString(), new Vector2(16, 16), Color.WHITE);
+            font.RenderText(score2.ToString(), new Vector2(window.Width - 48, 16), Color.WHITE);
         }
 
         private void Window_OnResize(int width, int height)
         {
-            player1.Height = height / 5;
-            player2.Height = height / 5;
-            player2.Position.X = width - 80;   
-            
+            player2.Position.X = width - 80;
             ball.Origin = new Vector2(width / 2, height / 2);
         }
     }

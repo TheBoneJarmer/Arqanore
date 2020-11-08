@@ -1,4 +1,5 @@
 using System;
+using Arqanore.Graphics;
 using Arqanore.Math;
 
 namespace Arqanore.Examples.Pong
@@ -6,6 +7,7 @@ namespace Arqanore.Examples.Pong
     public class Ball
     {
         private int timer;
+        private Polygon polygon;
 
         public Vector2 Origin { get; set; }
         public Vector2 Velocity { get; set; }
@@ -13,8 +15,8 @@ namespace Arqanore.Examples.Pong
 
         public Ball(float x, float y)
         {
+            polygon = Polygon.Circle(10, 8);
             Origin = new Vector2(x, y);
-
             Reset();
         }
 
@@ -46,7 +48,7 @@ namespace Arqanore.Examples.Pong
         }
         public void Render()
         {
-            Draw.Box(Position.X, Position.Y, 16, 16, 0, -8, -8, 255, 255, 255, 255, PolygonMode.Filled);
+            polygon.Render(Position, 0, Color.WHITE);
         }
 
         public void Bounce(bool horizontal)

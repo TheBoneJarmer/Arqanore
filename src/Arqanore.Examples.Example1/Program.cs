@@ -14,7 +14,6 @@ namespace Arqanore.Examples.Example1
         private static Texture texPlayer;
         private static Sprite sprPlayer;
         private static Sprite sprGrass;
-        private static Polygon box;
 
         private static int scale;
         private static Vector2 playerPos;
@@ -39,7 +38,6 @@ namespace Arqanore.Examples.Example1
             texPlayer = new Texture("assets/player.arqtex");
             sprGrass = new Sprite(texGrass, new Vector2(0, 0), new Vector2(scale, scale));
             sprPlayer = new Sprite(texPlayer, 4, 4, new Vector2(0, 0), new Vector2(scale, scale));
-            box = Polygon.Box(new Vector2(64, 64), new Vector2(0, 0));
             playerPos = new Vector2(5, 5);
         }
 
@@ -104,11 +102,8 @@ namespace Arqanore.Examples.Example1
             // Render the player
             sprPlayer.Render(playerPos * 16 * scale, frameHor, frameVert);
 
-            // Render all polygons
-            box.Render(new Vector2(32, 32), 0, Color.RED);
-
             // Render text
-            //Draw.Text(font, "Hello World", 32, 32, 255, 255, 255, 255);
+            font.RenderText("Hello World", new Vector2(32, 32), Color.WHITE);
         }
     }
 }

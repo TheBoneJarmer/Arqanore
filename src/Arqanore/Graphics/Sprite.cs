@@ -206,14 +206,18 @@ namespace Arqanore.Graphics
             GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, tcbuffer);
             GL20.glVertexAttribPointer(texcoordAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
+
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.Id);
             GL20.glUseProgram(shader.Id);
+
             GL20.glUniform2f(translationUniformLocation, position.X, position.Y);
             GL20.glUniform2f(rotationUniformLocation, (float)cos, (float)sin);
             GL20.glUniform2f(resolutionUniformLocation, Window.Current.Width, Window.Current.Height);
             GL20.glUniform4f(colorUniformLocation, color.R / 255.0f, color.G / 255.0f, color.B / 255.0f, color.A / 255.0f);
+
             GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_FILL);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, frameIndex * 6, 6);
+
             GL20.glUseProgram(0);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
         }
