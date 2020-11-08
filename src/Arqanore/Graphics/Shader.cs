@@ -9,6 +9,10 @@ namespace Arqanore.Graphics
     {
         public uint Id { get; set; }
 
+        public Shader(List<string> vertexSource, List<string> fragmentSource) : this(vertexSource.ToArray(), fragmentSource.ToArray())
+        {
+
+        }
         public Shader(string[] vertexSource, string[] fragmentSource)
         {
             var program = GL20.glCreateProgram();

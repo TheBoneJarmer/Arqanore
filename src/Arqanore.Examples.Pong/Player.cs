@@ -88,7 +88,7 @@ namespace Arqanore.Examples.Pong
 
         public void Render()
         {
-            Draw.Box(Position.X, Position.Y, 16, Height, 0, -8, -(Height / 2), Color.R, Color.G, Color.B, Color.A, PolygonFillMode.Filled);
+            Draw.Box(Position.X, Position.Y, 16, Height, 0, -8, -(Height / 2), Color.R, Color.G, Color.B, Color.A, PolygonMode.Filled);
         }
     }
 }

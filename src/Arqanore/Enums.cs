@@ -4,9 +4,15 @@ using System.Text;
 
 namespace Arqanore
 {
-    public enum PolygonFillMode
+    public enum PolygonMode
     {
         Filled,
+        Lines,
+        Points
+    }
+    public enum DrawMode
+    {
+        Polygon,
         Lines,
         Points
     }

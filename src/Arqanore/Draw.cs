@@ -15,6 +15,15 @@ namespace Arqanore
         private static uint tcbuffer;
         private static Window gameWindow;
 
+        internal static uint VertexBuffer
+        {
+            get { return vbuffer; }
+        }
+        internal static uint TexCoordBuffer
+        {
+            get { return tcbuffer;  }
+        }
+
         internal static void Init(Window gameWindow)
         {
             uint[] buffers = new uint[2];
@@ -25,7 +34,8 @@ namespace Arqanore
             Draw.gameWindow = gameWindow;
         }
 
-        public static void Box(float x, float y, float width, float height, float angle, float offsetX, float offsetY, int r, int g, int b, int a, PolygonFillMode fillMode)
+        [Obsolete("Please us the Polygon class")]
+        public static void Box(float x, float y, float width, float height, float angle, float offsetX, float offsetY, int r, int g, int b, int a, PolygonMode fillMode)
         {
             float[] vertices = new float[8]
             {
@@ -38,7 +48,8 @@ namespace Arqanore
             Polygon(vertices, x, y, angle, r, g, b, a, fillMode);
         }
 
-        public static void RoundedBox(float x, float y, float width, float height, int radius, float angle, int r, int g, int b, int a, PolygonFillMode fillMode)
+        [Obsolete("Please us the Polygon class")]
+        public static void RoundedBox(float x, float y, float width, float height, int radius, float angle, int r, int g, int b, int a, PolygonMode fillMode)
         {
             // var vertices = new float[(36 * 2) + 8];
             var vertices = new float[80];
@@ -105,7 +116,8 @@ namespace Arqanore
             Polygon(vertices, x, y, angle, r, g, b, a, fillMode);
         }
 
-        public static void Circle(float x, float y, int radius, int steps, float angle, int r, int g, int b, int a, PolygonFillMode fillMode)
+        [Obsolete("Please us the Polygon class")]
+        public static void Circle(float x, float y, int radius, int steps, float angle, int r, int g, int b, int a, PolygonMode fillMode)
         {
             var vertices = new float[(360 / steps) * 2];
             var i = 0;
@@ -121,6 +133,7 @@ namespace Arqanore
             Polygon(vertices, x, y, angle, r, g, b, a, fillMode);
         }
 
+        [Obsolete("Please us the Polygon class")]
         public static void Line(float x1, float y1, float x2, float y2, int r, int g, int b, int a)
         {
             var positionAttribLocation = GL20.glGetAttribLocation(Shaders.Default.Id, "aposition");
@@ -130,13 +143,14 @@ namespace Arqanore
             var resolutionUniformLocation = GL20.glGetUniformLocation(Shaders.Default.Id, "uresolution");
             var colorUniformLocation = GL20.glGetUniformLocation(Shaders.Default.Id, "ucolor");
 
+            GL20.glEnableVertexAttribArray(positionAttribLocation);
+
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
             GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 16, new float[4] { x1, y1, x2, y2 }, GL15.GL_STATIC_DRAW);
+            GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
 
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-            GL20.glUseProgram(Shaders.Default.Id);
-
-            GL20.glEnableVertexAttribArray(positionAttribLocation);
+            GL20.glUseProgram(Shaders.Default.Id);          
 
             GL20.glUniform2f(translationUniformLocation, 0, 0);
             GL20.glUniform2f(rotationUniformLocation, 0, 1);
@@ -144,13 +158,11 @@ namespace Arqanore
             GL20.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
             GL20.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
-            GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
-
             GL11.glDrawArrays(GL11.GL_LINES, 0, 8);
         }
 
-        public static void Polygon(float[] vertices, float x, float y, float angle, int r, int g, int b, int a, PolygonFillMode fillMode)
+        [Obsolete("Please us the Polygon class")]
+        public static void Polygon(float[] vertices, float x, float y, float angle, int r, int g, int b, int a, PolygonMode fillMode)
         {
             var cos = System.Math.Cos(MathHelper.ToRadians(angle + 90));
             var sin = System.Math.Sin(MathHelper.ToRadians(angle + 90));
@@ -179,17 +191,17 @@ namespace Arqanore
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
             GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
 
-            if (fillMode == PolygonFillMode.Filled)
+            if (fillMode == PolygonMode.Filled)
             {
                 GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_FILL);
             }
 
-            if (fillMode == PolygonFillMode.Lines)
+            if (fillMode == PolygonMode.Lines)
             {
                 GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_LINE);
             }
 
-            if (fillMode == PolygonFillMode.Points)
+            if (fillMode == PolygonMode.Points)
             {
                 GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_POINT);
             }
@@ -197,6 +209,7 @@ namespace Arqanore
             GL11.glDrawArrays(GL11.GL_POLYGON, 0, vertices.Length / 2);
         }
         
+        [Obsolete("Please use the Sprite class")]
         public static void Texture(Texture image, float x, float y, float width, float height, float offsetX, float offsetY, float angle, float clipX, float clipY, float clipWidth, float clipHeight, int r, int g, int b, int a)
         {
             double cos = System.Math.Cos(MathHelper.ToRadians(angle + 90));

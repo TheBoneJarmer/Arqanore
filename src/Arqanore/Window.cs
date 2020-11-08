@@ -26,6 +26,8 @@ namespace Arqanore
         private GLFW.GLFWkeyfun glfwKeyFunction;
         private GLFW.GLFWcharfun glfwCharFunction;
 
+        internal static Window Current { get; private set;  }
+
         private IntPtr Handle
         {
             get { return handle; }
@@ -92,6 +94,8 @@ namespace Arqanore
 
         public void Open(bool fullscreen = false, bool resizable = true, bool maximized = false)
         {
+            Current = this;
+
             InitGLFW();
             InitWindow(fullscreen, resizable, maximized);
             InitEvents();

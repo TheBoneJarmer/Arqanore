@@ -46,7 +46,7 @@ namespace Arqanore.Examples.Pong
         }
         public void Render()
         {
-            Draw.Box(Position.X, Position.Y, 16, 16, 0, -8, -8, 255, 255, 255, 255, PolygonFillMode.Filled);
+            Draw.Box(Position.X, Position.Y, 16, 16, 0, -8, -8, 255, 255, 255, 255, PolygonMode.Filled);
         }
 
         public void Bounce(bool horizontal)

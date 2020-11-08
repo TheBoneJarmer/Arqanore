@@ -1,28 +1,46 @@
 ﻿using Arqanore.Graphics;
 using Arqanore.Input;
+using Arqanore.Math;
 using System;
 
 namespace Arqanore.Examples.Example1
 {
     class Program
     {
-        private static Font font;
-        private static Texture grass;
-        private static Texture player;
         private static Window window;
-        private static float playerX;
-        private static float playerY;
+
+        private static Font font;
+        private static Texture texGrass;
+        private static Texture texPlayer;
+        private static Sprite sprPlayer;
+        private static Sprite sprGrass;
+        private static Polygon box;
+
+        private static int scale;
+        private static Vector2 playerPos;
+        private static int frameHor;
+        private static int frameVert;
         private static float frameTime;
-        private static float frameHor;
-        private static float frameVert;
 
         static void Main(string[] args)
         {
-            window = new Window(1366, 768, "Example 1");
+            window = new Window(1600, 900, "Example 1");
             window.OnRender += Window_OnRender;
             window.OnLoad += Window_OnLoad;
             window.OnTick += Window_OnTick;
             window.Open();
+        }
+
+        private static void Window_OnLoad()
+        {
+            scale = 3;
+            font = new Font("assets/arial.arqfnt");
+            texGrass = new Texture("assets/grass.arqtex");
+            texPlayer = new Texture("assets/player.arqtex");
+            sprGrass = new Sprite(texGrass, new Vector2(0, 0), new Vector2(scale, scale));
+            sprPlayer = new Sprite(texPlayer, 4, 4, new Vector2(0, 0), new Vector2(scale, scale));
+            box = Polygon.Box(new Vector2(64, 64), new Vector2(0, 0));
+            playerPos = new Vector2(5, 5);
         }
 
         private static void Window_OnTick(double deltaTime)
@@ -31,25 +49,25 @@ namespace Arqanore.Examples.Example1
 
             if (Keyboard.KeyDown(KeyCode.LEFT))
             {
-                playerX -= speed;
+                playerPos.X -= speed;
                 frameTime += speed;
                 frameVert = 3;
             }
             if (Keyboard.KeyDown(KeyCode.RIGHT))
             {
-                playerX += speed;
+                playerPos.X += speed;
                 frameTime += speed;
                 frameVert = 2;
             }
             if (Keyboard.KeyDown(KeyCode.UP))
             {
-                playerY -= speed;
+                playerPos.Y -= speed;
                 frameTime += speed;
                 frameVert = 1;
             }
             if (Keyboard.KeyDown(KeyCode.DOWN))
             {
-                playerY += speed;
+                playerPos.Y += speed;
                 frameTime += speed;
                 frameVert = 0;
             }
@@ -66,35 +84,31 @@ namespace Arqanore.Examples.Example1
             }
         }
 
-        private static void Window_OnLoad()
-        {
-            font = new Font("assets/arial.arqfnt");
-            grass = new Texture("assets/grass.arqtex");
-            player = new Texture("assets/player.arqtex");
-        }
-
         private static void Window_OnRender()
         {
             float scale = 3;
-            float tilesHor = window.Width / scale / 16;
-            float tilesVert = window.Height / scale / 16;
+            float tilesHor = (float)System.Math.Ceiling(window.Width / scale / 16);
+            float tilesVert = (float)System.Math.Ceiling(window.Height / scale / 16);
 
-            Draw.Text(font, "Hello World", 32, 32, 255, 255, 255, 255);
+            window.Title = $"Tiles Hor: {tilesHor} | Tiles Vert: {tilesVert} | Total: {tilesHor * tilesVert}";
 
             // Render a floor
             for (int x = 0; x < tilesHor; x++)
             {
                 for (int y = 0; y < tilesVert; y++)
                 {
-                    //Draw.Texture(grass, x * 16 * scale, y * 16 * scale, 16 * scale, 16 * scale, 0, 0, 0, 0, 0, 16, 16, 255, 255, 255, 255);
+                    sprGrass.Render(new Vector2(x * 16 * scale, y * 16 * scale));
                 }
             }
 
             // Render the player
-            Draw.Texture(player, playerX * 16 * scale, playerY * 16 * scale, 16 * scale, 16 * scale, 0, 0, 0, frameHor * 16, frameVert * 16, 16, 16, 255, 255, 255, 255);
+            sprPlayer.Render(playerPos * 16 * scale, frameHor, frameVert);
+
+            // Render all polygons
+            box.Render(new Vector2(32, 32), 0, Color.RED);
 
             // Render text
-            Draw.Text(font, "Hello World", 32, 32, 255, 255, 255, 255);
+            //Draw.Text(font, "Hello World", 32, 32, 255, 255, 255, 255);
         }
     }
 }
