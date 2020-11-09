@@ -65,6 +65,10 @@ namespace Arqanore.Graphics
 
         public void Render(Vector2 position, float angle, Color color, DrawMode drawMode = DrawMode.Polygon, PolygonMode polygonMode = PolygonMode.Filled)
         {
+            Render(position.X, position.Y, angle, color.R, color.G, color.B, color.A, drawMode, polygonMode);
+        }
+        public void Render(float x, float y, float angle, int r, int g, int b, int a, DrawMode drawMode = DrawMode.Polygon, PolygonMode polygonMode = PolygonMode.Filled)
+        {
             double cos = System.Math.Cos(MathHelper.ToRadians(angle + 90));
             double sin = System.Math.Sin(MathHelper.ToRadians(angle + 90));
 
@@ -78,10 +82,10 @@ namespace Arqanore.Graphics
             GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
             GL20.glUseProgram(shader.Id);
-            GL20.glUniform2f(translationUniformLocation, position.X, position.Y);
+            GL20.glUniform2f(translationUniformLocation, x, y);
             GL20.glUniform2f(rotationUniformLocation, (float)cos, (float)sin);
             GL20.glUniform2f(resolutionUniformLocation, Window.Current.Width, Window.Current.Height);
-            GL20.glUniform4f(colorUniformLocation, color.R / 255.0f, color.G / 255.0f, color.B / 255.0f, color.A / 255.0f);
+            GL20.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
             if (polygonMode == PolygonMode.Filled) GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_FILL);
             if (polygonMode == PolygonMode.Lines) GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_LINE);

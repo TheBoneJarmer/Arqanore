@@ -180,23 +180,47 @@ namespace Arqanore.Graphics
         {
             Render(position, 0, 0, 0, Color.WHITE);
         }
+        public void Render(float x, float y)
+        {
+            Render(x, y, 0, 0, 0, 255, 255, 255, 255);
+        }
         public void Render(Vector2 position, int frameHor, int frameVert)
         {
             Render(position, frameHor, frameVert, 0, Color.WHITE);
+        }
+        public void Render(float x, float y, int frameHor, int frameVert)
+        {
+            Render(x, y, frameHor, frameVert, 0, 255, 255, 255, 255);
         }
         public void Render(Vector2 position, float angle)
         {
             Render(position, 0, 0, angle, Color.WHITE);
         }
+        public void Render(float x, float y, float angle)
+        {
+            Render(x, y, 0, 0, angle, 255, 255, 255, 255);
+        }
         public void Render(Vector2 position, int frameHor, int frameVert, float angle)
         {
             Render(position, frameHor, frameVert, angle, Color.WHITE);
+        }
+        public void Render(float x, float y, int frameHor, int frameVert, float angle)
+        {
+            Render(x, y, frameHor, frameVert, angle, 255, 255, 255, 255);
         }
         public void Render(Vector2 position, float angle, Color color)
         {
             Render(position, 0, 0, angle, color);
         }
+        public void Render(float x, float y, float angle, int r, int g, int b, int a)
+        {
+            Render(x, y, 0, 0, angle, r, g, b, a);
+        }
         public void Render(Vector2 position, int frameHor, int frameVert, float angle, Color color)
+        {
+            Render(position.X, position.Y, frameHor, frameVert, angle, color.R, color.G, color.B, color.A);
+        }
+        public void Render(float x, float y, int frameHor, int frameVert, float angle, int r, int g, int b, int a)
         {
             int frameIndex = (frameHor * framesHor) + frameVert;
             double cos = System.Math.Cos(MathHelper.ToRadians(angle + 90));
@@ -210,10 +234,10 @@ namespace Arqanore.Graphics
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.Id);
             GL20.glUseProgram(shader.Id);
 
-            GL20.glUniform2f(translationUniformLocation, position.X, position.Y);
+            GL20.glUniform2f(translationUniformLocation, x, y);
             GL20.glUniform2f(rotationUniformLocation, (float)cos, (float)sin);
             GL20.glUniform2f(resolutionUniformLocation, Window.Current.Width, Window.Current.Height);
-            GL20.glUniform4f(colorUniformLocation, color.R / 255.0f, color.G / 255.0f, color.B / 255.0f, color.A / 255.0f);
+            GL20.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
             GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_FILL);
             GL11.glDrawArrays(GL11.GL_TRIANGLES, frameIndex * 6, 6);
