@@ -235,9 +235,9 @@ namespace Arqanore
                             Keyboard.KeyState[i] = 0;
                         }
                     }
-                }
 
-                OnRender?.Invoke();
+                    OnRender?.Invoke();
+                }
 
                 GLFW.glfwSwapInterval(1);
                 GLFW.glfwSwapBuffers(Handle);

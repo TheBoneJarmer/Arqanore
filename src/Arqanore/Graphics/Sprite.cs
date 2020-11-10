@@ -9,9 +9,11 @@ namespace Arqanore.Graphics
     public class Sprite
     {
         private Texture texture;
-        private Vector2 offset;
-        private Vector2 scale;
         private Shader shader;
+        private float offsetX;
+        private float offsetY;
+        private float scaleX;
+        private float scaleY;
         private uint vbuffer;
         private uint tcbuffer;
 
@@ -38,23 +40,41 @@ namespace Arqanore.Graphics
             get { return texture.Height; }
         }
 
-        public Sprite(string path, Vector2 offset, Vector2 scale) : this(path, 1, 1, offset, scale)
+        public Sprite(string path, Vector2 offset, Vector2 scale) : this(new Texture(path), 1, 1, offset.X, offset.Y, scale.X, scale.Y)
         {
 
         }
-        public Sprite(Texture texture, Vector2 offset, Vector2 scale) : this(texture, 1, 1, offset, scale)
+        public Sprite(Texture texture, Vector2 offset, Vector2 scale) : this(texture, 1, 1, offset.X, offset.Y, scale.X, scale.Y)
         {
 
         }
-        public Sprite(string path, int framesHor, int framesVert, Vector2 offset, Vector2 scale) : this(new Texture(path), framesHor, framesVert, offset, scale)
+        public Sprite(string path, float offsetX, float offsetY, float scaleX, float scaleY) : this(new Texture(path), 1, 1, offsetX, offsetY, scaleX, scaleY)
+        {
+
+        }
+        public Sprite(Texture texture, float offsetX, float offsetY, float scaleX, float scaleY) : this(texture, 1, 1, offsetX, offsetY, scaleX, scaleY)
+        {
+
+        }
+        public Sprite(string path, int framesHor, int framesVert, Vector2 offset, Vector2 scale) : this(new Texture(path), framesHor, framesVert, offset.X, offset.Y, scale.X, scale.Y)
         {
             
         }
-        public Sprite(Texture texture, int framesHor, int framesVert, Vector2 offset, Vector2 scale)
+        public Sprite(Texture texture, int framesHor, int framesVert, Vector2 offset, Vector2 scale) : this(texture, framesHor, framesVert, offset.X, offset.Y, scale.X, scale.Y)
+        {
+
+        }
+        public Sprite(string path, int framesHor, int framesVert, float offsetX, float offsetY, float scaleX, float scaleY) : this(new Texture(path), framesHor, framesVert, offsetX, offsetY, scaleX, scaleY)
+        {
+
+        }
+        public Sprite(Texture texture, int framesHor, int framesVert, float offsetX, float offsetY, float scaleX, float scaleY)
         {
             this.texture = texture;
-            this.offset = offset;
-            this.scale = scale;
+            this.offsetX = offsetX;
+            this.offsetY = offsetY;
+            this.scaleX = scaleX;
+            this.scaleY = scaleY;
             this.framesHor = framesHor;
             this.framesVert = framesVert;
 
@@ -82,8 +102,8 @@ namespace Arqanore.Graphics
             {
                 for (int frameVert = 0; frameVert < framesVert; frameVert++)
                 {
-                    float width = (texture.Width * scale.X) / framesHor;
-                    float height = (texture.Height * scale.Y) / framesVert;
+                    float width = (texture.Width * scaleX) / framesHor;
+                    float height = (texture.Height * scaleY) / framesVert;
 
                     float clipWidth = texture.Width / framesHor;
                     float clipHeight = texture.Height / framesVert;
@@ -97,12 +117,12 @@ namespace Arqanore.Graphics
 
                     float[] vertices = new float[12]
                     {
-                        offset.X, offset.Y,
-                        offset.X + width, offset.Y,
-                        offset.X, offset.Y + height,
-                        offset.X + width, offset.Y,
-                        offset.X, offset.Y + height,
-                        offset.X + width, offset.Y + height
+                        offsetX, offsetY,
+                        offsetX + width, offsetY,
+                        offsetX, offsetY + height,
+                        offsetX + width, offsetY,
+                        offsetX, offsetY + height,
+                        offsetX + width, offsetY + height
                     };
 
                     float[] texcoords = new float[12]

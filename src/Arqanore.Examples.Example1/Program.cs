@@ -36,8 +36,8 @@ namespace Arqanore.Examples.Example1
             font = new Font("assets/arial.arqfnt");
             texGrass = new Texture("assets/grass.arqtex");
             texPlayer = new Texture("assets/player.arqtex");
-            sprGrass = new Sprite(texGrass, new Vector2(0, 0), new Vector2(scale, scale));
-            sprPlayer = new Sprite(texPlayer, 4, 4, new Vector2(0, 0), new Vector2(scale, scale));
+            sprGrass = new Sprite(texGrass, 0, 0, scale, scale);
+            sprPlayer = new Sprite(texPlayer, 4, 4, 0, 0, scale, scale);
             playerPos = new Vector2(5, 5);
         }
 
