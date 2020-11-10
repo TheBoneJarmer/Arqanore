@@ -242,7 +242,7 @@ namespace Arqanore.Graphics
         }
         public void Render(float x, float y, int frameHor, int frameVert, float angle, int r, int g, int b, int a)
         {
-            int frameIndex = (frameHor * framesHor) + frameVert;
+            int frameIndex = (frameVert * framesHor) + frameHor;
             double cos = System.Math.Cos(MathHelper.ToRadians(angle + 90));
             double sin = System.Math.Sin(MathHelper.ToRadians(angle + 90));
 
