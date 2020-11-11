@@ -9,10 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arqanore.FontGenerator", "A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arqanore.TexGenerator", "Arqanore.TexGenerator\Arqanore.TexGenerator.csproj", "{A31D85C9-F6F9-4396-B4BC-0C79A7D2B43C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arqanore.Examples.Pong", "Arqanore.Examples.Pong\Arqanore.Examples.Pong.csproj", "{8A3771F6-A4E6-47F2-B38F-2DC2E139BE5D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arqanore.Examples.Example1", "Arqanore.Examples.Example1\Arqanore.Examples.Example1.csproj", "{DE679841-37FF-4984-92DB-EF5E5E3A45DF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,18 +35,6 @@ Global
 		{A31D85C9-F6F9-4396-B4BC-0C79A7D2B43C}.x64|Any CPU.Build.0 = x64|Any CPU
 		{A31D85C9-F6F9-4396-B4BC-0C79A7D2B43C}.x86|Any CPU.ActiveCfg = x86|Any CPU
 		{A31D85C9-F6F9-4396-B4BC-0C79A7D2B43C}.x86|Any CPU.Build.0 = x86|Any CPU
-		{8A3771F6-A4E6-47F2-B38F-2DC2E139BE5D}.Debug|Any CPU.ActiveCfg = x86|Any CPU
-		{8A3771F6-A4E6-47F2-B38F-2DC2E139BE5D}.Release|Any CPU.ActiveCfg = x86|Any CPU
-		{8A3771F6-A4E6-47F2-B38F-2DC2E139BE5D}.x64|Any CPU.ActiveCfg = x64|Any CPU
-		{8A3771F6-A4E6-47F2-B38F-2DC2E139BE5D}.x64|Any CPU.Build.0 = x64|Any CPU
-		{8A3771F6-A4E6-47F2-B38F-2DC2E139BE5D}.x86|Any CPU.ActiveCfg = x86|Any CPU
-		{DE679841-37FF-4984-92DB-EF5E5E3A45DF}.Debug|Any CPU.ActiveCfg = x64|Any CPU
-		{DE679841-37FF-4984-92DB-EF5E5E3A45DF}.Release|Any CPU.ActiveCfg = x64|Any CPU
-		{DE679841-37FF-4984-92DB-EF5E5E3A45DF}.Release|Any CPU.Build.0 = x64|Any CPU
-		{DE679841-37FF-4984-92DB-EF5E5E3A45DF}.x64|Any CPU.ActiveCfg = x64|Any CPU
-		{DE679841-37FF-4984-92DB-EF5E5E3A45DF}.x64|Any CPU.Build.0 = x64|Any CPU
-		{DE679841-37FF-4984-92DB-EF5E5E3A45DF}.x86|Any CPU.ActiveCfg = x64|Any CPU
-		{DE679841-37FF-4984-92DB-EF5E5E3A45DF}.x86|Any CPU.Build.0 = x64|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

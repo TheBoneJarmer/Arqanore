@@ -21,7 +21,7 @@ namespace Arqanore
         }
         internal static uint TexCoordBuffer
         {
-            get { return tcbuffer;  }
+            get { return tcbuffer; }
         }
 
         internal static void Init(Window gameWindow)
@@ -150,7 +150,7 @@ namespace Arqanore
             GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
 
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-            GL20.glUseProgram(Shaders.Default.Id);          
+            GL20.glUseProgram(Shaders.Default.Id);
 
             GL20.glUniform2f(translationUniformLocation, 0, 0);
             GL20.glUniform2f(rotationUniformLocation, 0, 1);
@@ -208,7 +208,7 @@ namespace Arqanore
 
             GL11.glDrawArrays(GL11.GL_POLYGON, 0, vertices.Length / 2);
         }
-        
+
         [Obsolete("Please use the Sprite class")]
         public static void Texture(Texture image, float x, float y, float width, float height, float offsetX, float offsetY, float angle, float clipX, float clipY, float clipWidth, float clipHeight, int r, int g, int b, int a)
         {
@@ -221,12 +221,12 @@ namespace Arqanore
             float tcHeight = 1f / (image.Height / clipHeight);
 
             var vertices = new float[12] {
-                offsetX, offsetY, 
+                offsetX, offsetY,
                 offsetX + width, offsetY,
                 offsetX, offsetY + height,
                 offsetX + width, offsetY,
                 offsetX, offsetY + height,
-                offsetX + width, 
+                offsetX + width,
                 offsetY + height
             };
 
@@ -235,7 +235,7 @@ namespace Arqanore
                 tcX + tcWidth, tcY,
                 tcX, tcY + tcHeight,
                 tcX + tcWidth, tcY,
-                tcX, tcY + tcHeight, 
+                tcX, tcY + tcHeight,
                 tcX + tcWidth, tcY + tcHeight
             };
 
@@ -276,7 +276,7 @@ namespace Arqanore
         [Obsolete("Please use Font.RenderText instead")]
         public static void Text(Font font, string text, float x, float y, int r, int g, int b, int a)
         {
-            font.RenderText(text, new Vector2(x, y), new Color(r, g, b, a));
+            font.RenderText(text, x, y, r, g, b, a);
         }
     }
 }

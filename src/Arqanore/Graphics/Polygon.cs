@@ -63,10 +63,6 @@ namespace Arqanore.Graphics
             shader = new Shader(vSource, fSource);
         }
 
-        public void Render(Vector2 position, float angle, Color color, DrawMode drawMode = DrawMode.Polygon, PolygonMode polygonMode = PolygonMode.Filled)
-        {
-            Render(position.X, position.Y, angle, color.R, color.G, color.B, color.A, drawMode, polygonMode);
-        }
         public void Render(float x, float y, float angle, int r, int g, int b, int a, DrawMode drawMode = DrawMode.Polygon, PolygonMode polygonMode = PolygonMode.Filled)
         {
             double cos = System.Math.Cos(MathHelper.ToRadians(angle + 90));

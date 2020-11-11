@@ -186,10 +186,6 @@ namespace Arqanore.Graphics
             }
         }
 
-        public void RenderText(string text, Vector2 position, Color color)
-        {
-            RenderText(text, position.X, position.Y, color.R, color.G, color.B, color.A);
-        }
         public void RenderText(string text, float x, float y, int r, int g, int b, int a)
         {
             float advance = 0;

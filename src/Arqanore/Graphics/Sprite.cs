@@ -39,44 +39,17 @@ namespace Arqanore.Graphics
         {
             get { return texture.Height; }
         }
-
-        public Sprite(string path, Vector2 offset, Vector2 scale) : this(new Texture(path), 1, 1, offset.X, offset.Y, scale.X, scale.Y)
+        
+        public Sprite(string path, float frameWidth, float frameHeight, float offsetX, float offsetY, float scaleX, float scaleY)
         {
-
-        }
-        public Sprite(Texture texture, Vector2 offset, Vector2 scale) : this(texture, 1, 1, offset.X, offset.Y, scale.X, scale.Y)
-        {
-
-        }
-        public Sprite(string path, float offsetX, float offsetY, float scaleX, float scaleY) : this(new Texture(path), 1, 1, offsetX, offsetY, scaleX, scaleY)
-        {
-
-        }
-        public Sprite(Texture texture, float offsetX, float offsetY, float scaleX, float scaleY) : this(texture, 1, 1, offsetX, offsetY, scaleX, scaleY)
-        {
-
-        }
-        public Sprite(string path, int framesHor, int framesVert, Vector2 offset, Vector2 scale) : this(new Texture(path), framesHor, framesVert, offset.X, offset.Y, scale.X, scale.Y)
-        {
-            
-        }
-        public Sprite(Texture texture, int framesHor, int framesVert, Vector2 offset, Vector2 scale) : this(texture, framesHor, framesVert, offset.X, offset.Y, scale.X, scale.Y)
-        {
-
-        }
-        public Sprite(string path, int framesHor, int framesVert, float offsetX, float offsetY, float scaleX, float scaleY) : this(new Texture(path), framesHor, framesVert, offsetX, offsetY, scaleX, scaleY)
-        {
-
-        }
-        public Sprite(Texture texture, int framesHor, int framesVert, float offsetX, float offsetY, float scaleX, float scaleY)
-        {
-            this.texture = texture;
             this.offsetX = offsetX;
             this.offsetY = offsetY;
             this.scaleX = scaleX;
             this.scaleY = scaleY;
-            this.framesHor = framesHor;
-            this.framesVert = framesVert;
+
+            texture = new Texture(path);
+            framesHor = (int)(texture.Width / frameWidth);
+            framesVert = (int)(texture.Height / frameHeight);
 
             Generate();
         }
