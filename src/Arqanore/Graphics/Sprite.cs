@@ -39,6 +39,14 @@ namespace Arqanore.Graphics
         {
             get { return (texture.Height / framesVert) * scaleY; }
         }
+        public int FramesHor
+        {
+            get { return framesHor; }
+        }
+        public int FramesVert
+        {
+            get { return framesVert; }
+        }
         
         public Sprite(string path, float frameWidth, float frameHeight, float offsetX, float offsetY, float scaleX, float scaleY)
         {
