@@ -13,14 +13,14 @@
     <PropertyGroup>
         <Authors>Ruben Labruyere</Authors>
         <Company>Ruben Labruyere</Company>
-        <Version>0.9.7</Version>
+        <Version>0.9.8</Version>
         <Description>Arqanore is a 2D OpenGL framework used to make video games for Linux desktop and Windows desktop. It is built on top of my other library, Arqan, and therefore makes use of the GLFW window and input system. Please makee sure you install all required dependencies!! Read the readme in the repo for more info.</Description>
         <Copyright>Copyright 2020 Ruben Labruyere</Copyright>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <RepositoryUrl>https://github.com/TheBoneJarmer/arqanore.git</RepositoryUrl>
         <PackageTags>arqanore, opengl, 2d, framework, glfw, arqan</PackageTags>
-        <AssemblyVersion>0.9.7.0</AssemblyVersion>
-        <FileVersion>0.9.7.0</FileVersion>
+        <AssemblyVersion>0.9.8.0</AssemblyVersion>
+        <FileVersion>0.9.8.0</FileVersion>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     </PropertyGroup>
 

@@ -33,11 +33,11 @@ namespace Arqanore.Graphics
         }
         public float Width
         {
-            get { return texture.Width * scaleX; }
+            get { return (texture.Width / framesHor) * scaleX; }
         }
         public float Height
         {
-            get { return texture.Height * scaleY; }
+            get { return (texture.Height / framesVert) * scaleY; }
         }
         
         public Sprite(string path, float frameWidth, float frameHeight, float offsetX, float offsetY, float scaleX, float scaleY)
