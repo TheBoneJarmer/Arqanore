@@ -39,6 +39,8 @@ Below code shows how to display a custom window using some properties.
 ```C#
 using System;
 using Arqanore;
+using Arqanore.Input;
+using Arqanore.Graphics;
 
 namespace example
 {
