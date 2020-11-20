@@ -34,20 +34,55 @@ dotnet add package Arqanore.Linux
 ```
 
 ## Usage
-Below code for showing a basic window. For more examples, please look in the 'examples' folder in the root of this repository.
+Below code shows how to display a custom window using some properties.
 
 ```C#
 using System;
-using Arqanore.Framework;
+using Arqanore;
 
 namespace example
 {
     class Program
     {
+        Sprite sprite;
+        float x;
+    
         static void Main(string[] args)
         {
             var window = new Window(800, 600, "Basic Window");
+            window.OnOpen += Window_OnOpen;
+            window.OnUpdate += Window_OnUpdate;
+            window.OnTick += Window_OnTick;
+            window.OnRender += Window_OnRender;
             window.Open();
+        }
+        
+        static void Window_OnOpen()
+        {
+            // Load assets, fonts, init data and what not
+            x = 0;   
+            sprite = new Sprite("assets/sprite.arqtex"); // Just a path I made up
+        }
+        
+        static void Window_OnUpdate()
+        {
+            // Perform basic updates, handle keyboard input or what not
+            if (KeyBoard.KeyPressed(KeyCode.ESCAPE))
+            {
+                Close();
+            }
+        }
+        
+        static void Window_OnTick(double delta)
+        {
+            // Use this method for frame-sensitive motions like movements, rotations and physics.
+            x += (float)delta;
+        }
+        
+        static void Window_OnRender()
+        {
+            // Use this method to render your stuff
+            sprite.Render(x, 32);
         }
     }
 }
