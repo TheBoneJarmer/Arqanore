@@ -112,8 +112,43 @@ namespace Arqanore.FontGenerator
                 throw new Exception("Font size must be minimum 4 points");
             }
 
-            FixPermissions();
+            ValidateRequirements();
             Generate(fontFile, fontSize, outputFolder);
+        }
+
+        static void ValidateRequirements()
+        {
+            try
+            {
+                Process prc = new Process();
+                prc.StartInfo.FileName = "fontbm";
+                prc.StartInfo.UseShellExecute = false;
+                prc.StartInfo.RedirectStandardOutput = true;
+                prc.StartInfo.RedirectStandardError = true;
+                prc.Start();
+                prc.WaitForExit();
+
+                // Fetch the output
+                string stdError = prc.StandardError.ReadToEnd();
+                string stdOutput = prc.StandardOutput.ReadToEnd();
+
+                // Check the output for errors
+                if (prc.ExitCode != 0)
+                {
+                    throw new Exception("[FONTBM] " + stdError);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "No such file or directory")
+                {
+                    throw new Exception("Unable to locate fontbm. Please make sure fontbm is accessible from the command line.");
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         static void FixPermissions()
@@ -157,7 +192,7 @@ namespace Arqanore.FontGenerator
         {
             string fontExtension = fontFile.Substring(fontFile.LastIndexOf("."));
             string fontFolder = fontFile.Substring(0, fontFile.Replace("\\", "/").LastIndexOf("/") + 1);
-            string fontName = fontFile.Replace(fontFolder, "").Replace(fontExtension, "");
+            string fontName = fontFolder.Length > 0 ? fontFile.Replace(fontFolder, "").Replace(fontExtension, "") : fontFile;
 
             if (outputFolder == null)
             {
@@ -174,12 +209,9 @@ namespace Arqanore.FontGenerator
         
         static void GenerateFontData(string fontFile, int fontSize, string fontName)
         {
-            string location = Assembly.GetExecutingAssembly().Location;
-            string folder = Path.GetDirectoryName(location);
-
             // Generate the bitmap(s) and font data with fontbmp
             Process prc = new Process();
-            prc.StartInfo.FileName = $"{folder}/fontbm";
+            prc.StartInfo.FileName = $"fontbm";
             prc.StartInfo.Arguments = $"--font-file {fontFile} --output {fontName} --font-size {fontSize}";
             prc.StartInfo.WorkingDirectory = tempFolder;
             prc.StartInfo.UseShellExecute = false;
