@@ -118,25 +118,17 @@ namespace Arqanore.FontGenerator
 
         static void ValidateRequirements()
         {
+            // Just run fontbm to check if it runs at all
+            // It will exit with a non-zero code because no arguments were provided but that is ok
             try
             {
                 Process prc = new Process();
                 prc.StartInfo.FileName = "fontbm";
                 prc.StartInfo.UseShellExecute = false;
-                prc.StartInfo.RedirectStandardOutput = true;
                 prc.StartInfo.RedirectStandardError = true;
+                prc.StartInfo.RedirectStandardOutput = true;
                 prc.Start();
                 prc.WaitForExit();
-
-                // Fetch the output
-                string stdError = prc.StandardError.ReadToEnd();
-                string stdOutput = prc.StandardOutput.ReadToEnd();
-
-                // Check the output for errors
-                if (prc.ExitCode != 0)
-                {
-                    throw new Exception("[FONTBM] " + stdError);
-                }
             }
             catch (Exception ex)
             {
