@@ -28,7 +28,7 @@ dotnet tool install Arqanore.FontGenerator.Linux
 ```
 
 ### TexGenerator
-The tex generator tool allows you to generate Arqanore texture images from bitmaps, png images, jpeg and what not. In this case whatever the System.Drawing.Bitmap supports actually. If you look at the source you may wonder why the hell I introduced this tool as I only change the file extension. And to answer that question, quite simple: Just in case. I have some futuristic plans about introducing animated sprites and having a format and a tool already present only makes it easier to do so.
+The tex generator tool allows you to generate Arqanore texture images from bitmaps, png images, jpeg and what not. In this case whatever the System.Drawing.Bitmap supports actually.
 
 ## Assets
 Arqanore does not directly read png, jpg, bmp and font files. Instead it only supports two custom formats. One for fonts and one for images. The motivation behind this decision has to do with the way font files are used to render text. Arqanore uses the tool [fontbm](https://github.com/vladimirgamalyan/fontbm), created by [Vladimir Gamalyan](https://github.com/vladimirgamalyan), to generate bitmap fonts and some data files required to render glyphs correctly. However, to keep things clean and user-friendly I figured it'd be better if I had just one file to load. So hence the font generator was introduced and the media type **Arqanore Font** was invented. And the font generator does nothing more and nothing less than merging the output of fontbm into a single file using a custom standard. On its turn, Arqanore parses that file and extracts the image data along with the font data which are than being used to generate glyphs and values for the Font class.
