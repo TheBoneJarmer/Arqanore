@@ -17,6 +17,8 @@ sudo apt-get install libc6-dev libgdiplus libx11-dev
 ```
 
 ## Tools
+> ** Important! The tools are currently not being released for 32 bit machines as I don't have 32 bit computers to build the source code with.**
+
 Along with the framework I introduced some command line tools for generating assets. I go more into detail about assets later.
 
 ### FontGenerator
