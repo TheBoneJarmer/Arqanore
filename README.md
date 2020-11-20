@@ -19,7 +19,7 @@ sudo apt-get install libc6-dev libgdiplus libx11-dev
 Along with the framework I introduced some command line tools for generating assets. I go more into detail about assets later.
 
 ### FontGenerator
-The font generator toos allows you to generate Arqanore font files (.arqfnt) from TrueType font files (.ttf) using fontbm, a very very nice tool created by [Vladimir Gamalyan](https://github.com/vladimirgamalyan/). I managed to include fontbm within the NuGet packages so you don't need to install it seperately. In fact, I prefer if you don't. The fontgenerator just starts a C# Process and picks which "fontbm" he can find on the command line. Although I am not doing crazy stuff with fontbm, it would be better if the font generator uses the fontbm that is bundled along with it.
+The font generator toos allows you to generate Arqanore font files (.arqfnt) from TrueType font files (.ttf) using the tool fontbm (more info below). I managed to include fontbm within the NuGet packages so you don't need to install it seperately. In fact, I prefer if you don't. The fontgenerator just starts a C# Process and picks which "fontbm" he can find on the command line. Although I am not doing crazy stuff with fontbm, it would be better if the font generator uses the fontbm that is bundled along with it.
 
 #### Installation
 ```
