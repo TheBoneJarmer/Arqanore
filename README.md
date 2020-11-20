@@ -7,7 +7,7 @@ Arqanore is an 2D OpenGL framework for creating desktop games for Windows and Li
 Arqanore requires dotnet core 2.1 or higher to compile.
 
 ### Arqan
-Arqanore is built on top of my other library, Arqan, which can be found at https://github.com/TheBoneJarmer/Arqan. **Please make sure you read the readme within the repo of Arqan as you will need to download and install several dependencies.**
+Arqanore is built on top of my other library, Arqan, which can be found at https://github.com/TheBoneJarmer/Arqan.
 
 ### Linux 
 Arqanore makes use of the System.Drawing package from Microsoft, this requires however several extra packages which are not required by Windows. Execute the following command to install them.
@@ -81,6 +81,9 @@ namespace example
     }
 }
 ```
+
+## Building
+Arqanore uses my other project, [Arqan](https://github.com/TheBoneJarmer/Arqan), for access to the OpenGL and GLFW methods in C#. Therefore you need to make sure you have all dependencies installed required by Arqan, otherwise **debugging** will fail. And I purposely focus on debugging here since you can actually build Arqanore, but it would crash during runtime without the required dependencies. Other than that you need _dotnet core sdk 3.1_.
 
 ## Contribution
 Feel free to send in pull requests at any time!
