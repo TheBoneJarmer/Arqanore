@@ -120,6 +120,9 @@ namespace Arqanore.FontGenerator
         {
             // Just run fontbm to check if it runs at all
             // It will exit with a non-zero code because no arguments were provided but that is ok
+            // If it does not run, the reason why is not relevant to us as it has to run or we can't continue.
+            // But if the end-user can access fontbm from the command line, so can we
+            // And if we can't, something else is wrong and the user should open up an issue
             try
             {
                 Process prc = new Process();
@@ -130,16 +133,9 @@ namespace Arqanore.FontGenerator
                 prc.Start();
                 prc.WaitForExit();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                if (ex.Message == "No such file or directory")
-                {
-                    throw new Exception("Unable to locate fontbm. Please make sure fontbm is accessible from the command line.");
-                }
-                else
-                {
-                    throw;
-                }
+                throw new Exception("Unable to run fontbm. Please make sure fontbm is accessible from the command line.");
             }
         }
 
