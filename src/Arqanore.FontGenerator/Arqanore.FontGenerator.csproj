@@ -39,12 +39,21 @@
         </Content>
     </ItemGroup>
     
-    <Target Name="FontBM" BeforeTargets="Build">       
+    <Target Name="FontBM" AfterTargets="Build">       
         <Copy SourceFiles="fontbm/linux/fontbm" DestinationFolder="$(OutDir)" Condition="'$(OS)' == 'UNIX'" />
         <Copy SourceFiles="fontbm/windows/fontbm.exe" DestinationFolder="$(OutDir)" Condition="'$(OS)' == 'Windows_NT'" />
         <Copy SourceFiles="fontbm/windows/bz2.dll" DestinationFolder="$(OutDir)" Condition="'$(OS)' == 'Windows_NT'" />
         <Copy SourceFiles="fontbm/windows/freetype.dll" DestinationFolder="$(OutDir)" Condition="'$(OS)' == 'Windows_NT'" />
         <Copy SourceFiles="fontbm/windows/libpng16.dll" DestinationFolder="$(OutDir)" Condition="'$(OS)' == 'Windows_NT'" />
         <Copy SourceFiles="fontbm/windows/zlib1.dll" DestinationFolder="$(OutDir)" Condition="'$(OS)' == 'Windows_NT'" />
+    </Target>
+
+    <Target Name="FontBM" AfterTargets="Publish">       
+        <Copy SourceFiles="fontbm/linux/fontbm" DestinationFolder="$(PublishDir)" Condition="'$(OS)' == 'UNIX'" />
+        <Copy SourceFiles="fontbm/windows/fontbm.exe" DestinationFolder="$(PublishDir)" Condition="'$(OS)' == 'Windows_NT'" />
+        <Copy SourceFiles="fontbm/windows/bz2.dll" DestinationFolder="$(PublishDir)" Condition="'$(OS)' == 'Windows_NT'" />
+        <Copy SourceFiles="fontbm/windows/freetype.dll" DestinationFolder="$(PublishDir)" Condition="'$(OS)' == 'Windows_NT'" />
+        <Copy SourceFiles="fontbm/windows/libpng16.dll" DestinationFolder="$(PublishDir)" Condition="'$(OS)' == 'Windows_NT'" />
+        <Copy SourceFiles="fontbm/windows/zlib1.dll" DestinationFolder="$(PublishDir)" Condition="'$(OS)' == 'Windows_NT'" />
     </Target>
 </Project>
