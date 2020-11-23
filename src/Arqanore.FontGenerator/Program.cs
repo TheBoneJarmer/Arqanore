@@ -14,29 +14,57 @@ namespace Arqanore.FontGenerator
     {
         static string tempFolder;
 
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             tempFolder = ".temp" + Guid.NewGuid().ToString().Replace("-", "");
             int exitCode = 0;
 
+            if (args.Length == 0)
+            {
+                Console.WriteLine("Running arqanore-fontgeneraotr with no arguments");
+                Console.WriteLine();
+            }
+            else
+            {
+                Console.Write("Running arqanore-fontgenerator with arguments \"");
+
+                for (int i=0; i<args.Length; i++)
+                {
+                    Console.Write(args[i]);
+
+                    if (i < args.Length - 1)
+                    {
+                        Console.Write(" ");
+                    }
+                }
+
+                Console.WriteLine("\"");
+                Console.WriteLine();
+            }
+
             if (args.Length == 1 && (args[0] == "-h" || args[0] == "--help"))
             {
                 DisplayHelp();
-                Environment.Exit(0);
+                return 0;
             }
             if (args.Length == 0)
             {
                 DisplayHelp();
-                Environment.Exit(0);
+                return 0;
             }
 
             try
             {
-                // Create a temp folder
+                Console.WriteLine($"Creating temp folder {tempFolder}");
                 Directory.CreateDirectory(tempFolder);
 
                 // Run the generator
                 Run(args);
+            }
+            catch (FontGeneratorException ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                exitCode = 1;
             }
             catch (Exception ex)
             {
@@ -58,6 +86,8 @@ namespace Arqanore.FontGenerator
             }
             finally
             {
+                Console.WriteLine("Cleaning up temp folder");
+
                 // Delete the temp folder
                 if (Directory.Exists(tempFolder))
                 {
@@ -65,7 +95,7 @@ namespace Arqanore.FontGenerator
                 }
             }
 
-            Environment.Exit(exitCode);
+            return exitCode;
         }
 
         static void Run(string[] args)
@@ -73,43 +103,60 @@ namespace Arqanore.FontGenerator
             string fontFile = null;
             int fontSize = 0;
             string outputFolder = null;
+            OperatingSystem os = Environment.OSVersion;
 
             // Fetch data from the args
-            for (var i = 0; i < args.Length; i++)
+            try
             {
-                var arg = args[i];
+                for (var i = 0; i < args.Length; i++)
+                {
+                    var arg = args[i];
 
-                if (arg == "-f")
-                {
-                    fontFile = args[i + 1];
-                    i++;
+                    if (arg == "-f")
+                    {
+                        fontFile = args[i + 1];
+                        i++;
+                    }
+                    if (arg == "-s")
+                    {
+                        fontSize = int.Parse(args[i + 1]);
+                        i++;
+                    }
+                    if(arg == "-o")
+                    {
+                        outputFolder = args[i + 1];
+                        i++;
+                    }
                 }
-                if (arg == "-s")
-                {
-                    fontSize = int.Parse(args[i + 1]);
-                    i++;
-                }
-                if(arg == "-o")
-                {
-                    outputFolder = args[i + 1];
-                    i++;
-                }
+            }
+            catch (Exception)
+            {
+                throw new FontGeneratorException("Invalid arguments provided");
             }
 
             // Check if the user provided all info
             if (fontFile == null || fontSize == 0)
             {
-                throw new Exception("Missing required parameters");
+                throw new FontGeneratorException("Missing required arguments");
             }
 
             // Validate the input
             if (!File.Exists(fontFile))
             {
-                throw new Exception($"Unable to find file {fontFile}");
+                throw new FontGeneratorException($"Unable to find file {fontFile}");
             }
             if (fontSize < 4)
             {
-                throw new Exception("Font size must be minimum 4 points");
+                throw new FontGeneratorException("Font size must be minimum 4 points");
+            }
+            
+            if (os.Platform == PlatformID.Win32NT && !Regex.IsMatch(fontFile, @"[A-Z]\:.*"))
+            {
+                throw new FontGeneratorException("Filename is not absolute");
+            }
+            if (os.Platform == PlatformID.Unix && !Regex.IsMatch(fontFile, @"/.*"))
+            {
+                throw new FontGeneratorException("Filename is not absolute");
             }
 
             ValidateRequirements();
@@ -118,6 +165,8 @@ namespace Arqanore.FontGenerator
 
         static void ValidateRequirements()
         {
+            Console.WriteLine("Validating requirements");
+
             // Just run fontbm to check if it runs at all
             // It will exit with a non-zero code because no arguments were provided but that is ok
             // If it does not run, the reason why is not relevant to us as it has to run or we can't continue.
@@ -125,6 +174,8 @@ namespace Arqanore.FontGenerator
             // And if we can't, something else is wrong and the user should open up an issue
             try
             {
+                Console.Write("Checking accessibility fontbm: ");
+
                 Process prc = new Process();
                 prc.StartInfo.FileName = "fontbm";
                 prc.StartInfo.UseShellExecute = false;
@@ -132,48 +183,29 @@ namespace Arqanore.FontGenerator
                 prc.StartInfo.RedirectStandardOutput = true;
                 prc.Start();
                 prc.WaitForExit();
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("[");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("TRUE");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("]");
+                Console.WriteLine();
             }
             catch (Exception)
             {
-                throw new Exception("Unable to run fontbm. Please make sure fontbm is accessible from the command line.");
-            }
-        }
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("[");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("FALSE");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("]");
+                Console.WriteLine();
 
-        static void FixPermissions()
-        {
-            string location = Assembly.GetExecutingAssembly().Location;
-            string folder = Path.GetDirectoryName(location);
-
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-            {
-                return;
-            }
-            if (File.Exists($"{folder}/.fixedpermissions"))
-            {
-                return;
+                throw new FontGeneratorException("Fontbm does not seem to be accessible from command line. Please make sure the executable has the correct permissions and that the PATH variable contains the folder where arqanore-fontgenerator is located.");
             }
 
-            Process prc = new Process();
-            prc.StartInfo.FileName = "chmod";
-            prc.StartInfo.Arguments = "+x fontbm";
-            prc.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory();
-            prc.StartInfo.UseShellExecute = false;
-            prc.StartInfo.RedirectStandardOutput = true;
-            prc.StartInfo.RedirectStandardError = true;
-            prc.Start();
-            prc.WaitForExit();
-
-            // Fetch the output
-            string stdError = prc.StandardError.ReadToEnd();
-            string stdOutput = prc.StandardOutput.ReadToEnd();
-
-            // Check the output for errors
-            if (prc.ExitCode != 0)
-            {
-                throw new Exception("[CHMOD] " + stdError);
-            }
-            
-            File.Create($"{folder}/.fixedpermissions");
+            Console.WriteLine();
         }
 
         static void Generate(string fontFile, int fontSize, string outputFolder)
@@ -181,6 +213,8 @@ namespace Arqanore.FontGenerator
             string fontExtension = fontFile.Substring(fontFile.LastIndexOf("."));
             string fontFolder = fontFile.Substring(0, fontFile.Replace("\\", "/").LastIndexOf("/") + 1);
             string fontName = fontFolder.Length > 0 ? fontFile.Replace(fontFolder, "").Replace(fontExtension, "") : fontFile;
+
+            Console.WriteLine($"Generating arqanore font from fontfile {fontFile} with size {fontSize}");
 
             if (outputFolder == null)
             {
@@ -197,10 +231,13 @@ namespace Arqanore.FontGenerator
         
         static void GenerateFontData(string fontFile, int fontSize, string fontName)
         {
+            string args = $"--font-file {fontFile} --output {fontName} --font-size {fontSize}";
+            Console.WriteLine($"Executing fontbm with arguments {args}");
+
             // Generate the bitmap(s) and font data with fontbmp
             Process prc = new Process();
-            prc.StartInfo.FileName = $"fontbm";
-            prc.StartInfo.Arguments = $"--font-file {fontFile} --output {fontName} --font-size {fontSize}";
+            prc.StartInfo.FileName = "fontbm";
+            prc.StartInfo.Arguments = args;
             prc.StartInfo.WorkingDirectory = tempFolder;
             prc.StartInfo.UseShellExecute = false;
             prc.StartInfo.RedirectStandardOutput = true;
@@ -215,12 +252,14 @@ namespace Arqanore.FontGenerator
             // Check the output for errors
             if (prc.ExitCode != 0)
             {
-                throw new Exception("[FONTBM] " + stdError);
+                throw new FontGeneratorException($"fontbm exited with non-zero code {prc.ExitCode}: {stdError}");
             }
         }
 
         static void GenerateFontFile(string fontFolder, string fontName)
         {
+            Console.WriteLine($"Merging fontbm output to {fontName}.arqfnt");
+
             var result = new List<byte>();
             var bitmapBytes = GenerateBitmapBytes(fontName);
             var dataBytes = GenerateDataBytes(fontName);
@@ -369,9 +408,9 @@ namespace Arqanore.FontGenerator
             Console.Write(" in a format is being used by the Arqanore framework.\n");
             Console.WriteLine();
             Console.WriteLine("ARGUMENTS");
-            Console.WriteLine("-f      Name of the font file with extension");
+            Console.WriteLine("-f      Absolute path to the font file");
             Console.WriteLine("-s      Font size as integer. Cannot be lower than 4.");
-            Console.WriteLine("-o      [optional] Output folder of the generated font files. If not provided the working folder will be used.");
+            Console.WriteLine("-o      [optional] Output folder of the generated font file. If not provided the working folder will be used.");
         }
     }
 }
