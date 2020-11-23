@@ -21,7 +21,7 @@ namespace Arqanore.FontGenerator
 
             if (args.Length == 0)
             {
-                Console.WriteLine("Running arqanore-fontgeneraotr with no arguments");
+                Console.WriteLine("Running arqanore-fontgenerator with no arguments");
                 Console.WriteLine();
             }
             else

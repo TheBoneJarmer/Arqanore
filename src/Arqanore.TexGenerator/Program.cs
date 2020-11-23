@@ -12,7 +12,7 @@ namespace Arqanore.TexGenerator
 
             if (args.Length == 0)
             {
-                Console.WriteLine("Running arqanore-texgeneraotr with no arguments");
+                Console.WriteLine("Running arqanore-texgenerator with no arguments");
                 //Console.WriteLine();
             }
             else
