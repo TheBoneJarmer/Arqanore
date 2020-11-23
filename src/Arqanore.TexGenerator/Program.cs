@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace Arqanore.TexGenerator
@@ -10,32 +12,17 @@ namespace Arqanore.TexGenerator
         {
             int exitCode = 0;
 
-            if (args.Length == 0)
-            {
-                Console.WriteLine("Running arqanore-texgenerator with no arguments");
-                //Console.WriteLine();
-            }
-            else
-            {
-                Console.Write("Running arqanore-texgenerator with arguments \"");
-
-                for (int i=0; i<args.Length; i++)
-                {
-                    Console.Write(args[i]);
-
-                    if (i < args.Length - 1)
-                    {
-                        Console.Write(" ");
-                    }
-                }
-
-                Console.WriteLine("\"");
-                //Console.WriteLine();
-            }
-
             if (args.Length == 1 && (args[0] == "-h" || args[0] == "--help"))
             {
                 DisplayHelp();
+                return 0;
+            }
+            if (args.Length == 1 && (args[0] == "-v" || args[0] == "--version"))
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                FileVersionInfo info = FileVersionInfo.GetVersionInfo(assembly.Location);
+
+                Console.WriteLine(info.ProductVersion);
                 return 0;
             }
             if (args.Length == 0)

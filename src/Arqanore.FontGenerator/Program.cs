@@ -19,32 +19,17 @@ namespace Arqanore.FontGenerator
             tempFolder = ".temp" + Guid.NewGuid().ToString().Replace("-", "");
             int exitCode = 0;
 
-            if (args.Length == 0)
-            {
-                Console.WriteLine("Running arqanore-fontgenerator with no arguments");
-                Console.WriteLine();
-            }
-            else
-            {
-                Console.Write("Running arqanore-fontgenerator with arguments \"");
-
-                for (int i=0; i<args.Length; i++)
-                {
-                    Console.Write(args[i]);
-
-                    if (i < args.Length - 1)
-                    {
-                        Console.Write(" ");
-                    }
-                }
-
-                Console.WriteLine("\"");
-                Console.WriteLine();
-            }
-
             if (args.Length == 1 && (args[0] == "-h" || args[0] == "--help"))
             {
                 DisplayHelp();
+                return 0;
+            }
+            if (args.Length == 1 && (args[0] == "-v" || args[0] == "--version"))
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                FileVersionInfo info = FileVersionInfo.GetVersionInfo(assembly.Location);
+
+                Console.WriteLine(info.ProductVersion);
                 return 0;
             }
             if (args.Length == 0)
