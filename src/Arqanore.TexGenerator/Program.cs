@@ -154,7 +154,7 @@ namespace Arqanore.TexGenerator
             Console.WriteLine("Usage: arqanore-texgenerator -f <FILENAME> -o <OUTPUT_FOLDER>");
             Console.WriteLine();
             Console.WriteLine("ABOUT");
-            Console.WriteLine("This tool generates an a texture file from a png, jpg, or bmp file");
+            Console.WriteLine("This tool generates an Arqanore texture file from a png, jpg, or bmp image file");
             Console.WriteLine();
             Console.WriteLine("ARGUMENTS");
             Console.WriteLine("-f    Absolute path to the image file");

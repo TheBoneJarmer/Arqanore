@@ -400,13 +400,11 @@ namespace Arqanore.FontGenerator
 
         static void DisplayHelp()
         {
-            Console.WriteLine("Usage: font-generator -f <FILENAME> -s <SIZE>");
+            Console.WriteLine("Usage: arqanore-fontgenerator -f <FILENAME> -s <SIZE>");
             Console.WriteLine();
             Console.WriteLine("ABOUT");
-            Console.Write("This tool generates an font file which can be used by the Arqanore framework.");
-            Console.Write(" This tool uses the application fontbm to generate the bitmaps and font data and 'packs' that data into a single file");
-            Console.Write(" in a format is being used by the Arqanore framework.\n");
-            Console.WriteLine();
+            Console.WriteLine("This tool generates Arqanore font files from TrueType font files using fontbm");
+	    Console.WriteLine();
             Console.WriteLine("ARGUMENTS");
             Console.WriteLine("-f      Absolute path to the font file");
             Console.WriteLine("-s      Font size as integer. Cannot be lower than 4.");
