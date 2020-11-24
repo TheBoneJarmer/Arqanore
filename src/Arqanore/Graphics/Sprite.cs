@@ -79,9 +79,9 @@ namespace Arqanore.Graphics
             List<float> totalVertices = new List<float>();
             List<float> totalTexCoords = new List<float>();
 
-            for (int frameHor = 0; frameHor < framesHor; frameHor++)
+            for (int frameVert = 0; frameVert < framesVert; frameVert++)
             {
-                for (int frameVert = 0; frameVert < framesVert; frameVert++)
+                for (int frameHor = 0; frameHor < framesHor; frameHor++)
                 {
                     float width = (texture.Width * scaleX) / framesHor;
                     float height = (texture.Height * scaleY) / framesVert;
@@ -223,7 +223,8 @@ namespace Arqanore.Graphics
         }
         public void Render(float x, float y, int frameHor, int frameVert, float angle, int r, int g, int b, int a)
         {
-            int frameIndex = (frameVert * framesHor) + frameHor;
+            //int frameIndex = (framesVert * frameHor) + frameVert;
+            int frameIndex = (framesHor * frameVert) + frameHor;
             double cos = System.Math.Cos(MathHelper.ToRadians(angle + 90));
             double sin = System.Math.Sin(MathHelper.ToRadians(angle + 90));
 
