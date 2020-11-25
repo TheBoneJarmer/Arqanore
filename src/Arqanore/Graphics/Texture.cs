@@ -59,17 +59,17 @@ namespace Arqanore.Graphics
             Bitmap = bmp;
 
             // Generate 2D texture
-            GL11.glGenTextures(1, ids);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ids[0]);
-            GL10.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
-            GL10.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
-            GL10.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-            GL10.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-            GL10.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, bmp.Width, bmp.Height, 0, GL12.GL_BGRA, GL11.GL_UNSIGNED_BYTE, data.Scan0);
+            GL.glGenTextures(1, ids);
+            GL.glBindTexture(GL.GL_TEXTURE_2D, ids[0]);
+            GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP_TO_EDGE);
+            GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP_TO_EDGE);
+            GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+            GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+            GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, bmp.Width, bmp.Height, 0, GL.GL_BGRA, GL.GL_UNSIGNED_BYTE, data.Scan0);
 
             // Cleanup
             bmp.UnlockBits(data);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+            GL.glBindTexture(GL.GL_TEXTURE_2D, 0);
 
             // Finish
             Id = ids[0];

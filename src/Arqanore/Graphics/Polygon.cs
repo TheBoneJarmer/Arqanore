@@ -23,15 +23,15 @@ namespace Arqanore.Graphics
         private void GenerateVBO(float[] vertices)
         {
             uint[] buffers = new uint[1];
-            GL15.glGenBuffers(1, buffers);
+            GL.glGenBuffers(1, buffers);
             buffer = buffers[0];
 
-            uint positionAttribLocation = GL20.glGetAttribLocation(shader.Id, "aposition");
+            uint positionAttribLocation = GL.glGetAttribLocation(shader.Id, "aposition");
 
-            GL20.glEnableVertexAttribArray(positionAttribLocation);
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices.Length * 4, vertices, GL15.GL_STATIC_DRAW);
-            GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
+            GL.glEnableVertexAttribArray(positionAttribLocation);
+            GL.glBindBuffer(GL.GL_ARRAY_BUFFER, buffer);
+            GL.glBufferData(GL.GL_ARRAY_BUFFER, vertices.Length * 4, vertices, GL.GL_STATIC_DRAW);
+            GL.glVertexAttribPointer(positionAttribLocation, 2, GL.GL_FLOAT, false, 0, IntPtr.Zero);
         }
 
         private void GenerateShader()
@@ -68,28 +68,28 @@ namespace Arqanore.Graphics
             double cos = System.Math.Cos(MathHelper.ToRadians(angle + 90));
             double sin = System.Math.Sin(MathHelper.ToRadians(angle + 90));
 
-            uint positionAttribLocation = GL20.glGetAttribLocation(shader.Id, "aposition");
-            uint rotationUniformLocation = GL20.glGetUniformLocation(shader.Id, "urotation");
-            uint translationUniformLocation = GL20.glGetUniformLocation(shader.Id, "utranslation");
-            uint resolutionUniformLocation = GL20.glGetUniformLocation(shader.Id, "uresolution");
-            uint colorUniformLocation = GL20.glGetUniformLocation(shader.Id, "ucolor");
+            uint positionAttribLocation = GL.glGetAttribLocation(shader.Id, "aposition");
+            uint rotationUniformLocation = GL.glGetUniformLocation(shader.Id, "urotation");
+            uint translationUniformLocation = GL.glGetUniformLocation(shader.Id, "utranslation");
+            uint resolutionUniformLocation = GL.glGetUniformLocation(shader.Id, "uresolution");
+            uint colorUniformLocation = GL.glGetUniformLocation(shader.Id, "ucolor");
 
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
-            GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-            GL20.glUseProgram(shader.Id);
-            GL20.glUniform2f(translationUniformLocation, x, y);
-            GL20.glUniform2f(rotationUniformLocation, (float)cos, (float)sin);
-            GL20.glUniform2f(resolutionUniformLocation, Window.Current.Width, Window.Current.Height);
-            GL20.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+            GL.glBindBuffer(GL.GL_ARRAY_BUFFER, buffer);
+            GL.glVertexAttribPointer(positionAttribLocation, 2, GL.GL_FLOAT, false, 0, IntPtr.Zero);
+            GL.glBindTexture(GL.GL_TEXTURE_2D, 0);
+            GL.glUseProgram(shader.Id);
+            GL.glUniform2f(translationUniformLocation, x, y);
+            GL.glUniform2f(rotationUniformLocation, (float)cos, (float)sin);
+            GL.glUniform2f(resolutionUniformLocation, Window.Current.Width, Window.Current.Height);
+            GL.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
-            if (polygonMode == PolygonMode.Filled) GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_FILL);
-            if (polygonMode == PolygonMode.Lines) GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_LINE);
-            if (polygonMode == PolygonMode.Points) GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_POINT);
+            if (polygonMode == PolygonMode.Filled) GL.glPolygonMode(GL.GL_FRONT, GL.GL_FILL);
+            if (polygonMode == PolygonMode.Lines) GL.glPolygonMode(GL.GL_FRONT, GL.GL_LINE);
+            if (polygonMode == PolygonMode.Points) GL.glPolygonMode(GL.GL_FRONT, GL.GL_POINT);
 
-            if (drawMode == DrawMode.Polygon) GL11.glDrawArrays(GL11.GL_POLYGON, 0, vertices.Length / 2);
-            if (drawMode == DrawMode.Lines) GL11.glDrawArrays(GL11.GL_LINES, 0, vertices.Length / 2);
-            if (drawMode == DrawMode.Points) GL11.glDrawArrays(GL11.GL_POINTS, 0, vertices.Length / 2);
+            if (drawMode == DrawMode.Polygon) GL.glDrawArrays(GL.GL_POLYGON, 0, vertices.Length / 2);
+            if (drawMode == DrawMode.Lines) GL.glDrawArrays(GL.GL_LINES, 0, vertices.Length / 2);
+            if (drawMode == DrawMode.Points) GL.glDrawArrays(GL.GL_POINTS, 0, vertices.Length / 2);
         }
 
         /* SHAPES */

@@ -27,7 +27,7 @@ namespace Arqanore
         internal static void Init(Window gameWindow)
         {
             uint[] buffers = new uint[2];
-            GL15.glGenBuffers(2, buffers);
+            GL.glGenBuffers(2, buffers);
 
             Draw.vbuffer = buffers[0];
             Draw.tcbuffer = buffers[1];
@@ -136,29 +136,29 @@ namespace Arqanore
         [Obsolete("Please us the Polygon class")]
         public static void Line(float x1, float y1, float x2, float y2, int r, int g, int b, int a)
         {
-            var positionAttribLocation = GL20.glGetAttribLocation(Shaders.Default.Id, "aposition");
-            var rotationUniformLocation = GL20.glGetUniformLocation(Shaders.Default.Id, "urotation");
-            var scaleUniformLocation = GL20.glGetUniformLocation(Shaders.Default.Id, "uscale");
-            var translationUniformLocation = GL20.glGetUniformLocation(Shaders.Default.Id, "utranslation");
-            var resolutionUniformLocation = GL20.glGetUniformLocation(Shaders.Default.Id, "uresolution");
-            var colorUniformLocation = GL20.glGetUniformLocation(Shaders.Default.Id, "ucolor");
+            var positionAttribLocation = GL.glGetAttribLocation(Shaders.Default.Id, "aposition");
+            var rotationUniformLocation = GL.glGetUniformLocation(Shaders.Default.Id, "urotation");
+            var scaleUniformLocation = GL.glGetUniformLocation(Shaders.Default.Id, "uscale");
+            var translationUniformLocation = GL.glGetUniformLocation(Shaders.Default.Id, "utranslation");
+            var resolutionUniformLocation = GL.glGetUniformLocation(Shaders.Default.Id, "uresolution");
+            var colorUniformLocation = GL.glGetUniformLocation(Shaders.Default.Id, "ucolor");
 
-            GL20.glEnableVertexAttribArray(positionAttribLocation);
+            GL.glEnableVertexAttribArray(positionAttribLocation);
 
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, 16, new float[4] { x1, y1, x2, y2 }, GL15.GL_STATIC_DRAW);
-            GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
+            GL.glBindBuffer(GL.GL_ARRAY_BUFFER, vbuffer);
+            GL.glBufferData(GL.GL_ARRAY_BUFFER, 16, new float[4] { x1, y1, x2, y2 }, GL.GL_STATIC_DRAW);
+            GL.glVertexAttribPointer(positionAttribLocation, 2, GL.GL_FLOAT, false, 0, IntPtr.Zero);
 
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-            GL20.glUseProgram(Shaders.Default.Id);
+            GL.glBindTexture(GL.GL_TEXTURE_2D, 0);
+            GL.glUseProgram(Shaders.Default.Id);
 
-            GL20.glUniform2f(translationUniformLocation, 0, 0);
-            GL20.glUniform2f(rotationUniformLocation, 0, 1);
-            GL20.glUniform2f(scaleUniformLocation, 1.0f, 1.0f);
-            GL20.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
-            GL20.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+            GL.glUniform2f(translationUniformLocation, 0, 0);
+            GL.glUniform2f(rotationUniformLocation, 0, 1);
+            GL.glUniform2f(scaleUniformLocation, 1.0f, 1.0f);
+            GL.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
+            GL.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
-            GL11.glDrawArrays(GL11.GL_LINES, 0, 8);
+            GL.glDrawArrays(GL.GL_LINES, 0, 8);
         }
 
         [Obsolete("Please us the Polygon class")]
@@ -167,46 +167,46 @@ namespace Arqanore
             var cos = System.Math.Cos(MathHelper.ToRadians(angle + 90));
             var sin = System.Math.Sin(MathHelper.ToRadians(angle + 90));
 
-            var positionAttribLocation = GL20.glGetAttribLocation(Shaders.Default.Id, "aposition");
-            var rotationUniformLocation = GL20.glGetUniformLocation(Shaders.Default.Id, "urotation");
-            var scaleUniformLocation = GL20.glGetUniformLocation(Shaders.Default.Id, "uscale");
-            var translationUniformLocation = GL20.glGetUniformLocation(Shaders.Default.Id, "utranslation");
-            var resolutionUniformLocation = GL20.glGetUniformLocation(Shaders.Default.Id, "uresolution");
-            var colorUniformLocation = GL20.glGetUniformLocation(Shaders.Default.Id, "ucolor");
+            var positionAttribLocation = GL.glGetAttribLocation(Shaders.Default.Id, "aposition");
+            var rotationUniformLocation = GL.glGetUniformLocation(Shaders.Default.Id, "urotation");
+            var scaleUniformLocation = GL.glGetUniformLocation(Shaders.Default.Id, "uscale");
+            var translationUniformLocation = GL.glGetUniformLocation(Shaders.Default.Id, "utranslation");
+            var resolutionUniformLocation = GL.glGetUniformLocation(Shaders.Default.Id, "uresolution");
+            var colorUniformLocation = GL.glGetUniformLocation(Shaders.Default.Id, "ucolor");
 
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices.Length * 4, vertices, GL15.GL_STATIC_DRAW);
+            GL.glBindBuffer(GL.GL_ARRAY_BUFFER, vbuffer);
+            GL.glBufferData(GL.GL_ARRAY_BUFFER, vertices.Length * 4, vertices, GL.GL_STATIC_DRAW);
 
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-            GL20.glUseProgram(Shaders.Default.Id);
+            GL.glBindTexture(GL.GL_TEXTURE_2D, 0);
+            GL.glUseProgram(Shaders.Default.Id);
 
-            GL20.glEnableVertexAttribArray(positionAttribLocation);
+            GL.glEnableVertexAttribArray(positionAttribLocation);
 
-            GL20.glUniform2f(translationUniformLocation, x, y);
-            GL20.glUniform2f(rotationUniformLocation, (float)cos, (float)sin);
-            GL20.glUniform2f(scaleUniformLocation, 1.0f, 1.0f);
-            GL20.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
-            GL20.glUniform4f(colorUniformLocation, (float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f, (float)a / 255.0f);
+            GL.glUniform2f(translationUniformLocation, x, y);
+            GL.glUniform2f(rotationUniformLocation, (float)cos, (float)sin);
+            GL.glUniform2f(scaleUniformLocation, 1.0f, 1.0f);
+            GL.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
+            GL.glUniform4f(colorUniformLocation, (float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f, (float)a / 255.0f);
 
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
-            GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
+            GL.glBindBuffer(GL.GL_ARRAY_BUFFER, vbuffer);
+            GL.glVertexAttribPointer(positionAttribLocation, 2, GL.GL_FLOAT, false, 0, IntPtr.Zero);
 
             if (fillMode == PolygonMode.Filled)
             {
-                GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_FILL);
+                GL.glPolygonMode(GL.GL_FRONT, GL.GL_FILL);
             }
 
             if (fillMode == PolygonMode.Lines)
             {
-                GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_LINE);
+                GL.glPolygonMode(GL.GL_FRONT, GL.GL_LINE);
             }
 
             if (fillMode == PolygonMode.Points)
             {
-                GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_POINT);
+                GL.glPolygonMode(GL.GL_FRONT, GL.GL_POINT);
             }
 
-            GL11.glDrawArrays(GL11.GL_POLYGON, 0, vertices.Length / 2);
+            GL.glDrawArrays(GL.GL_POLYGON, 0, vertices.Length / 2);
         }
 
         [Obsolete("Please use the Sprite class")]
@@ -239,38 +239,38 @@ namespace Arqanore
                 tcX + tcWidth, tcY + tcHeight
             };
 
-            var positionAttribLocation = GL20.glGetAttribLocation(Shaders.Image.Id, "aposition");
-            var texcoordAttribLocation = GL20.glGetAttribLocation(Shaders.Image.Id, "atexcoord");
-            var rotationUniformLocation = GL20.glGetUniformLocation(Shaders.Image.Id, "urotation");
-            var translationUniformLocation = GL20.glGetUniformLocation(Shaders.Image.Id, "utranslation");
-            var resolutionUniformLocation = GL20.glGetUniformLocation(Shaders.Image.Id, "uresolution");
-            var colorUniformLocation = GL20.glGetUniformLocation(Shaders.Image.Id, "ucolor");
+            var positionAttribLocation = GL.glGetAttribLocation(Shaders.Image.Id, "aposition");
+            var texcoordAttribLocation = GL.glGetAttribLocation(Shaders.Image.Id, "atexcoord");
+            var rotationUniformLocation = GL.glGetUniformLocation(Shaders.Image.Id, "urotation");
+            var translationUniformLocation = GL.glGetUniformLocation(Shaders.Image.Id, "utranslation");
+            var resolutionUniformLocation = GL.glGetUniformLocation(Shaders.Image.Id, "uresolution");
+            var colorUniformLocation = GL.glGetUniformLocation(Shaders.Image.Id, "ucolor");
 
-            GL20.glEnableVertexAttribArray(positionAttribLocation);
-            GL20.glEnableVertexAttribArray(texcoordAttribLocation);
+            GL.glEnableVertexAttribArray(positionAttribLocation);
+            GL.glEnableVertexAttribArray(texcoordAttribLocation);
 
             // Bind the VBO's for vertices and texcoords and update them
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices.Length * 4, vertices, GL15.GL_STATIC_DRAW);
-            GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
+            GL.glBindBuffer(GL.GL_ARRAY_BUFFER, vbuffer);
+            GL.glBufferData(GL.GL_ARRAY_BUFFER, vertices.Length * 4, vertices, GL.GL_STATIC_DRAW);
+            GL.glVertexAttribPointer(positionAttribLocation, 2, GL.GL_FLOAT, false, 0, IntPtr.Zero);
 
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, tcbuffer);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, texcoords.Length * 4, texcoords, GL15.GL_STATIC_DRAW);
-            GL20.glVertexAttribPointer(texcoordAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
+            GL.glBindBuffer(GL.GL_ARRAY_BUFFER, tcbuffer);
+            GL.glBufferData(GL.GL_ARRAY_BUFFER, texcoords.Length * 4, texcoords, GL.GL_STATIC_DRAW);
+            GL.glVertexAttribPointer(texcoordAttribLocation, 2, GL.GL_FLOAT, false, 0, IntPtr.Zero);
 
             // Bind our texture and our shader
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, image.Id);
-            GL20.glUseProgram(Shaders.Image.Id);
+            GL.glBindTexture(GL.GL_TEXTURE_2D, image.Id);
+            GL.glUseProgram(Shaders.Image.Id);
 
             // Set some shader values
-            GL20.glUniform2f(translationUniformLocation, x, y);
-            GL20.glUniform2f(rotationUniformLocation, (float)cos, (float)sin);
-            GL20.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
-            GL20.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+            GL.glUniform2f(translationUniformLocation, x, y);
+            GL.glUniform2f(rotationUniformLocation, (float)cos, (float)sin);
+            GL.glUniform2f(resolutionUniformLocation, gameWindow.Width, gameWindow.Height);
+            GL.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
             // Draw the texture
-            GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_FILL);
-            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices.Length / 2);
+            GL.glPolygonMode(GL.GL_FRONT, GL.GL_FILL);
+            GL.glDrawArrays(GL.GL_TRIANGLES, 0, vertices.Length / 2);
         }
 
         [Obsolete("Please use Font.RenderText instead")]

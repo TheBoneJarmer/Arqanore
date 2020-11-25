@@ -40,7 +40,7 @@ namespace Arqanore.Graphics
         private void GenerateBuffers()
         {
             uint[] buffers = new uint[2];
-            GL15.glGenBuffers(2, buffers);
+            GL.glGenBuffers(2, buffers);
             vbuffer = buffers[0];
             tcbuffer = buffers[1];
 
@@ -80,19 +80,19 @@ namespace Arqanore.Graphics
                 totalTexCoords.AddRange(texcoords);
             }
 
-            uint positionAttribLocation = GL20.glGetAttribLocation(shader.Id, "aposition");
-            uint texcoordAttribLocation = GL20.glGetAttribLocation(shader.Id, "atexcoord");
+            uint positionAttribLocation = GL.glGetAttribLocation(shader.Id, "aposition");
+            uint texcoordAttribLocation = GL.glGetAttribLocation(shader.Id, "atexcoord");
 
-            GL20.glEnableVertexAttribArray(positionAttribLocation);
-            GL20.glEnableVertexAttribArray(texcoordAttribLocation);
+            GL.glEnableVertexAttribArray(positionAttribLocation);
+            GL.glEnableVertexAttribArray(texcoordAttribLocation);
 
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, totalVertices.Count * 4, totalVertices.ToArray(), GL15.GL_STATIC_DRAW);
-            GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
+            GL.glBindBuffer(GL.GL_ARRAY_BUFFER, vbuffer);
+            GL.glBufferData(GL.GL_ARRAY_BUFFER, totalVertices.Count * 4, totalVertices.ToArray(), GL.GL_STATIC_DRAW);
+            GL.glVertexAttribPointer(positionAttribLocation, 2, GL.GL_FLOAT, false, 0, IntPtr.Zero);
 
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, tcbuffer);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, totalTexCoords.Count * 4, totalTexCoords.ToArray(), GL15.GL_STATIC_DRAW);
-            GL20.glVertexAttribPointer(texcoordAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
+            GL.glBindBuffer(GL.GL_ARRAY_BUFFER, tcbuffer);
+            GL.glBufferData(GL.GL_ARRAY_BUFFER, totalTexCoords.Count * 4, totalTexCoords.ToArray(), GL.GL_STATIC_DRAW);
+            GL.glVertexAttribPointer(texcoordAttribLocation, 2, GL.GL_FLOAT, false, 0, IntPtr.Zero);
         }
         private void GenerateShader()
         {
@@ -206,30 +206,30 @@ namespace Arqanore.Graphics
         {
             int index = glyphs.IndexOf(glyph);
 
-            uint positionAttribLocation = GL20.glGetAttribLocation(shader.Id, "aposition");
-            uint texcoordAttribLocation = GL20.glGetAttribLocation(shader.Id, "atexcoord");
-            uint translationUniformLocation = GL20.glGetUniformLocation(shader.Id, "utranslation");
-            uint resolutionUniformLocation = GL20.glGetUniformLocation(shader.Id, "uresolution");
-            uint colorUniformLocation = GL20.glGetUniformLocation(shader.Id, "ucolor");
+            uint positionAttribLocation = GL.glGetAttribLocation(shader.Id, "aposition");
+            uint texcoordAttribLocation = GL.glGetAttribLocation(shader.Id, "atexcoord");
+            uint translationUniformLocation = GL.glGetUniformLocation(shader.Id, "utranslation");
+            uint resolutionUniformLocation = GL.glGetUniformLocation(shader.Id, "uresolution");
+            uint colorUniformLocation = GL.glGetUniformLocation(shader.Id, "ucolor");
 
-            GL20.glUseProgram(shader.Id);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, textures[glyph.Page].Id);
+            GL.glUseProgram(shader.Id);
+            GL.glBindTexture(GL.GL_TEXTURE_2D, textures[glyph.Page].Id);
 
-            GL20.glUniform2f(translationUniformLocation, x, y);
-            GL20.glUniform2f(resolutionUniformLocation, Window.Current.Width, Window.Current.Height);
-            GL20.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+            GL.glUniform2f(translationUniformLocation, x, y);
+            GL.glUniform2f(resolutionUniformLocation, Window.Current.Width, Window.Current.Height);
+            GL.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbuffer);
-            GL20.glVertexAttribPointer(positionAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
+            GL.glBindBuffer(GL.GL_ARRAY_BUFFER, vbuffer);
+            GL.glVertexAttribPointer(positionAttribLocation, 2, GL.GL_FLOAT, false, 0, IntPtr.Zero);
 
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, tcbuffer);
-            GL20.glVertexAttribPointer(texcoordAttribLocation, 2, GL11.GL_FLOAT, false, 0, IntPtr.Zero);
+            GL.glBindBuffer(GL.GL_ARRAY_BUFFER, tcbuffer);
+            GL.glVertexAttribPointer(texcoordAttribLocation, 2, GL.GL_FLOAT, false, 0, IntPtr.Zero);
 
-            GL10.glPolygonMode(GL11.GL_FRONT, GL11.GL_FILL);
-            GL11.glDrawArrays(GL11.GL_TRIANGLES, index * 6, 6);
+            GL.glPolygonMode(GL.GL_FRONT, GL.GL_FILL);
+            GL.glDrawArrays(GL.GL_TRIANGLES, index * 6, 6);
 
-            GL20.glUseProgram(0);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+            GL.glUseProgram(0);
+            GL.glBindTexture(GL.GL_TEXTURE_2D, 0);
         }
         public int MeasureText(string text)
         {
