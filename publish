@@ -1,0 +1,5 @@
+#!/bin/bash
+
+rm -r out/ &> /dev/null
+dotnet publish -c Release -r linux-x64 -o out/fontgenerator/ src/Arqanore.FontGenerator/*.csproj
+dotnet publish -c Release -r linux-x64 -o out/texgenerator/ src/Arqanore.TexGenerator/*.csproj
