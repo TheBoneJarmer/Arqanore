@@ -246,8 +246,8 @@ namespace Arqanore
 
             if (state != WindowState.Closed)
             {
-                OnClose?.Invoke();
                 state = WindowState.Closed;
+                OnClose?.Invoke();
             }
 
             GLFW.glfwDestroyWindow(Handle);
