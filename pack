@@ -1,0 +1,5 @@
+#!/bin/bash
+
+rm *.nupkg &> /dev/null
+echo "Building package"
+dotnet pack -c Release -o . src/Arqanore/*.csproj 1> /dev/null
