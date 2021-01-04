@@ -23,6 +23,7 @@ namespace Arqanore
         private GLFW.GLFWwindowrefreshfun glfwWindowRefreshFunction;
         private GLFW.GLFWcursorposfun glfwCursorPosFunction;
         private GLFW.GLFWmousebuttonfun glfwMouseButtonFunction;
+        private GLFW.GLFWjoystickfun glfwJoystickFunction;
         private GLFW.GLFWkeyfun glfwKeyFunction;
         private GLFW.GLFWcharfun glfwCharFunction;
 
@@ -152,6 +153,7 @@ namespace Arqanore
             this.glfwWindowCloseFunction = new GLFW.GLFWwindowclosefun(OnWindowCloseFunction);
             this.glfwWindowRefreshFunction = new GLFW.GLFWwindowrefreshfun(OnWindowRefreshFunction);
             this.glfwWindowSizeFunction = new GLFW.GLFWwindowsizefun(OnWindowSizeFunction);
+            this.glfwJoystickFunction = new GLFW.GLFWjoystickfun(OnJoystickFunction);
 
             GLFW.glfwSetErrorCallback(this.glfwErrorFunction);
             GLFW.glfwSetWindowSizeCallback(Handle, this.glfwWindowSizeFunction);
@@ -161,6 +163,7 @@ namespace Arqanore
             GLFW.glfwSetMouseButtonCallback(Handle, this.glfwMouseButtonFunction);
             GLFW.glfwSetKeyCallback(Handle, this.glfwKeyFunction);
             GLFW.glfwSetCharCallback(Handle, this.glfwCharFunction);
+            GLFW.glfwSetJoystickCallback(this.glfwJoystickFunction);
         }
         private void InitFramework()
         {
@@ -337,6 +340,12 @@ namespace Arqanore
             OnChar?.Invoke((char)codepoint);
         }
 
+        private void OnJoystickFunction(int jid, int ev)
+        {
+            if (ev == GLFW.GLFW_CONNECTED) OnJoystickConnected?.Invoke(jid);
+            if (ev == GLFW.GLFW_DISCONNECTED) OnJoystickDisconnected?.Invoke(jid);
+        }
+
         /* EVENTS */
         public delegate void OnTickDelegate(double deltaTime);
         public delegate void OnUpdateDelegate();
@@ -347,6 +356,8 @@ namespace Arqanore
         public delegate void OnLoadDelegate();
         public delegate void OnCloseDelegate();
         public delegate void OnCharDelegate(char c);
+        public delegate void OnJoystickConnectedDelegate(int joystick);
+        public delegate void OnJoystickDisconnectedDelegate(int joystick);
 
         public event OnTickDelegate OnTick;
         public event OnUpdateDelegate OnUpdate;
@@ -357,5 +368,7 @@ namespace Arqanore
         public event OnCloseDelegate OnClose;
         public event OnLoadDelegate OnLoad;
         public event OnCharDelegate OnChar;
+        public event OnJoystickConnectedDelegate OnJoystickConnected;
+        public event OnJoystickDisconnectedDelegate OnJoystickDisconnected;
     }
 }
