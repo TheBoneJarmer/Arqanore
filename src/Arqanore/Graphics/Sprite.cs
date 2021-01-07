@@ -66,9 +66,9 @@ namespace Arqanore.Graphics
             this.scaleY = scaleY;
             this.offsetX = offsetX;
             this.offsetY = offsetY;           
+            this.texture = new Texture(path);
             this.framesHor = (int)(texture.Width / frameWidth);
             this.framesVert = (int)(texture.Height / frameHeight);
-            this.texture = new Texture(path);   
 
             Generate();
         }
