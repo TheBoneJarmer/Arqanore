@@ -169,7 +169,6 @@ namespace Arqanore
         {
             Mouse.Init();
             Keyboard.Init();
-            Draw.Init(this);
         }
 
         private void Sync()
