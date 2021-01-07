@@ -47,7 +47,7 @@ namespace Arqanore.Graphics
         {
             get { return framesVert; }
         }
-        
+
         public Sprite(string path, float frameWidth, float frameHeight, float offsetX, float offsetY, float scaleX, float scaleY)
         {
             this.offsetX = offsetX;
@@ -55,7 +55,20 @@ namespace Arqanore.Graphics
             this.scaleX = scaleX;
             this.scaleY = scaleY;
 
-            texture = new Texture(path);
+            texture = new Texture(path);   
+            framesHor = (int)(texture.Width / frameWidth);
+            framesVert = (int)(texture.Height / frameHeight);
+
+            Generate();
+        }
+        public Sprite(byte[] data, float frameWidth, float frameHeight, float offsetX, float offsetY, float scaleX, float scaleY)
+        {
+            this.offsetX = offsetX;
+            this.offsetY = offsetY;
+            this.scaleX = scaleX;
+            this.scaleY = scaleY;
+
+            texture = new Texture(data);
             framesHor = (int)(texture.Width / frameWidth);
             framesVert = (int)(texture.Height / frameHeight);
 

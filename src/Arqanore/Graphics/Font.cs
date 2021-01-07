@@ -31,6 +31,11 @@ namespace Arqanore.Graphics
             Load(path);
             Generate();
         }
+        public Font(byte[] data)
+        {
+            Parse(data);
+            Generate();
+        }
 
         private void Generate()
         {

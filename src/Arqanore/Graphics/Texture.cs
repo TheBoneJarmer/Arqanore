@@ -39,6 +39,10 @@ namespace Arqanore.Graphics
             // Parse the data
             Parse(File.ReadAllBytes(filename));
         }
+        public Texture(byte[] data)
+        {
+            Parse(data);
+        }
 
         private void Parse(byte[] data)
         {
