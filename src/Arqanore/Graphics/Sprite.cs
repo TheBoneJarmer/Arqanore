@@ -2,6 +2,7 @@
 using Arqanore.Math;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace Arqanore.Graphics
@@ -48,25 +49,50 @@ namespace Arqanore.Graphics
             get { return framesVert; }
         }
 
-        public Sprite(string path, float scaleX, float scaleY)
+        private Sprite()
         {
-            this.scaleX = scaleX;
-            this.scaleY = scaleY;
+            this.scaleX = 1;
+            this.scaleY = 1;
             this.offsetX = 0;
             this.offsetY = 0;
             this.framesHor = 1;
             this.framesVert = 1;
+        }
+        public Sprite(string path, float scaleX, float scaleY) : this()
+        {
+            this.scaleX = scaleX;
+            this.scaleY = scaleY;
             this.texture = new Texture(path);
 
             Generate();
         }
-        public Sprite(string path, float frameWidth, float frameHeight, float offsetX, float offsetY, float scaleX, float scaleY)
+        public Sprite(string path, float frameWidth, float frameHeight, float offsetX, float offsetY, float scaleX, float scaleY) : this()
         {
             this.scaleX = scaleX;
             this.scaleY = scaleY;
             this.offsetX = offsetX;
             this.offsetY = offsetY;           
             this.texture = new Texture(path);
+            this.framesHor = (int)(texture.Width / frameWidth);
+            this.framesVert = (int)(texture.Height / frameHeight);
+
+            Generate();
+        }
+        public Sprite(Bitmap bmp, float scaleX, float scaleY) : this()
+        {
+            this.scaleX = scaleX;
+            this.scaleY = scaleY;
+            this.texture = new Texture(bmp);
+
+            Generate();
+        }
+        public Sprite(Bitmap bmp, float frameWidth, float frameHeight, float offsetX, float offsetY, float scaleX, float scaleY) : this()
+        {
+            this.scaleX = scaleX;
+            this.scaleY = scaleY;
+            this.offsetX = offsetX;
+            this.offsetY = offsetY;           
+            this.texture = new Texture(bmp);
             this.framesHor = (int)(texture.Width / frameWidth);
             this.framesVert = (int)(texture.Height / frameHeight);
 
