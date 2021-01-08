@@ -30,7 +30,7 @@ namespace Arqanore.Graphics
 
         public Texture Texture
         {
-            get { return Texture; }
+            get { return texture; }
         }
         public float Width
         {
@@ -49,24 +49,19 @@ namespace Arqanore.Graphics
             get { return framesVert; }
         }
 
-        private Sprite()
+        public Sprite(string path, float scaleX, float scaleY)
         {
-            this.scaleX = 1;
-            this.scaleY = 1;
+            this.scaleX = scaleX;
+            this.scaleY = scaleY;
             this.offsetX = 0;
             this.offsetY = 0;
             this.framesHor = 1;
             this.framesVert = 1;
-        }
-        public Sprite(string path, float scaleX, float scaleY) : this()
-        {
-            this.scaleX = scaleX;
-            this.scaleY = scaleY;
             this.texture = new Texture(path);
 
             Generate();
         }
-        public Sprite(string path, float frameWidth, float frameHeight, float offsetX, float offsetY, float scaleX, float scaleY) : this()
+        public Sprite(string path, float frameWidth, float frameHeight, float offsetX, float offsetY, float scaleX, float scaleY)
         {
             this.scaleX = scaleX;
             this.scaleY = scaleY;
@@ -78,15 +73,19 @@ namespace Arqanore.Graphics
 
             Generate();
         }
-        public Sprite(Bitmap bmp, float scaleX, float scaleY) : this()
+        public Sprite(Bitmap bmp, float scaleX, float scaleY)
         {
             this.scaleX = scaleX;
             this.scaleY = scaleY;
+            this.offsetX = 0;
+            this.offsetY = 0;
+            this.framesHor = 1;
+            this.framesVert = 1;
             this.texture = new Texture(bmp);
 
             Generate();
         }
-        public Sprite(Bitmap bmp, float frameWidth, float frameHeight, float offsetX, float offsetY, float scaleX, float scaleY) : this()
+        public Sprite(Bitmap bmp, float frameWidth, float frameHeight, float offsetX, float offsetY, float scaleX, float scaleY)
         {
             this.scaleX = scaleX;
             this.scaleY = scaleY;
