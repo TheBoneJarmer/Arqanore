@@ -6,3 +6,4 @@ packages/
 lib/
 Properties/
 *.nupkg
+tools/
