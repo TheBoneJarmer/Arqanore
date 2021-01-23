@@ -5,7 +5,9 @@ rm -r ./tools &> /dev/null
 
 # Build the tools
 echo "Compiling font generator"
-dotnet publish -c Release -r linux-x64 -o ./tools/fontgenerator --nologo --self-contained --force -v q ./src/Arqanore.FontGenerator/*.csproj
+dotnet publish -c Release -r linux-x64 -o ./tools/linux-x64/fontgenerator --nologo --self-contained --force -v q ./src/Arqanore.FontGenerator/*.csproj
+dotnet publish -c Release -r win-x64 -o ./tools/win-x64/fontgenerator --nologo --self-contained --force -v q ./src/Arqanore.FontGenerator/*.csproj
 
 echo "Compiling tex generator"
-dotnet publish -c Release -r linux-x64 -o ./tools/texgenerator --nologo --self-contained --force -v q ./src/Arqanore.TexGenerator/*.csproj
+dotnet publish -c Release -r linux-x64 -o ./tools/linux-x64/texgenerator --nologo --self-contained --force -v q ./src/Arqanore.TexGenerator/*.csproj
+dotnet publish -c Release -r win-x64 -o ./tools/win-x64/texgenerator --nologo --self-contained --force -v q ./src/Arqanore.TexGenerator/*.csproj
