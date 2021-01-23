@@ -90,33 +90,24 @@ namespace example
 }
 ```
 
-## Tools
-> **Important! The tools are currently not being released for 32 bit machines as I don't have 32 bit computers to build the source code with.**
-
-Along with the framework I introduced some command line tools for generating assets. I go more into detail about assets later.
-
-### FontGenerator
-The font generator toos allows you to generate Arqanore font files (.arqfnt) from TrueType font files (.ttf) using the tool fontbm (more info below). I managed to include fontbm within the NuGet packages so you don't need to install it seperately. In fact, I prefer if you don't. The fontgenerator just starts a C# Process and picks which "fontbm" he can find on the command line. Although I am not doing crazy stuff with fontbm, it would be better if the font generator uses the fontbm that is bundled along with it.
-
-#### Installation
-```
-dotnet tool install Arqanore.FontGenerator.Windows
-dotnet tool install Arqanore.FontGenerator.Linux
-```
-
-### TexGenerator
-The tex generator tool allows you to generate Arqanore texture images from bitmaps, png images, jpeg and what not. In this case whatever the System.Drawing.Bitmap supports actually.
-
-#### Installation
-```
-dotnet tool install Arqanore.TexGenerator.Windows
-dotnet tool install Arqanore.TexGenerator.Linux
-```
-
 ## Assets
 Arqanore does not directly read png, jpg, bmp and font files. Instead it only supports two custom formats. One for fonts and one for images. The motivation behind this decision has to do with the way font files are used to render text. Arqanore uses the tool [fontbm](https://github.com/vladimirgamalyan/fontbm), created by [Vladimir Gamalyan](https://github.com/vladimirgamalyan), to generate bitmap fonts and some data files required to render glyphs correctly. However, to keep things clean and user-friendly I figured it'd be better if I had just one file to load. So hence the font generator was introduced and the media type **Arqanore Font** was invented. And the font generator does nothing more and nothing less than merging the output of fontbm into a single file using a custom standard. On its turn, Arqanore parses that file and extracts the image data along with the font data which are than being used to generate glyphs and values for the Font class.
 
 As for the texture generator, there is actually nothing special about it. Truth is, while I had a good motiviation to invent a custom format for fonts, I did not had one for images. However, in the future I might want to pack images or support spritesheets in a different way. And having a tool already makes that easier. But right now it simply renames files. Also, I did not want to end up with a mix of custom formats and standard formats. I rather have either all assets using a custom format, or none.
+
+## Tools
+I already mentioned them in the previous section, but this one will be dedicated to the tools entirely. I created two different command line applications for generating assets. The first being the font generator and the second being the texture generator. I already explained what they were invented for. But now I will explain how to use them.
+
+1. Download the latest release from this repo
+2. Extract the zip file somewhere on your system. If possible, add that folder to the PATH environment variable.
+3. Open up a command prompt
+4. Run either *arqanore-fontgenerator* or *arqanore-texgenerator*. From here on the tools are rather self-explanatory.
+
+### Example usage
+```
+arqanore-fontgenerator -f /home/ruben/Documents/assets/arial.ttf -s 16 -o .
+arqanore-texgenerator -f /home/ruben/Documents/assets/logo.png -o .
+```
 
 ## Building
 Arqanore uses my other project, [Arqan](https://github.com/TheBoneJarmer/Arqan), for access to the OpenGL and GLFW methods in C#. Therefore you need to make sure you have all dependencies installed required by Arqan, otherwise **debugging** will fail. And I purposely focus on debugging here since you can actually build Arqanore, but it would crash during runtime without the required dependencies. Other than that you need _dotnet core sdk 3.1_.

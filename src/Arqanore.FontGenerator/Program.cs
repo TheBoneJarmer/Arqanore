@@ -389,7 +389,7 @@ namespace Arqanore.FontGenerator
             Console.WriteLine();
             Console.WriteLine("ABOUT");
             Console.WriteLine("This tool generates Arqanore font files from TrueType font files using fontbm");
-	    Console.WriteLine();
+	        Console.WriteLine();
             Console.WriteLine("ARGUMENTS");
             Console.WriteLine("-f      Absolute path to the font file");
             Console.WriteLine("-s      Font size as integer. Cannot be lower than 4.");
