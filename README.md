@@ -110,7 +110,7 @@ arqanore-texgenerator -f /home/ruben/Documents/assets/logo.png -o .
 ```
 
 ## Building
-Arqanore uses my other project, [Arqan](https://github.com/TheBoneJarmer/Arqan), for access to the OpenGL and GLFW methods in C#. Therefore you need to make sure you have all dependencies installed required by Arqan, otherwise **debugging** will fail. And I purposely focus on debugging here since you can actually build Arqanore, but it would crash during runtime without the required dependencies. Other than that you need _dotnet core sdk 3.1_.
+Arqanore uses my other project, [Arqan](https://github.com/TheBoneJarmer/Arqan), for access to the OpenGL and GLFW methods in C#. Therefore you need to make sure you have all dependencies installed required by Arqan, otherwise **debugging** will fail. And I purposely focus on debugging here since you can actually build Arqanore, but it would crash during runtime without the required dependencies. Other than that you need _dotnet sdk 5_.
 
 ## Contribution
 Feel free to send in pull requests at any time!
