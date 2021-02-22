@@ -172,15 +172,18 @@ namespace Arqanore.Graphics
         }
         public static Polygon Circle(int steps, int radius)
         {
-            float[] vertices = new float[(360 / steps) * 2];
-            int i = 0;
+            var vertices = new float[steps * 4];
+            var i = 0;
+            var step = 360 / steps;
 
-            for (int j = 0; j < 360; j += steps)
+            for (int j = 0; j < 360; j += step)
             {
-                vertices[i + 0] = MathHelper.MoveX(j) * radius;
-                vertices[i + 1] = MathHelper.MoveY(j) * radius;
+                vertices[i + 0] = MathHelper.MoveX(j + 0) * radius;
+                vertices[i + 1] = MathHelper.MoveY(j + 0) * radius;
+                vertices[i + 2] = MathHelper.MoveX(j + step) * radius;
+                vertices[i + 3] = MathHelper.MoveY(j + step) * radius;
 
-                i += 2;
+                i += 4;
             }
 
             return new Polygon(vertices);
