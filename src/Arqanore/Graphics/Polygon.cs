@@ -93,19 +93,19 @@ namespace Arqanore.Graphics
         }
 
         /* SHAPES */
-        public static Polygon Box(Vector2 size, Vector2 offset)
+        public static Polygon Box(float x, float y, float width, float height, float offsetX, float offsetY)
         {
             float[] vertices = new float[8]
             {
-                offset.X, offset.Y,
-                offset.X + size.X, offset.Y,
-                offset.X + size.X, offset.Y + size.Y,
-                offset.X, offset.Y + size.Y
+                offsetX, offsetY,
+                offsetX + width, offsetY,
+                offsetX + width, offsetY + height,
+                offsetX, offsetY + height
             };
 
             return new Polygon(vertices);
         }
-        public static Polygon RoundedBox(Vector2 size, Vector2 offset, float radius)
+        public static Polygon RoundedBox(float width, float height, float offsetX, float offsetY, float radius)
         {
             float[] vertices = new float[80];
             int i = 0;
@@ -128,14 +128,14 @@ namespace Arqanore.Graphics
             // Top right
             for (int j = 270; j < 360; j += 10)
             {
-                vertices[i + 0] = (size.X - radius) + (MathHelper.MoveX(j) * radius);
+                vertices[i + 0] = (width - radius) + (MathHelper.MoveX(j) * radius);
                 vertices[i + 1] = radius + (MathHelper.MoveY(j) * radius);
 
                 i += 2;
             }
 
             // Right
-            vertices[i + 0] = size.X;
+            vertices[i + 0] = width;
             vertices[i + 1] = radius;
 
             i += 2;
@@ -143,15 +143,15 @@ namespace Arqanore.Graphics
             // Bottom right
             for (var j = 0; j < 90; j += 10)
             {
-                vertices[i + 0] = (size.X - radius) + (MathHelper.MoveX(j) * radius);
-                vertices[i + 1] = (size.Y - radius) + (MathHelper.MoveY(j) * radius);
+                vertices[i + 0] = (width - radius) + (MathHelper.MoveX(j) * radius);
+                vertices[i + 1] = (height - radius) + (MathHelper.MoveY(j) * radius);
 
                 i += 2;
             }
 
             // Bottom
-            vertices[i + 0] = size.X - radius;
-            vertices[i + 1] = size.Y;
+            vertices[i + 0] = width - radius;
+            vertices[i + 1] = height;
 
             i += 2;
 
@@ -159,14 +159,14 @@ namespace Arqanore.Graphics
             for (var j = 90; j < 180; j += 10)
             {
                 vertices[i + 0] = radius + (MathHelper.MoveX(j) * radius);
-                vertices[i + 1] = (size.Y - radius) + (MathHelper.MoveY(j) * radius);
+                vertices[i + 1] = (height - radius) + (MathHelper.MoveY(j) * radius);
 
                 i += 2;
             }
 
             // Left
             vertices[i + 0] = 0;
-            vertices[i + 1] = size.Y - radius;
+            vertices[i + 1] = height - radius;
 
             return new Polygon(vertices);
         }

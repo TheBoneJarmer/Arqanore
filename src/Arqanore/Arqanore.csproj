@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
     
     <PropertyGroup>
-        <PackageId Condition="'$(OS)' == 'Windows_NT' AND '$(Configuration)' == 'x64'">Arqanore.Windows.x64</PackageId>
-        <PackageId Condition="'$(OS)' == 'Windows_NT' AND '$(Configuration)' == 'x86'">Arqanore.Windows.x86</PackageId>
+        <PackageId Condition="'$(OS)' == 'Windows_NT'">Arqanore.Windows.x64</PackageId>
+        <!--<PackageId Condition="'$(OS)' == 'Windows_NT' AND '$(Configuration)' == 'x86'">Arqanore.Windows.x86</PackageId>-->
         <PackageId Condition="'$(OS)' == 'UNIX'">Arqanore.Linux</PackageId>
         <Authors>Ruben Labruyere</Authors>
         <Company>Ruben Labruyere</Company>
@@ -30,8 +30,8 @@
     </ItemGroup>
 	
     <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
-	    <PackageReference Include="Arqan.Windows.x64" Version="2.1.0" Condition="'$(Configuration)' == 'x64'" />
-	    <PackageReference Include="Arqan.Windows.x86" Version="2.1.0" Condition="'$(Configuration)' == 'x86'" />
+	    <PackageReference Include="Arqan.Windows.x64" Version="2.1.0" />
+	    <!--<PackageReference Include="Arqan.Windows.x86" Version="2.1.0" Condition="'$(Configuration)' == 'x86'" />-->
     </ItemGroup>
 	
 	<ItemGroup>
