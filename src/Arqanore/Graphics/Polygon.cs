@@ -12,6 +12,11 @@ namespace Arqanore.Graphics
         private uint buffer;
         private float[] vertices;
 
+        public float[] Vertices
+        {
+            get { return vertices; }
+        }
+
         public Polygon(float[] vertices)
         {
             this.vertices = vertices;

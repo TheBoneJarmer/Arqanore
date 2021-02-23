@@ -11,6 +11,12 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="IdeDocumentHistory">
+    <changedPaths>
+      <option value="$PROJECT_DIR$/Arqanore/Graphics/Polygon.cs" />
+      <option value="$PROJECT_DIR$/Arqanore/Arqanore.csproj" />
+    </changedPaths>
+  </component>
   <component name="ProjectId" id="1orBM4ABW4X5ni5cmQJrTmTA72Q" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
