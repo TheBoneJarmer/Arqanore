@@ -1,7 +1,7 @@
 ﻿$branch = git branch --show-current;
 
 Remove-Item *.nupkg
-dotnet pack -c Release -o . ./src/*.csproj
+dotnet pack -c Release -o . ./src/Arqanore/*.csproj
 
 if ($branch -eq "develop")
 {
@@ -15,3 +15,5 @@ else
 {
     echo "Can only publish nuget package on develop or main branch";
 }
+
+Remove-Item *.nupkg

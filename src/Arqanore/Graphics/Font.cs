@@ -188,18 +188,17 @@ namespace Arqanore.Graphics
 
         public void RenderText(string text, float x, float y, int r, int g, int b, int a)
         {
-            float advance = 0;
+            var advance = 0;
 
             foreach (char c in text)
             {
-                Glyph glyph = glyphs.FirstOrDefault(e => e.Id == (short)c);
+                var glyph = glyphs.FirstOrDefault(e => e.Id == (short)c);
 
                 if (glyph != null)
                 {
                     RenderGlyph(glyph, x + advance, y, r, g, b, a);
+                    advance += glyph.Advance;
                 }
-
-                advance += glyph.Advance;
             }
         }
         private void RenderGlyph(Glyph glyph, float x, float y, float r, float g, float b, float a)
