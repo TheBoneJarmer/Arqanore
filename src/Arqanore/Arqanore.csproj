@@ -12,6 +12,7 @@
         <RepositoryUrl>https://github.com/TheBoneJarmer/arqanore.git</RepositoryUrl>
         <PackageTags>arqanore, opengl, 2d, framework, glfw, arqan</PackageTags>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageVersion>1.0.9</PackageVersion>
     </PropertyGroup>
 
 	<PropertyGroup>

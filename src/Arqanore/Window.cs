@@ -83,6 +83,8 @@ namespace Arqanore
             get { return clearColor; }
             set { clearColor = value; }
         }
+        
+        public bool VSync { get; set; }
 
         public Window(int width, int height, string title)
         {
@@ -131,7 +133,7 @@ namespace Arqanore
 
                 if (maximized) GLFW.glfwWindowHint(GLFW.GLFW_MAXIMIZED, GLFW.GLFW_TRUE);
                 if (!maximized) GLFW.glfwWindowHint(GLFW.GLFW_MAXIMIZED, GLFW.GLFW_FALSE);
-
+                
                 Handle = GLFW.glfwCreateWindow(Width, Height, Encoding.ASCII.GetBytes(Title), IntPtr.Zero, IntPtr.Zero);
             }
 
@@ -204,9 +206,8 @@ namespace Arqanore
                     while (frameTime > 0)
                     {
                         double deltaTime = System.Math.Min(frameTime, dt);
-                        frameTime -= deltaTime;
-
                         OnTick?.Invoke(deltaTime);
+                        frameTime -= deltaTime;
                     }
 
                     OnUpdate?.Invoke();
@@ -241,7 +242,7 @@ namespace Arqanore
                     OnRender?.Invoke();
                 }
 
-                GLFW.glfwSwapInterval(1);
+                GLFW.glfwSwapInterval(VSync ? 1 : 0);
                 GLFW.glfwSwapBuffers(Handle);
                 GLFW.glfwPollEvents();
             }
