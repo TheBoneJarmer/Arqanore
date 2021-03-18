@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     
     <PropertyGroup>
-        <PackageId Condition="'$(OS)' == 'Windows_NT'">Arqanore.Windows.x64</PackageId>
-        <!--<PackageId Condition="'$(OS)' == 'Windows_NT' AND '$(Configuration)' == 'x86'">Arqanore.Windows.x86</PackageId>-->
+        <PackageId Condition="'$(OS)' == 'Windows_NT'">Arqanore.Windows</PackageId>
         <PackageId Condition="'$(OS)' == 'UNIX'">Arqanore.Linux</PackageId>
         <Authors>Ruben Labruyere</Authors>
         <Company>Ruben Labruyere</Company>
@@ -22,7 +21,6 @@
 
     <ItemGroup>
 	    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
-	    <!--<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />-->
     </ItemGroup>
     
     <ItemGroup Condition="'$(OS)' == 'UNIX'">
@@ -30,8 +28,7 @@
     </ItemGroup>
 	
     <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
-	    <PackageReference Include="Arqan.Windows.x64" Version="2.1.0" />
-	    <!--<PackageReference Include="Arqan.Windows.x86" Version="2.1.0" Condition="'$(Configuration)' == 'x86'" />-->
+	    <PackageReference Include="Arqan.Windows" Version="2.1.0" />
     </ItemGroup>
 	
 	<ItemGroup>
