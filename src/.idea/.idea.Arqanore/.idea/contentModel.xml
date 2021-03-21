@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\ruben\AppData\local\JetBrains\Rider2020.3\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\ruben\AppData\local\JetBrains\Rider2020.3\resharper-host\local\Transient\Rider\v203\SolutionCaches\_Arqanore.1958209516.00" t="ExcludeRecursive" />
-    <e p="D:\Projects\arqanore\LICENSE" t="Include" />
-    <e p="D:\Projects\arqanore\src" t="IncludeFlat">
-      <e p="arqanore" t="IncludeRecursive">
+    <e p="$USER_HOME$/.cache/JetBrains/Rider2020.3/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.cache/JetBrains/Rider2020.3/resharper-host/local/Transient/Rider/v203/SolutionCaches/_Arqanore.-678726101.00" t="ExcludeRecursive" />
+    <e p="$PROJECT_DIR$/../LICENSE" t="Include" />
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p="Arqanore" t="IncludeRecursive">
         <e p="Arqanore.csproj" t="IncludeRecursive" />
-        <e p="bin" t="ExcludeRecursive" />
         <e p="Compression" t="Include">
           <e p="AssetPack.cs" t="Include" />
         </e>
@@ -34,6 +33,11 @@
           <e p="Rectangle.cs" t="Include" />
           <e p="Vector2.cs" t="Include" />
         </e>
+        <e p="Utils" t="Include">
+          <e p="ByteParser.cs" t="Include" />
+        </e>
+        <e p="Window.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="x86" t="Include">
             <e p="netstandard2.0" t="Include">
@@ -41,15 +45,12 @@
             </e>
           </e>
         </e>
-        <e p="Utils" t="Include">
-          <e p="ByteParser.cs" t="Include" />
-        </e>
-        <e p="Window.cs" t="Include" />
       </e>
       <e p="Arqanore.FontGenerator" t="IncludeRecursive">
         <e p="Arqanore.FontGenerator.csproj" t="IncludeRecursive" />
-        <e p="bin" t="ExcludeRecursive" />
         <e p="Exceptions.cs" t="Include" />
+        <e p="Program.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
         <e p="fontbm" t="Include">
           <e p="linux" t="Include">
             <e p="fontbm" t="Include" />
@@ -69,13 +70,12 @@
             </e>
           </e>
         </e>
-        <e p="Program.cs" t="Include" />
       </e>
-      <e p="Arqanore.sln" t="IncludeFlat" />
       <e p="Arqanore.TexGenerator" t="IncludeRecursive">
         <e p="Arqanore.TexGenerator.csproj" t="IncludeRecursive" />
-        <e p="bin" t="ExcludeRecursive" />
         <e p="Exceptions.cs" t="Include" />
+        <e p="Program.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="x86" t="Include">
             <e p="net5.0" t="Include">
@@ -83,8 +83,8 @@
             </e>
           </e>
         </e>
-        <e p="Program.cs" t="Include" />
       </e>
+      <e p="Arqanore.sln" t="IncludeFlat" />
       <e p="packages" t="ExcludeRecursive" />
     </e>
   </component>

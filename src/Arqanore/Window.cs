@@ -1,21 +1,21 @@
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Text;
 using System.Threading;
-using Arqanore.Graphics;
 using Arqanore.Input;
 using Arqan;
+using Arqanore.Graphics;
+using Color = Arqanore.Graphics.Color;
 
 namespace Arqanore
 {
     public class Window
     {
-        private IntPtr handle;
-        private Color clearColor;
-        private WindowState state;
         private int width;
         private int height;
         private string title;
+        private Texture[] icon;
 
         private GLFW.GLFWerrorfun glfwErrorFunction;
         private GLFW.GLFWwindowsizefun glfwWindowSizeFunction;
@@ -29,15 +29,10 @@ namespace Arqanore
 
         internal static Window Current { get; private set;  }
 
-        private IntPtr Handle
-        {
-            get { return handle; }
-            set { handle = value; }
-        }
-        public WindowState State
-        {
-            get { return state; }
-        }
+        private IntPtr Handle { get; set; }
+        public WindowState State { get; private set; }
+        public Color ClearColor { get; set; }
+        public bool VSync { get; set; }
         public int Width
         {
             get { return width; }
@@ -78,13 +73,28 @@ namespace Arqanore
             }
         }
 
-        public Color ClearColor
+        public Texture[] Icon
         {
-            get { return clearColor; }
-            set { clearColor = value; }
+            get { return icon; }
+            set
+            {
+                icon = value;
+
+                if (Handle != IntPtr.Zero)
+                {
+                    var images = new GLFW.GLFWImage[value.Length];
+
+                    for (var i = 0; i < images.Length; i++)
+                    {
+                        images[i].width = value[i].Width;
+                        images[i].height = value[i].Height;
+                        images[i].pixels = value[i].Pixels;
+                    }
+                    
+                    GLFW.glfwSetWindowIcon(Handle, images.Length, images);
+                }
+            }
         }
-        
-        public bool VSync { get; set; }
 
         public Window(int width, int height, string title)
         {
@@ -180,7 +190,7 @@ namespace Arqanore
             bool loaded = false;
 
             // Mark the window as open
-            state = WindowState.Open;
+            State = WindowState.Open;
 
             // Main loop
             while (GLFW.glfwWindowShouldClose(Handle) == 0)
@@ -189,7 +199,7 @@ namespace Arqanore
                 GL.glEnable(GL.GL_BLEND);
                 GL.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
                 GL.glViewport(0, 0, Width, Height);
-                GL.glClearColor(clearColor.R / 255.0f, clearColor.G / 255.0f, clearColor.B / 255.0f, clearColor.A / 255.0f);
+                GL.glClearColor(ClearColor.R / 255.0f, ClearColor.G / 255.0f, ClearColor.B / 255.0f, ClearColor.A / 255.0f);
                 GL.glClear(GL.GL_COLOR_BUFFER_BIT);
 
                 if (!loaded)
@@ -247,9 +257,9 @@ namespace Arqanore
                 GLFW.glfwPollEvents();
             }
 
-            if (state != WindowState.Closed)
+            if (State != WindowState.Closed)
             {
-                state = WindowState.Closed;
+                State = WindowState.Closed;
                 OnClose?.Invoke();
             }
 
@@ -258,11 +268,11 @@ namespace Arqanore
 
         public void HideCursor()
         {
-            GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_HIDDEN);
+            GLFW.glfwSetInputMode(Handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_HIDDEN);
         }
         public void ShowCursor()
         {
-            GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
+            GLFW.glfwSetInputMode(Handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
         }
 
         /* GENERAL FUNCTIONS */
@@ -287,9 +297,9 @@ namespace Arqanore
         }
         private void OnWindowCloseFunction(IntPtr windowHandle)
         {
-            if (state != WindowState.Closed)
+            if (State != WindowState.Closed)
             {
-                state = WindowState.Closed;
+                State = WindowState.Closed;
                 OnClose?.Invoke();
             }
         }

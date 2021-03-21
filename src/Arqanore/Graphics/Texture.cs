@@ -12,9 +12,11 @@ namespace Arqanore.Graphics
     public class Texture
     {
         public uint Id { get; private set; }
-        public float Width { get; private set; }
-        public float Height { get; private set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
         public Bitmap Bitmap { get; private set; }
+        public IntPtr Pixels { get; private set; }
+        public PixelFormat PixelFormat { get; private set; }
 
         public Texture(Image img)
         {
@@ -61,6 +63,8 @@ namespace Arqanore.Graphics
             Width = bmp.Width;
             Height = bmp.Height;
             Bitmap = bmp;
+            Pixels = data.Scan0;
+            PixelFormat = data.PixelFormat;
 
             // Generate 2D texture
             GL.glGenTextures(1, ids);
@@ -69,7 +73,7 @@ namespace Arqanore.Graphics
             GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP_TO_EDGE);
             GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
             GL.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
-            GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, bmp.Width, bmp.Height, 0, GL.GL_BGRA, GL.GL_UNSIGNED_BYTE, data.Scan0);
+            GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, bmp.Width, bmp.Height, 0, GL.GL_BGRA, GL.GL_UNSIGNED_BYTE, Pixels);
 
             // Cleanup
             bmp.UnlockBits(data);

@@ -39,26 +39,26 @@ namespace Arqanore.Graphics
         }
         private void GenerateBuffers()
         {
-            uint[] buffers = new uint[2];
+            var buffers = new uint[2];
             GL.glGenBuffers(2, buffers);
             vbuffer = buffers[0];
             tcbuffer = buffers[1];
 
-            List<float> totalVertices = new List<float>();
-            List<float> totalTexCoords = new List<float>();
+            var totalVertices = new List<float>();
+            var totalTexCoords = new List<float>();
 
-            foreach (Glyph glyph in glyphs)
+            foreach (var glyph in glyphs)
             {
-                Texture texture = textures[glyph.Page];
+                var texture = textures[glyph.Page];
 
-                float tcX = (1f / texture.Width) * glyph.X;
-                float tcY = (1f / texture.Height) * glyph.Y;
-                float tcWidth = 1f / (texture.Width / glyph.Width);
-                float tcHeight = 1f / (texture.Height / glyph.Height);
-                float vx = glyph.OffsetX;
-                float vy = glyph.OffsetY;
+                var tcX = (1f / texture.Width) * glyph.X;
+                var tcY = (1f / texture.Height) * glyph.Y;
+                var tcWidth = 1f / ((float)texture.Width / glyph.Width);
+                var tcHeight = 1f / ((float)texture.Height / glyph.Height);
+                var vx = glyph.OffsetX;
+                var vy = glyph.OffsetY;
 
-                float[] vertices = new float[12] {
+                var vertices = new float[12] {
                     vx, vy,
                     vx + glyph.Width, vy,
                     vx, vy + glyph.Height,
@@ -67,7 +67,7 @@ namespace Arqanore.Graphics
                     vx + glyph.Width, vy + glyph.Height
                 };
 
-                float[] texcoords = new float[12] {
+                var texcoords = new float[12] {
                     tcX, tcY,
                     tcX + tcWidth, tcY,
                     tcX, tcY + tcHeight,
@@ -80,8 +80,8 @@ namespace Arqanore.Graphics
                 totalTexCoords.AddRange(texcoords);
             }
 
-            uint positionAttribLocation = GL.glGetAttribLocation(shader.Id, "aposition");
-            uint texcoordAttribLocation = GL.glGetAttribLocation(shader.Id, "atexcoord");
+            var positionAttribLocation = GL.glGetAttribLocation(shader.Id, "aposition");
+            var texcoordAttribLocation = GL.glGetAttribLocation(shader.Id, "atexcoord");
 
             GL.glEnableVertexAttribArray(positionAttribLocation);
             GL.glEnableVertexAttribArray(texcoordAttribLocation);
