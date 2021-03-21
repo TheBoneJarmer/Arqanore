@@ -20,11 +20,14 @@ namespace Arqanore.Graphics
 
         public int LineHeight { get; private set; }
         public int BaseHeight { get; private set; }
+        public int TabSize { get; set; }
 
         public Font()
         {
             textures = new List<Texture>();
             glyphs = new List<Glyph>();
+
+            TabSize = 4;
         }
         public Font(string path) : this()
         {
@@ -189,16 +192,37 @@ namespace Arqanore.Graphics
         public void RenderText(string text, float x, float y, int r, int g, int b, int a)
         {
             var advance = 0;
+            var line = 0;
 
             foreach (char c in text)
             {
-                var glyph = glyphs.FirstOrDefault(e => e.Id == (short)c);
+                var glyph = glyphs.FirstOrDefault(z => z.Id == (short)c);
+                var glyphAdvance = 0;
 
-                if (glyph != null)
+                if (c == '\t')
                 {
-                    RenderGlyph(glyph, x + advance, y, r, g, b, a);
-                    advance += glyph.Advance;
+                    glyph = glyphs.FirstOrDefault(z => z.Id == 32);
+                    glyphAdvance = glyph?.Advance * TabSize ?? 0;
                 }
+                else
+                {
+                    glyphAdvance = glyph?.Advance ?? 0;
+                }
+
+                if (c == '\n')
+                {
+                    line++;
+                    advance = 0;
+                    continue;
+                }
+
+                if (glyph == null)
+                {
+                    continue;
+                }
+                
+                RenderGlyph(glyph, x + advance, y + (line * BaseHeight), r, g, b, a);
+                advance += glyphAdvance;
             }
         }
         private void RenderGlyph(Glyph glyph, float x, float y, float r, float g, float b, float a)
@@ -230,21 +254,60 @@ namespace Arqanore.Graphics
             GL.glUseProgram(0);
             GL.glBindTexture(GL.GL_TEXTURE_2D, 0);
         }
-        public int MeasureText(string text)
+        public int MeasureWidth(string text)
         {
+            var advance = 0;
             var result = 0;
 
             for (var i=0; i<text.Length; i++)
             {
-                var glyph = glyphs.FirstOrDefault(x => x.Id == (short)text[i]);
+                var c = text[i];
+                var glyph = glyphs.FirstOrDefault(x => x.Id == (short)c);
+
+                if (c == '\t')
+                {
+                    glyph = glyphs.FirstOrDefault(x => x.Id == 32);
+                    advance += glyph?.Advance * TabSize ?? 0;
+                }
+
+                if (c == '\n')
+                {
+                    if (advance > result)
+                    {
+                        result = advance;
+                    }
+                    
+                    advance = 0;
+                }
 
                 if (glyph != null)
                 {
-                    result += glyph.Advance;
+                    advance += glyph.Advance;
                 }
             }
 
+            if (advance > result)
+            {
+                result = advance;
+            }
+
             return result;
+        }
+        public int MeasureHeight(string text)
+        {
+            var result = 1;
+
+            for (var i=0; i<text.Length; i++)
+            {
+                var c = text[i];
+
+                if (c == '\n')
+                {
+                    result++;
+                }
+            }
+
+            return result * BaseHeight;
         }
 
         public class Glyph
