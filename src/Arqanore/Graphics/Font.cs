@@ -11,24 +11,23 @@ namespace Arqanore.Graphics
 {
     public class Font
     {
-        private List<Texture> textures;
-        private List<Glyph> glyphs;
-
+        private const char UNDEFINED = '?';
+        
+        private Texture[] textures;
+        private Glyph[] glyphs;
         private Shader shader;
         private uint vbuffer;
         private uint tcbuffer;
-
+        
         public int LineHeight { get; private set; }
         public int BaseHeight { get; private set; }
         public int TabSize { get; set; }
 
         public Font()
         {
-            textures = new List<Texture>();
-            glyphs = new List<Glyph>();
-
             TabSize = 4;
         }
+
         public Font(string path) : this()
         {
             Load(path);
@@ -40,6 +39,7 @@ namespace Arqanore.Graphics
             GenerateShader();
             GenerateBuffers();
         }
+
         private void GenerateBuffers()
         {
             var buffers = new uint[2];
@@ -56,12 +56,13 @@ namespace Arqanore.Graphics
 
                 var tcX = (1f / texture.Width) * glyph.X;
                 var tcY = (1f / texture.Height) * glyph.Y;
-                var tcWidth = 1f / ((float)texture.Width / glyph.Width);
-                var tcHeight = 1f / ((float)texture.Height / glyph.Height);
+                var tcWidth = 1f / ((float) texture.Width / glyph.Width);
+                var tcHeight = 1f / ((float) texture.Height / glyph.Height);
                 var vx = glyph.OffsetX;
                 var vy = glyph.OffsetY;
 
-                var vertices = new float[12] {
+                var vertices = new float[12]
+                {
                     vx, vy,
                     vx + glyph.Width, vy,
                     vx, vy + glyph.Height,
@@ -70,7 +71,8 @@ namespace Arqanore.Graphics
                     vx + glyph.Width, vy + glyph.Height
                 };
 
-                var texcoords = new float[12] {
+                var texcoords = new float[12]
+                {
                     tcX, tcY,
                     tcX + tcWidth, tcY,
                     tcX, tcY + tcHeight,
@@ -97,6 +99,7 @@ namespace Arqanore.Graphics
             GL.glBufferData(GL.GL_ARRAY_BUFFER, totalTexCoords.Count * 4, totalTexCoords.ToArray(), GL.GL_STATIC_DRAW);
             GL.glVertexAttribPointer(texcoordAttribLocation, 2, GL.GL_FLOAT, false, 0, IntPtr.Zero);
         }
+
         private void GenerateShader()
         {
             var vSource = new List<string>();
@@ -137,6 +140,7 @@ namespace Arqanore.Graphics
             {
                 throw new ArqanoreException("Not a valid Arqanore font");
             }
+
             if (!File.Exists(path))
             {
                 throw new ArqanoreException($"Unable to find font {path}");
@@ -145,6 +149,7 @@ namespace Arqanore.Graphics
             // Parse the data
             Parse(File.ReadAllBytes(path));
         }
+
         private void Parse(byte[] bytes)
         {
             var parser = new ByteParser(bytes);
@@ -153,6 +158,9 @@ namespace Arqanore.Graphics
             var bmpLengths = parser.GetInts(8, bmpCount);
             var data = parser.GetString(dataLength).Split(';');
             var images = parser.GetImages(bmpLengths, bmpCount);
+
+            glyphs = new Glyph[data.Length - 2];
+            textures = new Texture[images.Length];
 
             // Parse the font data
             for (var i = 0; i < data.Length; i++)
@@ -168,8 +176,8 @@ namespace Arqanore.Graphics
                 else
                 {
                     var glyph = new Glyph();
-                    glyph.Id = short.Parse(data[i].Split(',')[0]);
-                    glyph.Page = short.Parse(data[i].Split(',')[1]);
+                    glyph.Char = (char)int.Parse(data[i].Split(',')[0]);
+                    glyph.Page = int.Parse(data[i].Split(',')[1]);
                     glyph.X = int.Parse(data[i].Split(',')[2]);
                     glyph.Y = int.Parse(data[i].Split(',')[3]);
                     glyph.Width = int.Parse(data[i].Split(',')[4]);
@@ -178,14 +186,14 @@ namespace Arqanore.Graphics
                     glyph.OffsetY = int.Parse(data[i].Split(',')[7]);
                     glyph.Advance = int.Parse(data[i].Split(',')[8]);
 
-                    glyphs.Add(glyph);
+                    glyphs[i - 2] = glyph;
                 }
             }
 
             // Add all the textures
-            foreach (var img in images)
+            for (var i = 0; i < images.Length; i++)
             {
-                textures.Add(new Texture(img));
+                textures[i] = new Texture(images[i]);
             }
         }
 
@@ -196,17 +204,12 @@ namespace Arqanore.Graphics
 
             foreach (char c in text)
             {
-                var glyph = glyphs.FirstOrDefault(z => z.Id == (short)c);
-                var glyphAdvance = 0;
+                var glyph = GetGlyph(c);
+                var glyphAdvance = GetGlyphAdvance(c);
 
                 if (c == '\t')
                 {
-                    glyph = glyphs.FirstOrDefault(z => z.Id == 32);
-                    glyphAdvance = glyph?.Advance * TabSize ?? 0;
-                }
-                else
-                {
-                    glyphAdvance = glyph?.Advance ?? 0;
+                    glyphAdvance = GetGlyphAdvance(' ');
                 }
 
                 if (c == '\n')
@@ -220,14 +223,29 @@ namespace Arqanore.Graphics
                 {
                     continue;
                 }
-                
+
                 RenderGlyph(glyph, x + advance, y + (line * BaseHeight), r, g, b, a);
                 advance += glyphAdvance;
             }
         }
+
         private void RenderGlyph(Glyph glyph, float x, float y, float r, float g, float b, float a)
         {
-            int index = glyphs.IndexOf(glyph);
+            int index = -1;
+
+            for (var i = 0; i < glyphs.Length; i++)
+            {
+                if (glyphs[i].Char == glyph.Char)
+                {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index == -1)
+            {
+                return;
+            }
 
             uint positionAttribLocation = GL.glGetAttribLocation(shader.Id, "aposition");
             uint texcoordAttribLocation = GL.glGetAttribLocation(shader.Id, "atexcoord");
@@ -254,20 +272,19 @@ namespace Arqanore.Graphics
             GL.glUseProgram(0);
             GL.glBindTexture(GL.GL_TEXTURE_2D, 0);
         }
+
         public int MeasureWidth(string text)
         {
             var advance = 0;
             var result = 0;
 
-            for (var i=0; i<text.Length; i++)
+            for (var i = 0; i < text.Length; i++)
             {
                 var c = text[i];
-                var glyph = glyphs.FirstOrDefault(x => x.Id == (short)c);
 
                 if (c == '\t')
                 {
-                    glyph = glyphs.FirstOrDefault(x => x.Id == 32);
-                    advance += glyph?.Advance * TabSize ?? 0;
+                    advance += GetGlyphAdvance(c) * TabSize;
                 }
 
                 if (c == '\n')
@@ -276,14 +293,11 @@ namespace Arqanore.Graphics
                     {
                         result = advance;
                     }
-                    
+
                     advance = 0;
                 }
 
-                if (glyph != null)
-                {
-                    advance += glyph.Advance;
-                }
+                advance += GetGlyphAdvance(c);
             }
 
             if (advance > result)
@@ -293,11 +307,12 @@ namespace Arqanore.Graphics
 
             return result;
         }
+
         public int MeasureHeight(string text)
         {
             var result = 1;
 
-            for (var i=0; i<text.Length; i++)
+            for (var i = 0; i < text.Length; i++)
             {
                 var c = text[i];
 
@@ -310,10 +325,34 @@ namespace Arqanore.Graphics
             return result * BaseHeight;
         }
 
+        public Glyph GetGlyph(char c)
+        {
+            var glyph = glyphs.FirstOrDefault(x => x.Char == c);
+
+            if (glyph == null)
+            {
+                glyph = glyphs.FirstOrDefault(x => x.Char == UNDEFINED);
+            }
+
+            return glyph;
+        }
+
+        public int GetGlyphAdvance(char c)
+        {
+            var glyph = GetGlyph(c);
+
+            if (glyph == null)
+            {
+                return 0;
+            }
+            
+            return glyph.Advance;
+        }
+
         public class Glyph
         {
-            public short Id { get; set; }
-            public short Page { get; set; }
+            public char Char { get; set; }
+            public int Page { get; set; }
             public int OffsetX { get; set; }
             public int OffsetY { get; set; }
             public int Advance { get; set; }
