@@ -5,17 +5,23 @@ using Arqan;
 
 namespace Arqanore
 {
+    public enum ShaderType
+    {
+        Vertex = (int)GL.GL_VERTEX_SHADER,
+        Fragment = (int)GL.GL_FRAGMENT_SHADER,
+        Geometry = (int)GL.GL_GEOMETRY_SHADER
+    }
     public enum PolygonMode
     {
-        Filled,
-        Lines,
-        Points
+        Fill = (int)GL.GL_FILL,
+        Line = (int)GL.GL_LINE,
+        Point = (int)GL.GL_POINT
     }
     public enum DrawMode
     {
-        Polygon,
-        Lines,
-        Points
+        Polygon = (int)GL.GL_POLYGON,
+        Lines = (int)GL.GL_LINES,
+        Points = (int)GL.GL_POINTS
     }
     public enum WindowState
     {

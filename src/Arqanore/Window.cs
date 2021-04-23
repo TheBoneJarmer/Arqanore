@@ -29,7 +29,7 @@ namespace Arqanore
 
         internal static Window Current { get; private set;  }
 
-        private IntPtr Handle { get; set; }
+        public IntPtr Handle { get; set; }
         public WindowState State { get; private set; }
         public Color ClearColor { get; set; }
         public bool VSync { get; set; }
@@ -125,7 +125,7 @@ namespace Arqanore
         {
             if (GLFW.glfwInit() == 0)
             {
-                throw new GLFWException(-1, "Unable to initialize");
+                throw new ArqanoreGlfwException(-1, "Unable to initialize glfw");
             }
         }
         private void InitWindow(bool fullscreen, bool resizable, bool maximized)
@@ -150,7 +150,7 @@ namespace Arqanore
             if (Handle == IntPtr.Zero)
             {
                 GLFW.glfwTerminate();
-                throw new GLFWException(-1, "Unable to create window");
+                throw new ArqanoreGlfwException(-1, "Unable to create window");
             }
 
             GLFW.glfwMakeContextCurrent(Handle);
@@ -264,6 +264,7 @@ namespace Arqanore
             }
 
             GLFW.glfwDestroyWindow(Handle);
+            GLFW.glfwTerminate();
         }
 
         public void HideCursor()
@@ -278,7 +279,7 @@ namespace Arqanore
         /* GENERAL FUNCTIONS */
         private void OnErrorFunction(int errorCode, string description)
         {
-            throw new GLFWException(errorCode, description);
+            throw new ArqanoreGlfwException(errorCode, description);
         }
         private void OnWindowSizeFunction(IntPtr windowHandle, int width, int height)
         {

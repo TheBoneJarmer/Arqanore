@@ -9,7 +9,7 @@ namespace Arqanore.Graphics
     public class Polygon
     {
         private Shader shader;
-        private uint buffer;
+        private uint vbo;
         private float[] vertices;
 
         public float[] Vertices
@@ -22,26 +22,26 @@ namespace Arqanore.Graphics
             this.vertices = vertices;
 
             GenerateShader();
-            GenerateVBO(vertices);
+            GenerateBuffers(vertices);
         }
 
-        private void GenerateVBO(float[] vertices)
+        private void GenerateBuffers(float[] vertices)
         {
-            uint[] buffers = new uint[1];
+            var buffers = new uint[1];
             GL.glGenBuffers(1, buffers);
-            buffer = buffers[0];
+            vbo = buffers[0];
 
-            uint positionAttribLocation = GL.glGetAttribLocation(shader.Id, "aposition");
+            var positionAttribLocation = GL.glGetAttribLocation(shader.Id, "aposition");
 
             GL.glEnableVertexAttribArray(positionAttribLocation);
-            GL.glBindBuffer(GL.GL_ARRAY_BUFFER, buffer);
+            GL.glBindBuffer(GL.GL_ARRAY_BUFFER, vbo);
             GL.glBufferData(GL.GL_ARRAY_BUFFER, vertices.Length * 4, vertices, GL.GL_STATIC_DRAW);
             GL.glVertexAttribPointer(positionAttribLocation, 2, GL.GL_FLOAT, false, 0, IntPtr.Zero);
         }
 
         private void GenerateShader()
         {
-            List<string> vSource = new List<string>();
+            var vSource = new List<string>();
             vSource.Add("attribute vec2 aposition;\n");
             vSource.Add("uniform vec2 uresolution;\n");
             vSource.Add("uniform vec2 urotation;\n");
@@ -55,7 +55,7 @@ namespace Arqanore.Graphics
             vSource.Add("gl_Position = vec4(clipSpace.x, -clipSpace.y, 0, 1);\n");
             vSource.Add("}\n");
 
-            List<string> fSource = new List<string>();
+            var fSource = new List<string>();
             fSource.Add("#version 130\n");
             fSource.Add("\n");
             fSource.Add("precision mediump float;\n");
@@ -68,18 +68,18 @@ namespace Arqanore.Graphics
             shader = new Shader(vSource, fSource);
         }
 
-        public void Render(float x, float y, float angle, int r, int g, int b, int a, DrawMode drawMode = DrawMode.Polygon, PolygonMode polygonMode = PolygonMode.Filled)
+        public void Render(float x, float y, float angle, int r, int g, int b, int a, DrawMode drawMode = DrawMode.Polygon, PolygonMode polygonMode = PolygonMode.Fill)
         {
-            double cos = System.Math.Cos(MathHelper.ToRadians(angle + 90));
-            double sin = System.Math.Sin(MathHelper.ToRadians(angle + 90));
+            var cos = System.Math.Cos(MathHelper.ToRadians(angle + 90));
+            var sin = System.Math.Sin(MathHelper.ToRadians(angle + 90));
 
-            uint positionAttribLocation = GL.glGetAttribLocation(shader.Id, "aposition");
-            uint rotationUniformLocation = GL.glGetUniformLocation(shader.Id, "urotation");
-            uint translationUniformLocation = GL.glGetUniformLocation(shader.Id, "utranslation");
-            uint resolutionUniformLocation = GL.glGetUniformLocation(shader.Id, "uresolution");
-            uint colorUniformLocation = GL.glGetUniformLocation(shader.Id, "ucolor");
+            var positionAttribLocation = GL.glGetAttribLocation(shader.Id, "aposition");
+            var rotationUniformLocation = GL.glGetUniformLocation(shader.Id, "urotation");
+            var translationUniformLocation = GL.glGetUniformLocation(shader.Id, "utranslation");
+            var resolutionUniformLocation = GL.glGetUniformLocation(shader.Id, "uresolution");
+            var colorUniformLocation = GL.glGetUniformLocation(shader.Id, "ucolor");
 
-            GL.glBindBuffer(GL.GL_ARRAY_BUFFER, buffer);
+            GL.glBindBuffer(GL.GL_ARRAY_BUFFER, vbo);
             GL.glVertexAttribPointer(positionAttribLocation, 2, GL.GL_FLOAT, false, 0, IntPtr.Zero);
             GL.glBindTexture(GL.GL_TEXTURE_2D, 0);
             GL.glUseProgram(shader.Id);
@@ -88,9 +88,9 @@ namespace Arqanore.Graphics
             GL.glUniform2f(resolutionUniformLocation, Window.Current.Width, Window.Current.Height);
             GL.glUniform4f(colorUniformLocation, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
 
-            if (polygonMode == PolygonMode.Filled) GL.glPolygonMode(GL.GL_FRONT, GL.GL_FILL);
-            if (polygonMode == PolygonMode.Lines) GL.glPolygonMode(GL.GL_FRONT, GL.GL_LINE);
-            if (polygonMode == PolygonMode.Points) GL.glPolygonMode(GL.GL_FRONT, GL.GL_POINT);
+            if (polygonMode == PolygonMode.Fill) GL.glPolygonMode(GL.GL_FRONT, GL.GL_FILL);
+            if (polygonMode == PolygonMode.Line) GL.glPolygonMode(GL.GL_FRONT, GL.GL_LINE);
+            if (polygonMode == PolygonMode.Point) GL.glPolygonMode(GL.GL_FRONT, GL.GL_POINT);
 
             if (drawMode == DrawMode.Polygon) GL.glDrawArrays(GL.GL_POLYGON, 0, vertices.Length / 2);
             if (drawMode == DrawMode.Lines) GL.glDrawArrays(GL.GL_LINES, 0, vertices.Length / 2);

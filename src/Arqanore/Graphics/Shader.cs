@@ -16,9 +16,9 @@ namespace Arqanore.Graphics
         public Shader(string[] vertexSource, string[] fragmentSource)
         {
             var program = GL.glCreateProgram();
-            var vshader = Compile(vertexSource, GL.GL_VERTEX_SHADER);
-            var fshader = Compile(fragmentSource, GL.GL_FRAGMENT_SHADER);
-
+            var vshader = CompileShader(vertexSource, ShaderType.Vertex);
+            var fshader = CompileShader(fragmentSource, ShaderType.Fragment);
+            
             GL.glAttachShader(program, vshader);
             GL.glAttachShader(program, fshader);
             GL.glLinkProgram(program);
@@ -28,10 +28,10 @@ namespace Arqanore.Graphics
             this.Id = program;
         }
 
-        private uint Compile(string[] shaderSource, uint shaderType)
+        private uint CompileShader(string[] shaderSource, ShaderType shaderType)
         {
-            var shader = GL.glCreateShader(shaderType);
-            var compiled = 0;
+            var shader = GL.glCreateShader((uint)shaderType);
+            var compileStatus = 0;
             var shaderSourceLength = new int[shaderSource.Length];
 
             // Calculate lengths
@@ -42,16 +42,16 @@ namespace Arqanore.Graphics
 
             GL.glShaderSource(shader, shaderSource.Length, shaderSource, shaderSourceLength);
             GL.glCompileShader(shader);
-            GL.glGetShaderiv(shader, GL.GL_COMPILE_STATUS, ref compiled);
+            GL.glGetShaderiv(shader, GL.GL_COMPILE_STATUS, ref compileStatus);
 
-            if (compiled == 0)
+            if (compileStatus == 0)
             {
                 var buffer = new byte[2048];
                 var bufferSize = 0;
 
                 GL.glGetShaderInfoLog(shader, 2048, ref bufferSize, buffer);
-
-                throw new Exception(Encoding.ASCII.GetString(buffer));
+                
+                throw new ArqanoreShaderException(shaderType, Encoding.ASCII.GetString(buffer));
             }
 
             return shader;
