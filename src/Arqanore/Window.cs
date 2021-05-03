@@ -157,25 +157,25 @@ namespace Arqanore
         }
         private void InitEvents()
         {
-            this.glfwErrorFunction = new GLFW.GLFWerrorfun(OnErrorFunction);
-            this.glfwCharFunction = new GLFW.GLFWcharfun(OnCharFunction);
-            this.glfwCursorPosFunction = new GLFW.GLFWcursorposfun(OnCursorPositionFunction);
-            this.glfwKeyFunction = new GLFW.GLFWkeyfun(OnKeyFunction);
-            this.glfwMouseButtonFunction = new GLFW.GLFWmousebuttonfun(OnMouseButtonFunction);
-            this.glfwWindowCloseFunction = new GLFW.GLFWwindowclosefun(OnWindowCloseFunction);
-            this.glfwWindowRefreshFunction = new GLFW.GLFWwindowrefreshfun(OnWindowRefreshFunction);
-            this.glfwWindowSizeFunction = new GLFW.GLFWwindowsizefun(OnWindowSizeFunction);
-            this.glfwJoystickFunction = new GLFW.GLFWjoystickfun(OnJoystickFunction);
+            glfwErrorFunction = OnErrorFunction;
+            glfwCharFunction = OnCharFunction;
+            glfwCursorPosFunction = OnCursorPositionFunction;
+            glfwKeyFunction = OnKeyFunction;
+            glfwMouseButtonFunction = OnMouseButtonFunction;
+            glfwWindowCloseFunction = OnWindowCloseFunction;
+            glfwWindowRefreshFunction = OnWindowRefreshFunction;
+            glfwWindowSizeFunction = OnWindowSizeFunction;
+            glfwJoystickFunction = OnJoystickFunction;
 
-            GLFW.glfwSetErrorCallback(this.glfwErrorFunction);
-            GLFW.glfwSetWindowSizeCallback(Handle, this.glfwWindowSizeFunction);
-            GLFW.glfwSetWindowCloseCallback(Handle, this.glfwWindowCloseFunction);
-            GLFW.glfwSetWindowRefreshCallback(Handle, this.glfwWindowRefreshFunction);
-            GLFW.glfwSetCursorPosCallback(Handle, this.glfwCursorPosFunction);
-            GLFW.glfwSetMouseButtonCallback(Handle, this.glfwMouseButtonFunction);
-            GLFW.glfwSetKeyCallback(Handle, this.glfwKeyFunction);
-            GLFW.glfwSetCharCallback(Handle, this.glfwCharFunction);
-            GLFW.glfwSetJoystickCallback(this.glfwJoystickFunction);
+            GLFW.glfwSetErrorCallback(glfwErrorFunction);
+            GLFW.glfwSetWindowSizeCallback(Handle, glfwWindowSizeFunction);
+            GLFW.glfwSetWindowCloseCallback(Handle, glfwWindowCloseFunction);
+            GLFW.glfwSetWindowRefreshCallback(Handle, glfwWindowRefreshFunction);
+            GLFW.glfwSetCursorPosCallback(Handle, glfwCursorPosFunction);
+            GLFW.glfwSetMouseButtonCallback(Handle, glfwMouseButtonFunction);
+            GLFW.glfwSetKeyCallback(Handle, glfwKeyFunction);
+            GLFW.glfwSetCharCallback(Handle, glfwCharFunction);
+            GLFW.glfwSetJoystickCallback(glfwJoystickFunction);
         }
         private void InitFramework()
         {
