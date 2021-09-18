@@ -38,14 +38,21 @@ namespace Arqanore.Input
             return result;
         }
 
-        public static byte[] GetHats(int joystick)
+        public static bool[] GetHats(int joystick)
         {
             var arraySize = 0;
             var ptr = GLFW.glfwGetJoystickHats(joystick, out arraySize);
             var states = new byte[arraySize];
+            var result = new bool[states.Length];
             
             Marshal.Copy(ptr, states, 0, arraySize);
-            return states;
+
+            for (var i=0; i<states.Length; i++)
+            {
+                if (states[i] == 1) result[i] = true;
+            }
+
+            return result;
         }
 
         public static string GetName(int joystick)

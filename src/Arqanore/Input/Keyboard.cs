@@ -26,7 +26,7 @@ namespace Arqanore.Input
         }
         public static bool KeyPressed(KeyCode code)
         {
-            return KeyState[(int)code] == 1 || KeyState[(int)code] == 3;
+            return KeyState[(int) code] == 1 || KeyState[(int) code] == 3;
         }
     }
 }

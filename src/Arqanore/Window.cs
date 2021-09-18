@@ -331,15 +331,15 @@ namespace Arqanore
             
             if (key < Keyboard.KeyState.Length)
             {
-                if (action == 1)
+                if (action == GLFW.GLFW_PRESS)
                 {
                     Keyboard.KeyState[key] = 1;
                 }
-                if (action == 2)
+                if (action == GLFW.GLFW_REPEAT)
                 {
                     Keyboard.KeyState[key] = 3;
                 }
-                if (action == 0 && Keyboard.KeyState[key] > 0)
+                if (action == GLFW.GLFW_RELEASE && Keyboard.KeyState[key] > 0)
                 {
                     Keyboard.KeyState[key] = 4;
                 }
