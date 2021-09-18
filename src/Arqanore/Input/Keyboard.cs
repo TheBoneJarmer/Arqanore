@@ -7,8 +7,9 @@ namespace Arqanore.Input
     public static class Keyboard
     {
         internal static int[] KeyState { get; private set; }
-        public static Char PressedChar { get; set; }
-        public static int PressedCharCode { get; set; }
+        public static Char PressedChar { get; internal set; }
+        public static int PressedCharCode { get; internal set; }
+        public static KeyCode PressedKey { get; internal set; }
 
         internal static void Init()
         {

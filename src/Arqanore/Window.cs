@@ -327,6 +327,8 @@ namespace Arqanore
         }
         private void OnKeyFunction(IntPtr windowHandle, int key, int scanCode, int action, int mods)
         {
+            Keyboard.PressedKey = (KeyCode)key;
+            
             if (key < Keyboard.KeyState.Length)
             {
                 if (action == 1)
