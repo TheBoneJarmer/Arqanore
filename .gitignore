@@ -1,0 +1,10 @@
+.idea/
+.vscode/
+
+cmake-build-*/
+build/
+bin/
+lib/
+
+# Blender temp files
+*.blend1
