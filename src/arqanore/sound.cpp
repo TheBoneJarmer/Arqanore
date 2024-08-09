@@ -38,7 +38,7 @@ double arqanore::Sound::pan() {
 
 void arqanore::Sound::looping(bool value) {
     if (!playing()) {
-        throw arqanore::ArqanoreException("Cannot loop sound because the sound is not playing.");
+        throw ArqanoreException("Cannot loop sound because the sound is not playing.");
     }
 
     Audio::engine->setLooping(this->handle, value);

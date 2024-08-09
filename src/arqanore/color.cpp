@@ -1,14 +1,7 @@
 #include "arqanore/color.h"
 
-void arqanore::Color::fix_values() {
-    this->fix_values(this);
-}
-
-void arqanore::Color::fix_values(arqanore::Color *color) {
-    if (color == nullptr) {
-        return;
-    }
-
+void arqanore::Color::fix_values(Color* color)
+{
     if (color->r > 255) color->r = 255;
     if (color->g > 255) color->g = 255;
     if (color->b > 255) color->b = 255;
@@ -28,69 +21,78 @@ const arqanore::Color arqanore::Color::PURPLE = Color(255, 0, 255);
 const arqanore::Color arqanore::Color::WHITE = Color(255, 255, 255);
 const arqanore::Color arqanore::Color::BLACK = Color(0, 0, 9);
 
-arqanore::Color::Color() {
+arqanore::Color::Color()
+{
     this->r = 0;
     this->g = 0;
     this->b = 0;
     this->a = 255;
 }
 
-arqanore::Color::Color(unsigned int r, unsigned int g, unsigned int b) {
+arqanore::Color::Color(unsigned int r, unsigned int g, unsigned int b)
+{
     this->r = r;
     this->g = g;
     this->b = b;
     this->a = 255;
 
-    fix_values();
+    fix_values(this);
 }
 
-arqanore::Color::Color(unsigned int r, unsigned int g, unsigned int b, unsigned int a) {
+arqanore::Color::Color(unsigned int r, unsigned int g, unsigned int b, unsigned int a)
+{
     this->r = r;
     this->g = g;
     this->b = b;
     this->a = a;
 
-    fix_values();
+    fix_values(this);
 }
 
-arqanore::Color::Color(const arqanore::Color &color) {
+arqanore::Color::Color(const Color& color)
+{
     this->r = color.r;
     this->g = color.g;
     this->b = color.b;
     this->a = color.a;
 
-    fix_values();
+    fix_values(this);
 }
 
-bool arqanore::Color::operator==(const arqanore::Color &color) {
+bool arqanore::Color::operator==(const Color& color)
+{
     return r == color.r && g == color.g && b == color.b && a == color.a;
 }
 
-bool arqanore::Color::operator!=(const arqanore::Color &color) {
+bool arqanore::Color::operator!=(const Color& color)
+{
     return r != color.r || g != color.g || b != color.b || a != color.a;
 }
 
-arqanore::Color &arqanore::Color::operator=(const arqanore::Color &color) {
+arqanore::Color& arqanore::Color::operator=(const Color& color)
+{
     this->r = color.r;
     this->g = color.g;
     this->b = color.b;
     this->a = color.a;
 
-    fix_values();
+    fix_values(this);
     return *this;
 }
 
-arqanore::Color &arqanore::Color::operator=(const unsigned int value) {
+arqanore::Color& arqanore::Color::operator=(const unsigned int value)
+{
     this->r = value;
     this->g = value;
     this->b = value;
     this->a = value;
 
-    fix_values();
+    fix_values(this);
     return *this;
 }
 
-arqanore::Color arqanore::Color::operator+(const arqanore::Color &color) {
+arqanore::Color arqanore::Color::operator+(const Color& color)
+{
     Color result;
     result.r = r + color.r;
     result.g = g + color.g;
@@ -101,7 +103,8 @@ arqanore::Color arqanore::Color::operator+(const arqanore::Color &color) {
     return result;
 }
 
-arqanore::Color arqanore::Color::operator+(const unsigned int value) {
+arqanore::Color arqanore::Color::operator+(const unsigned int value)
+{
     Color result;
     result.r = r + value;
     result.g = g + value;
@@ -112,7 +115,8 @@ arqanore::Color arqanore::Color::operator+(const unsigned int value) {
     return result;
 }
 
-arqanore::Color arqanore::Color::operator-(const arqanore::Color &color) {
+arqanore::Color arqanore::Color::operator-(const Color& color)
+{
     Color result;
     result.r = r - color.r;
     result.g = g - color.g;
@@ -123,7 +127,8 @@ arqanore::Color arqanore::Color::operator-(const arqanore::Color &color) {
     return result;
 }
 
-arqanore::Color arqanore::Color::operator-(const unsigned int value) {
+arqanore::Color arqanore::Color::operator-(const unsigned int value)
+{
     Color result;
     result.r = r - value;
     result.g = g - value;
@@ -134,7 +139,8 @@ arqanore::Color arqanore::Color::operator-(const unsigned int value) {
     return result;
 }
 
-arqanore::Color arqanore::Color::operator/(const arqanore::Color &color) {
+arqanore::Color arqanore::Color::operator/(const Color& color)
+{
     Color result;
     result.r = r / color.r;
     result.g = g / color.g;
@@ -145,7 +151,8 @@ arqanore::Color arqanore::Color::operator/(const arqanore::Color &color) {
     return result;
 }
 
-arqanore::Color arqanore::Color::operator/(const unsigned int value) {
+arqanore::Color arqanore::Color::operator/(const unsigned int value)
+{
     Color result;
     result.r = r / value;
     result.g = g / value;
@@ -156,7 +163,8 @@ arqanore::Color arqanore::Color::operator/(const unsigned int value) {
     return result;
 }
 
-arqanore::Color arqanore::Color::operator*(const arqanore::Color &color) {
+arqanore::Color arqanore::Color::operator*(const Color& color)
+{
     Color result;
     result.r = r * color.r;
     result.g = g * color.g;
@@ -167,7 +175,8 @@ arqanore::Color arqanore::Color::operator*(const arqanore::Color &color) {
     return result;
 }
 
-arqanore::Color arqanore::Color::operator*(const unsigned int value) {
+arqanore::Color arqanore::Color::operator*(const unsigned int value)
+{
     Color result;
     result.r = r * value;
     result.g = g * value;

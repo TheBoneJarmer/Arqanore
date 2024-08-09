@@ -72,25 +72,25 @@ namespace arqanore {
 
         void set_uniform_4d(std::string name, double d1, double d2, double d3, double d4);
 
-        void set_uniform_vec2(std::string name, arqanore::Vector2 v);
+        void set_uniform_vec2(std::string name, Vector2 v);
 
-        void set_uniform_vec3(std::string name, arqanore::Vector3 v);
+        void set_uniform_vec3(std::string name, Vector3 v);
 
-        void set_uniform_mat3(std::string name, arqanore::Matrix3 m);
+        void set_uniform_mat3(std::string name, Matrix3 m);
 
-        void set_uniform_mat4(std::string name, arqanore::Matrix4 m);
+        void set_uniform_mat4(std::string name, Matrix4 m);
 
-        void set_uniform_rgba(std::string name, arqanore::Color c);
+        void set_uniform_rgba(std::string name, Color c);
 
-        void set_uniform_rgb(std::string name, arqanore::Color c);
+        void set_uniform_rgb(std::string name, Color c);
 
-        void set_texture(unsigned int index, arqanore::Texture &tex);
+        void set_texture(unsigned int index, Texture &tex);
 
-        void set_sprite(unsigned int index, arqanore::Sprite &tex);
+        void set_sprite(unsigned int index, Sprite &tex);
 
-        void set_texture(unsigned int index, arqanore::Texture *tex);
+        void set_texture(unsigned int index, Texture *tex);
 
-        void set_sprite(unsigned int index, arqanore::Sprite *tex);
+        void set_sprite(unsigned int index, Sprite *tex);
 
         bool operator==(const Shader &in);
 

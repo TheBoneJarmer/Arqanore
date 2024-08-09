@@ -16,7 +16,7 @@ namespace arqanore {
 
         static Vector3 euler_angles(Quaternion q);
 
-        static Quaternion normalize(arqanore::Quaternion q);
+        static Quaternion normalize(Quaternion q);
 
         static Quaternion rotate(Quaternion q, float angle, Vector3 axis);
 

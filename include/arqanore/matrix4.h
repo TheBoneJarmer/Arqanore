@@ -21,13 +21,13 @@ namespace arqanore {
 
         static Matrix4 identity();
 
-        static Matrix4 scale(arqanore::Matrix4 m, Vector3 vec);
+        static Matrix4 scale(Matrix4 m, Vector3 vec);
 
-        static Matrix4 translate(arqanore::Matrix4 m, Vector3 vec);
+        static Matrix4 translate(Matrix4 m, Vector3 vec);
 
-        static Matrix4 rotate(arqanore::Matrix4 m, Quaternion quat);
+        static Matrix4 rotate(Matrix4 m, Quaternion quat);
 
-        static Matrix4 perspective(arqanore::Matrix4 m, float fovy, float ratio, float near, float far);
+        static Matrix4 perspective(Matrix4 m, float fovy, float ratio, float near, float far);
 
         Matrix4 operator+(const Matrix4 &m) const;
 

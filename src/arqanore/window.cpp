@@ -10,7 +10,7 @@
 #include "arqanore/scene.h"
 
 void arqanore::Window::error_callback(int error_code, const char *error_description) {
-    throw new arqanore::GlfwException(error_code, error_description);
+    throw new GlfwException(error_code, error_description);
 }
 
 void arqanore::Window::window_resize_callback(GLFWwindow *handle, int width, int height) {
@@ -182,7 +182,7 @@ void arqanore::Window::set_vsync(bool value) {
     }
 }
 
-void arqanore::Window::set_clear_color(arqanore::Color value) {
+void arqanore::Window::set_clear_color(Color value) {
     this->clear_color = value;
 }
 

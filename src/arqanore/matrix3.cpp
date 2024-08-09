@@ -34,7 +34,7 @@ arqanore::Matrix3::Matrix3(std::array<float, 9> values) {
     this->values = values;
 }
 
-arqanore::Matrix3::Matrix3(arqanore::Matrix4 &mat) : Matrix3() {
+arqanore::Matrix3::Matrix3(Matrix4 &mat) : Matrix3() {
     float *mat_values = Matrix4::array(mat.values);
     glm::mat4 glm_mat4 = glm::make_mat4(mat_values);
     glm::mat3 glm_mat3 = glm::mat3(glm_mat4);
@@ -72,21 +72,21 @@ std::array<float, 9> arqanore::Matrix3::array(float *arr) {
     return result;
 }
 
-arqanore::Matrix3 arqanore::Matrix3::inverse(arqanore::Matrix3 m) {
+arqanore::Matrix3 arqanore::Matrix3::inverse(Matrix3 m) {
     glm::mat3 glm_mat = to_glm_mat3(m);
     glm_mat = glm::inverse(glm_mat);
 
     return from_glm_mat3(glm_mat);
 }
 
-arqanore::Matrix3 arqanore::Matrix3::transpose(arqanore::Matrix3 m) {
+arqanore::Matrix3 arqanore::Matrix3::transpose(Matrix3 m) {
     glm::mat3 glm_mat = to_glm_mat3(m);
     glm_mat = glm::transpose(glm_mat);
 
     return from_glm_mat3(glm_mat);
 }
 
-arqanore::Matrix3 arqanore::Matrix3::operator+(const arqanore::Matrix3 &m) const {
+arqanore::Matrix3 arqanore::Matrix3::operator+(const Matrix3 &m) const {
     glm::mat3 glm_mat1 = to_glm_mat3(*this);
     glm::mat3 glm_mat2 = to_glm_mat3(m);
     glm::mat3 glm_mat = glm_mat1 + glm_mat2;
@@ -101,7 +101,7 @@ arqanore::Matrix3 arqanore::Matrix3::operator+(const float f) const {
     return from_glm_mat3(glm_mat);
 }
 
-arqanore::Matrix3 arqanore::Matrix3::operator-(const arqanore::Matrix3 &m) const {
+arqanore::Matrix3 arqanore::Matrix3::operator-(const Matrix3 &m) const {
     glm::mat3 glm_mat1 = to_glm_mat3(*this);
     glm::mat3 glm_mat2 = to_glm_mat3(m);
     glm::mat3 glm_mat = glm_mat1 - glm_mat2;
@@ -116,7 +116,7 @@ arqanore::Matrix3 arqanore::Matrix3::operator-(const float f) const {
     return from_glm_mat3(glm_mat);
 }
 
-arqanore::Matrix3 arqanore::Matrix3::operator*(const arqanore::Matrix3 &m) const {
+arqanore::Matrix3 arqanore::Matrix3::operator*(const Matrix3 &m) const {
     glm::mat3 glm_mat1 = to_glm_mat3(*this);
     glm::mat3 glm_mat2 = to_glm_mat3(m);
     glm::mat3 glm_mat = glm_mat1 * glm_mat2;
@@ -131,7 +131,7 @@ arqanore::Matrix3 arqanore::Matrix3::operator*(const float f) const {
     return from_glm_mat3(glm_mat);
 }
 
-arqanore::Matrix3 arqanore::Matrix3::operator/(const arqanore::Matrix3 &m) const {
+arqanore::Matrix3 arqanore::Matrix3::operator/(const Matrix3 &m) const {
     glm::mat3 glm_mat1 = to_glm_mat3(*this);
     glm::mat3 glm_mat2 = to_glm_mat3(m);
     glm::mat3 glm_mat = glm_mat1 / glm_mat2;
@@ -146,7 +146,7 @@ arqanore::Matrix3 arqanore::Matrix3::operator/(const float f) const {
     return from_glm_mat3(glm_mat);
 }
 
-bool arqanore::Matrix3::operator==(const arqanore::Matrix3 &m) const {
+bool arqanore::Matrix3::operator==(const Matrix3 &m) const {
     for (int i = 0; i < 9; i++) {
         float f1 = values[i];
         float f2 = m.values[i];
@@ -159,6 +159,6 @@ bool arqanore::Matrix3::operator==(const arqanore::Matrix3 &m) const {
     return true;
 }
 
-bool arqanore::Matrix3::operator!=(const arqanore::Matrix3 &m) const {
+bool arqanore::Matrix3::operator!=(const Matrix3 &m) const {
     return !(m == *this);
 }

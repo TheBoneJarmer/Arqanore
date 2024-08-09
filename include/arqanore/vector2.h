@@ -21,9 +21,9 @@ namespace arqanore {
 
         static float dot(Vector2 v1, Vector2 v2);
 
-        static Vector2 normalized(arqanore::Vector2 v);
+        static Vector2 normalized(Vector2 v);
 
-        static Vector2 lerp(arqanore::Vector2 v1, arqanore::Vector2 v2, float by);
+        static Vector2 lerp(Vector2 v1, Vector2 v2, float by);
 
         Vector2 &operator+(Vector2 &v);
 

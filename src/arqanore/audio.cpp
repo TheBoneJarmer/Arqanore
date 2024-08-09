@@ -2,15 +2,18 @@
 
 SoLoud::Soloud* arqanore::Audio::engine;
 
-void arqanore::Audio::init() {
+void arqanore::Audio::init()
+{
     engine = new SoLoud::Soloud();
     engine->init();
 }
 
-void arqanore::Audio::destroy() {
+void arqanore::Audio::destroy()
+{
     delete engine;
 }
 
-void arqanore::Audio::stop() {
+void arqanore::Audio::stop()
+{
     engine->stopAll();
 }

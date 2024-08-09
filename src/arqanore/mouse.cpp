@@ -26,11 +26,11 @@ void arqanore::Mouse::update() {
 }
 
 float arqanore::Mouse::get_x() {
-    return Mouse::x;
+    return x;
 }
 
 float arqanore::Mouse::get_y() {
-    return Mouse::y;
+    return y;
 }
 
 float arqanore::Mouse::get_move_x() {

@@ -272,7 +272,7 @@ void arqanore::Shader::set_uniform_4d(std::string name, double d1, double d2, do
     glUniform4d(uniform, d1, d2, d3, d4);
 }
 
-void arqanore::Shader::set_uniform_vec2(std::string name, arqanore::Vector2 v) {
+void arqanore::Shader::set_uniform_vec2(std::string name, Vector2 v) {
     int uniform = get_uniform_location(name);
 
     if (uniform == -1) {
@@ -282,7 +282,7 @@ void arqanore::Shader::set_uniform_vec2(std::string name, arqanore::Vector2 v) {
     glUniform2f(uniform, v.x, v.y);
 }
 
-void arqanore::Shader::set_uniform_vec3(std::string name, arqanore::Vector3 v) {
+void arqanore::Shader::set_uniform_vec3(std::string name, Vector3 v) {
     int uniform = get_uniform_location(name);
 
     if (uniform == -1) {
@@ -292,7 +292,7 @@ void arqanore::Shader::set_uniform_vec3(std::string name, arqanore::Vector3 v) {
     glUniform3f(uniform, v.x, v.y, v.z);
 }
 
-void arqanore::Shader::set_uniform_mat3(std::string name, arqanore::Matrix3 m) {
+void arqanore::Shader::set_uniform_mat3(std::string name, Matrix3 m) {
     int uniform = get_uniform_location(name);
     float *values = Matrix3::array(m.values);
 
@@ -303,7 +303,7 @@ void arqanore::Shader::set_uniform_mat3(std::string name, arqanore::Matrix3 m) {
     delete values;
 }
 
-void arqanore::Shader::set_uniform_mat4(std::string name, arqanore::Matrix4 m) {
+void arqanore::Shader::set_uniform_mat4(std::string name, Matrix4 m) {
     int uniform = get_uniform_location(name);
     float *values = Matrix4::array(m.values);
 
@@ -314,7 +314,7 @@ void arqanore::Shader::set_uniform_mat4(std::string name, arqanore::Matrix4 m) {
     delete values;
 }
 
-void arqanore::Shader::set_uniform_rgba(std::string name, arqanore::Color c) {
+void arqanore::Shader::set_uniform_rgba(std::string name, Color c) {
     int uniform = get_uniform_location(name);
 
     if (uniform == -1) {
@@ -324,7 +324,7 @@ void arqanore::Shader::set_uniform_rgba(std::string name, arqanore::Color c) {
     glUniform4f(uniform, c.r / 255.f, c.g / 255.f, c.b / 255.f, c.a / 255.f);
 }
 
-void arqanore::Shader::set_uniform_rgb(std::string name, arqanore::Color c) {
+void arqanore::Shader::set_uniform_rgb(std::string name, Color c) {
     int uniform = get_uniform_location(name);
 
     if (uniform == -1) {
@@ -334,17 +334,17 @@ void arqanore::Shader::set_uniform_rgb(std::string name, arqanore::Color c) {
     glUniform3f(uniform, c.r / 255.f, c.g / 255.f, c.b / 255.f);
 }
 
-void arqanore::Shader::set_texture(unsigned int index, arqanore::Texture &tex) {
+void arqanore::Shader::set_texture(unsigned int index, Texture &tex) {
     glActiveTexture(GL_TEXTURE0 + index);
     glBindTexture(GL_TEXTURE_2D, tex.id);
 }
 
-void arqanore::Shader::set_sprite(unsigned int index, arqanore::Sprite &tex) {
+void arqanore::Shader::set_sprite(unsigned int index, Sprite &tex) {
     glActiveTexture(GL_TEXTURE0 + index);
     glBindTexture(GL_TEXTURE_2D, tex.id);
 }
 
-void arqanore::Shader::set_texture(unsigned int index, arqanore::Texture *tex) {
+void arqanore::Shader::set_texture(unsigned int index, Texture *tex) {
     if (tex == nullptr) {
         throw ArqanoreException("Texture cannot be null");
     }
@@ -353,7 +353,7 @@ void arqanore::Shader::set_texture(unsigned int index, arqanore::Texture *tex) {
     glBindTexture(GL_TEXTURE_2D, tex->id);
 }
 
-void arqanore::Shader::set_sprite(unsigned int index, arqanore::Sprite *tex) {
+void arqanore::Shader::set_sprite(unsigned int index, Sprite *tex) {
     if (tex == nullptr) {
         throw ArqanoreException("Sprite cannot be null");
     }
@@ -362,15 +362,15 @@ void arqanore::Shader::set_sprite(unsigned int index, arqanore::Sprite *tex) {
     glBindTexture(GL_TEXTURE_2D, tex->id);
 }
 
-bool arqanore::Shader::operator==(const arqanore::Shader &in) {
+bool arqanore::Shader::operator==(const Shader &in) {
     return id == in.id;
 }
 
-bool arqanore::Shader::operator!=(const arqanore::Shader &in) {
+bool arqanore::Shader::operator!=(const Shader &in) {
     return id != in.id;
 }
 
-arqanore::Shader &arqanore::Shader::operator=(const arqanore::Shader &in) {
+arqanore::Shader &arqanore::Shader::operator=(const Shader &in) {
     this->id = in.id;
 
     return *this;

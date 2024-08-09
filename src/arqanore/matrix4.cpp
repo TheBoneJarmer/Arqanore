@@ -62,36 +62,36 @@ arqanore::Matrix4 arqanore::Matrix4::identity() {
     return from_glm_mat4(glm_mat);
 }
 
-arqanore::Matrix4 arqanore::Matrix4::scale(arqanore::Matrix4 m, arqanore::Vector3 vec) {
+arqanore::Matrix4 arqanore::Matrix4::scale(Matrix4 m, Vector3 vec) {
     glm::mat4 glm_mat = to_glm_mat4(m);
     glm_mat = glm::scale(glm_mat, glm::vec3(vec.x, vec.y, vec.z));
 
     return from_glm_mat4(glm_mat);
 }
 
-arqanore::Matrix4 arqanore::Matrix4::translate(arqanore::Matrix4 m, arqanore::Vector3 vec) {
+arqanore::Matrix4 arqanore::Matrix4::translate(Matrix4 m, Vector3 vec) {
     glm::mat4 glm_mat = to_glm_mat4(m);
     glm_mat = glm::translate(glm_mat, glm::vec3(vec.x, vec.y, vec.z));
 
     return from_glm_mat4(glm_mat);
 }
 
-arqanore::Matrix4 arqanore::Matrix4::rotate(arqanore::Matrix4 m, arqanore::Quaternion quat) {
+arqanore::Matrix4 arqanore::Matrix4::rotate(Matrix4 m, Quaternion quat) {
     glm::mat4 glm_mat = to_glm_mat4(m);
     glm::quat glm_quat = glm::quat(quat.w, quat.x, quat.y, quat.z);
-    glm_mat *= glm::mat4_cast(glm_quat);
+    glm_mat *= mat4_cast(glm_quat);
 
     return from_glm_mat4(glm_mat);
 }
 
-arqanore::Matrix4 arqanore::Matrix4::perspective(arqanore::Matrix4 m, float fovy, float ratio, float near, float far) {
+arqanore::Matrix4 arqanore::Matrix4::perspective(Matrix4 m, float fovy, float ratio, float near, float far) {
     glm::mat4 glm_mat = to_glm_mat4(m);
     glm_mat = glm::perspective(glm::radians(fovy), ratio, near, far);
 
     return from_glm_mat4(glm_mat);
 }
 
-arqanore::Matrix4 arqanore::Matrix4::operator+(const arqanore::Matrix4 &m) const {
+arqanore::Matrix4 arqanore::Matrix4::operator+(const Matrix4 &m) const {
     glm::mat4 glm_mat1 = to_glm_mat4(*this);
     glm::mat4 glm_mat2 = to_glm_mat4(m);
     glm::mat4 glm_mat = glm_mat1 + glm_mat2;
@@ -106,7 +106,7 @@ arqanore::Matrix4 arqanore::Matrix4::operator+(const float f) const {
     return from_glm_mat4(glm_mat);
 }
 
-arqanore::Matrix4 arqanore::Matrix4::operator-(const arqanore::Matrix4 &m) const {
+arqanore::Matrix4 arqanore::Matrix4::operator-(const Matrix4 &m) const {
     glm::mat4 glm_mat1 = to_glm_mat4(*this);
     glm::mat4 glm_mat2 = to_glm_mat4(m);
     glm::mat4 glm_mat = glm_mat1 - glm_mat2;
@@ -121,7 +121,7 @@ arqanore::Matrix4 arqanore::Matrix4::operator-(const float f) const {
     return from_glm_mat4(glm_mat);
 }
 
-arqanore::Matrix4 arqanore::Matrix4::operator*(const arqanore::Matrix4 &m) const {
+arqanore::Matrix4 arqanore::Matrix4::operator*(const Matrix4 &m) const {
     glm::mat4 glm_mat1 = to_glm_mat4(*this);
     glm::mat4 glm_mat2 = to_glm_mat4(m);
     glm::mat4 glm_mat = glm_mat1 * glm_mat2;
@@ -136,7 +136,7 @@ arqanore::Matrix4 arqanore::Matrix4::operator*(const float f) const {
     return from_glm_mat4(glm_mat);
 }
 
-arqanore::Matrix4 arqanore::Matrix4::operator/(const arqanore::Matrix4 &m) const {
+arqanore::Matrix4 arqanore::Matrix4::operator/(const Matrix4 &m) const {
     glm::mat4 glm_mat1 = to_glm_mat4(*this);
     glm::mat4 glm_mat2 = to_glm_mat4(m);
     glm::mat4 glm_mat = glm_mat1 / glm_mat2;
@@ -151,7 +151,7 @@ arqanore::Matrix4 arqanore::Matrix4::operator/(const float f) const {
     return from_glm_mat4(glm_mat);
 }
 
-bool arqanore::Matrix4::operator==(const arqanore::Matrix4 &m) const {
+bool arqanore::Matrix4::operator==(const Matrix4 &m) const {
     for (int i = 0; i < 16; i++) {
         float f1 = values[i];
         float f2 = m.values[i];
@@ -164,6 +164,6 @@ bool arqanore::Matrix4::operator==(const arqanore::Matrix4 &m) const {
     return true;
 }
 
-bool arqanore::Matrix4::operator!=(const arqanore::Matrix4 &m) const {
+bool arqanore::Matrix4::operator!=(const Matrix4 &m) const {
     return !(m == *this);
 }

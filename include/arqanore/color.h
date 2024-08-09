@@ -1,13 +1,10 @@
 #pragma once
 
-#include <cstdlib>
-
-namespace arqanore {
-    class Color {
-    private:
-        void fix_values();
-
-        void fix_values(Color* color);
+namespace arqanore
+{
+    class Color
+    {
+        static void fix_values(Color* color);
 
     public:
         static const Color RED;
@@ -23,11 +20,11 @@ namespace arqanore {
         unsigned int g;
         unsigned int b;
         unsigned int a;
-        
+
         Color();
-        
+
         Color(unsigned int r, unsigned int g, unsigned int b);
-        
+
         Color(unsigned int r, unsigned int g, unsigned int b, unsigned int a);
 
         Color(const Color& color);

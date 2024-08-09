@@ -1,4 +1,3 @@
-#include <iostream>
 #include "arqanore/keyboard.h"
 
 #include <string>
@@ -132,14 +131,18 @@ const unsigned int arqanore::Keys::MENU = 348;
 unsigned int arqanore::Keyboard::states[512];
 unsigned int arqanore::Keyboard::scancode;
 
-void arqanore::Keyboard::update() {
-    for (unsigned int & i : states) {
+void arqanore::Keyboard::update()
+{
+    for (unsigned int& i : states)
+    {
         unsigned int* state = &i;
 
-        if (*state == 1) {
+        if (*state == 1)
+        {
             *state = 2;
         }
-        if (*state == 4) {
+        if (*state == 4)
+        {
             *state = 0;
         }
     }
@@ -147,28 +150,35 @@ void arqanore::Keyboard::update() {
     scancode = 0;
 }
 
-unsigned int arqanore::Keyboard::get_scancode() {
-    return Keyboard::scancode;
+unsigned int arqanore::Keyboard::get_scancode()
+{
+    return scancode;
 }
 
-bool arqanore::Keyboard::key_down(unsigned int key) {
-    if (key > 512 || key < 0) {
+bool arqanore::Keyboard::key_down(unsigned int key)
+{
+    if (key >= 512)
+    {
         throw ArqanoreException("Invalid key code " + std::to_string(key));
     }
 
     return states[key] > 0;
 }
 
-bool arqanore::Keyboard::key_up(unsigned int key) {
-    if (key > 512 || key < 0) {
+bool arqanore::Keyboard::key_up(unsigned int key)
+{
+    if (key >= 512)
+    {
         throw ArqanoreException("Invalid key code " + std::to_string(key));
     }
 
-    return states[key]  == 4;
+    return states[key] == 4;
 }
 
-bool arqanore::Keyboard::key_pressed(unsigned int key) {
-    if (key > 512 || key < 0) {
+bool arqanore::Keyboard::key_pressed(unsigned int key)
+{
+    if (key >= 512)
+    {
         throw ArqanoreException("Invalid key code " + std::to_string(key));
     }
 

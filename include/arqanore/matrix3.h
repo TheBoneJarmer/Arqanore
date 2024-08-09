@@ -20,9 +20,9 @@ namespace arqanore {
 
         static std::array<float, 9> array(float* arr);
 
-        static Matrix3 inverse(arqanore::Matrix3 m);
+        static Matrix3 inverse(Matrix3 m);
 
-        static Matrix3 transpose(arqanore::Matrix3 m);
+        static Matrix3 transpose(Matrix3 m);
 
         Matrix3 operator+(const Matrix3 &m) const;
 

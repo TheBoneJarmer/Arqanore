@@ -5,7 +5,7 @@
 #include "arqanore/quaternion.h"
 
 arqanore::Vector3 arqanore::ModelParser::parse_vector3(std::string &value) {
-    auto vec = arqanore::Vector3();
+    auto vec = Vector3();
     auto values = string_split(value, ' ');
 
     vec.x = stof(values[0]);
@@ -16,7 +16,7 @@ arqanore::Vector3 arqanore::ModelParser::parse_vector3(std::string &value) {
 }
 
 arqanore::Vector2 arqanore::ModelParser::parse_vector2(std::string &value) {
-    auto vec = arqanore::Vector2();
+    auto vec = Vector2();
     auto values = string_split(value, ' ');
 
     vec.x = stof(values[0]);
@@ -26,7 +26,7 @@ arqanore::Vector2 arqanore::ModelParser::parse_vector2(std::string &value) {
 }
 
 arqanore::Color arqanore::ModelParser::parse_color(std::string &value) {
-    auto color = arqanore::Color();
+    auto color = Color();
     auto values = string_split(value, ' ');
 
     color.r = stoi(values[0]);
@@ -37,7 +37,7 @@ arqanore::Color arqanore::ModelParser::parse_color(std::string &value) {
     return color;
 }
 
-void arqanore::ModelParser::parse_line(std::string &key, std::string &value, arqanore::Mesh *&mesh, arqanore::Material *&material, std::string &path) {
+void arqanore::ModelParser::parse_line(std::string &key, std::string &value, Mesh *&mesh, Material *&material, std::string &path) {
     if (key == "VERSION") {
         parse_version(value);    
     }
@@ -81,7 +81,7 @@ void arqanore::ModelParser::parse_version(std::string& value) {
     this->version[2] = std::stoi(values[2]);
 }
 
-void arqanore::ModelParser::parse_mesh(std::string &key, std::string &value, arqanore::Mesh *mesh) {
+void arqanore::ModelParser::parse_mesh(std::string &key, std::string &value, Mesh *mesh) {
     if (key == "mat") parse_mesh_material(value, mesh);
     if (key == "v") parse_mesh_vertex(value, mesh);
     if (key == "n") parse_mesh_normal(value, mesh);
@@ -90,7 +90,7 @@ void arqanore::ModelParser::parse_mesh(std::string &key, std::string &value, arq
     if (key == "mf") parse_mesh_frame(value, mesh);
 }
 
-void arqanore::ModelParser::parse_mesh_frame(std::string &value, arqanore::Mesh *mesh) {
+void arqanore::ModelParser::parse_mesh_frame(std::string &value, Mesh *mesh) {
     auto values = string_split(value, ' ');
     auto frame = MeshFrame();
     frame.position = Vector3(stof(values[0]), stof(values[1]), stof(values[2]));
@@ -100,24 +100,24 @@ void arqanore::ModelParser::parse_mesh_frame(std::string &value, arqanore::Mesh 
     mesh->animation.frames.push_back(frame);
 }
 
-void arqanore::ModelParser::parse_mesh_vertex(std::string &value, arqanore::Mesh *mesh) {
+void arqanore::ModelParser::parse_mesh_vertex(std::string &value, Mesh *mesh) {
     auto vector = parse_vector3(value);
     vertices.push_back(vector);
 }
 
-void arqanore::ModelParser::parse_mesh_normal(std::string &value, arqanore::Mesh *mesh) {
+void arqanore::ModelParser::parse_mesh_normal(std::string &value, Mesh *mesh) {
     auto vector = parse_vector3(value);
     normals.push_back(vector);
 }
 
-void arqanore::ModelParser::parse_mesh_texcoord(std::string &value, arqanore::Mesh *mesh) {
+void arqanore::ModelParser::parse_mesh_texcoord(std::string &value, Mesh *mesh) {
     auto vector = parse_vector2(value);
     vector.y *= -1;
 
     texcoords.push_back(vector);
 }
 
-void arqanore::ModelParser::parse_mesh_material(std::string &value, arqanore::Mesh *mesh) {
+void arqanore::ModelParser::parse_mesh_material(std::string &value, Mesh *mesh) {
     for (Material &mat: materials) {
         if (mat.name == value) {
             mesh->material = mat;
@@ -125,7 +125,7 @@ void arqanore::ModelParser::parse_mesh_material(std::string &value, arqanore::Me
     }
 }
 
-void arqanore::ModelParser::parse_mesh_face(std::string &value, arqanore::Mesh *mesh) {
+void arqanore::ModelParser::parse_mesh_face(std::string &value, Mesh *mesh) {
     auto values = string_split(value, ' ');
 
     if (values.size() > 3) {
@@ -171,7 +171,7 @@ void arqanore::ModelParser::parse_mesh_face(std::string &value, arqanore::Mesh *
     }
 }
 
-void arqanore::ModelParser::parse_material(std::string &key, std::string &value, arqanore::Material *material, std::string &path) {
+void arqanore::ModelParser::parse_material(std::string &key, std::string &value, Material *material, std::string &path) {
     if (key == "clr") parse_material_color(value, material);
     if (key == "dif") parse_material_diffuse(value, material);
     if (key == "amb") parse_material_ambient(value, material);
@@ -182,41 +182,41 @@ void arqanore::ModelParser::parse_material(std::string &key, std::string &value,
     if (key == "spc_map") parse_material_specular_map(value, material, path);
 }
 
-void arqanore::ModelParser::parse_material_color(std::string &value, arqanore::Material *material) {
+void arqanore::ModelParser::parse_material_color(std::string &value, Material *material) {
     material->color = parse_color(value);
 }
 
-void arqanore::ModelParser::parse_material_diffuse(std::string &value, arqanore::Material *material) {
+void arqanore::ModelParser::parse_material_diffuse(std::string &value, Material *material) {
     material->diffuse = parse_color(value);
 }
 
-void arqanore::ModelParser::parse_material_ambient(std::string &value, arqanore::Material *material) {
+void arqanore::ModelParser::parse_material_ambient(std::string &value, Material *material) {
     material->ambient = parse_color(value);
 }
 
-void arqanore::ModelParser::parse_material_specular(std::string &value, arqanore::Material *material) {
+void arqanore::ModelParser::parse_material_specular(std::string &value, Material *material) {
     material->specular = parse_color(value);
 }
 
-void arqanore::ModelParser::parse_material_shininess(std::string &value, arqanore::Material *material) {
+void arqanore::ModelParser::parse_material_shininess(std::string &value, Material *material) {
     material->shininess = std::stof(value);
 }
 
-void arqanore::ModelParser::parse_material_diffuse_map(std::string &value, arqanore::Material *material, std::string &path) {
+void arqanore::ModelParser::parse_material_diffuse_map(std::string &value, Material *material, std::string &path) {
     auto parent_path = get_parent_path(path);
     auto full_path = parent_path.string() + "/" + value;
 
     material->diffuse_map = new Texture(full_path);
 }
 
-void arqanore::ModelParser::parse_material_ambient_map(std::string &value, arqanore::Material *material, std::string &path) {
+void arqanore::ModelParser::parse_material_ambient_map(std::string &value, Material *material, std::string &path) {
     auto parent_path = get_parent_path(path);
     auto full_path = parent_path.string() + "/" + value;
 
     material->ambient_map = new Texture(full_path);
 }
 
-void arqanore::ModelParser::parse_material_specular_map(std::string &value, arqanore::Material *material, std::string &path) {
+void arqanore::ModelParser::parse_material_specular_map(std::string &value, Material *material, std::string &path) {
     auto parent_path = get_parent_path(path);
     auto full_path = parent_path.string() + "/" + value;
 

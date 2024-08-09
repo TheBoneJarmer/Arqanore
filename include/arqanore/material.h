@@ -18,7 +18,7 @@ namespace arqanore {
 
         Material();
 
-        Material(std::string name);
+        Material(const std::string& name);
 
         Material(const Material& material);
 

@@ -25,7 +25,7 @@ namespace arqanore {
     public:
         ArqanoreException();
 
-        ArqanoreException(std::string message);
+        ArqanoreException(const std::string& message);
 
         const char *what();
     };

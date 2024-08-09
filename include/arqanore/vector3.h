@@ -28,7 +28,7 @@ namespace arqanore {
 
         static Vector3 cross(Vector3 v1, Vector3 v2);
 
-        static Vector3 normalized(arqanore::Vector3 v);
+        static Vector3 normalized(Vector3 v);
 
         static Vector3 lerp(Vector3 v1, Vector3 v2, float by);
 

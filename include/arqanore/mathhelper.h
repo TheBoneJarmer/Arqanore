@@ -11,7 +11,7 @@ namespace arqanore {
 
         static float degrees(float rad);
 
-        static float lerp(float d1, float d2, float by);
+        static float lerp(float start, float end, float t);
 
         static float clamp(float value, float min, float max);
     };
