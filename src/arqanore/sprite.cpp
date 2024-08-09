@@ -4,9 +4,9 @@
 #include "arqanore/exceptions.h"
 
 void arqanore::Sprite::generate_buffers() {
-    auto texcoord_x = 1.0f / (float) get_frames_hor();
-    auto texcoord_y = 1.0f / (float) get_frames_vert();
-    auto vertices = std::vector<float>({0, 0, (float) frame_width, 0, 0, (float) frame_height, (float) frame_width, 0, 0, (float) frame_height, (float) frame_width, (float) frame_height});
+    auto texcoord_x = 1.0f / static_cast<float>(get_frames_hor());
+    auto texcoord_y = 1.0f / static_cast<float>(get_frames_vert());
+    auto vertices = std::vector<float>({0, 0, static_cast<float>(frame_width), 0, 0, static_cast<float>(frame_height), static_cast<float>(frame_width), 0, 0, static_cast<float>(frame_height), static_cast<float>(frame_width), static_cast<float>(frame_height)});
     auto texcoords = std::vector<float>({0, 0, texcoord_x, 0, 0, texcoord_y, texcoord_x, 0, 0, texcoord_y, texcoord_x, texcoord_y});
 
     glGenBuffers(1, &this->vbo_vertices);

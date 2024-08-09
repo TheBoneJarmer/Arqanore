@@ -263,9 +263,9 @@ arqanore::ModelParserResult arqanore::ModelParser::parse(std::string &path) {
         delete mesh;
         delete material;
     } catch (ArqanoreException &ex) {
-        throw ArqanoreException((std::string) ex.what() + " at line " + std::to_string(line_number));
+        throw ArqanoreException(static_cast<std::string>(ex.what()) + " at line " + std::to_string(line_number));
     } catch (std::exception &ex) {
-        throw ArqanoreException((std::string) ex.what() + " at line " + std::to_string(line_number));
+        throw ArqanoreException(static_cast<std::string>(ex.what()) + " at line " + std::to_string(line_number));
     } catch (...) {
         throw ArqanoreException("An unknown error occurred while parsing model file at line " + std::to_string(line_number));
     }

@@ -48,8 +48,8 @@ Matrix4 Renderer::generate_view_matrix(Camera &camera) {
 
 Matrix4 Renderer::generate_projection_matrix(Camera &camera, Window *window) {
     float &fov = camera.fov;
-    float width = (float) window->get_width();
-    float height = (float) window->get_height();
+    float width = static_cast<float>(window->get_width());
+    float height = static_cast<float>(window->get_height());
     float &near = camera.near;
     float &far = camera.far;
 

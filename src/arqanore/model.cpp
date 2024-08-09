@@ -66,7 +66,7 @@ int arqanore::Model::total_vertices() {
     auto result = 0;
 
     for (auto &mesh: meshes) {
-        result += (int) mesh.vertices.size();
+        result += static_cast<int>(mesh.vertices.size());
     }
 
     return result;
@@ -76,7 +76,7 @@ int arqanore::Model::total_texcoords() {
     auto result = 0;
 
     for (auto &mesh: meshes) {
-        result += (int) mesh.texcoords.size();
+        result += static_cast<int>(mesh.texcoords.size());
     }
 
     return result;
@@ -86,7 +86,7 @@ int arqanore::Model::total_normals() {
     auto result = 0;
 
     for (auto &mesh: meshes) {
-        result += (int) mesh.normals.size();
+        result += static_cast<int>(mesh.normals.size());
     }
 
     return result;

@@ -14,7 +14,7 @@ void arqanore::Window::error_callback(int error_code, const char *error_descript
 }
 
 void arqanore::Window::window_resize_callback(GLFWwindow *handle, int width, int height) {
-    auto win = (Window *) glfwGetWindowUserPointer(handle);
+    auto win = static_cast<Window*>(glfwGetWindowUserPointer(handle));
 
     if (win->window_resize_cb != nullptr) {
         win->window_resize_cb(win, width, height);
@@ -25,7 +25,7 @@ void arqanore::Window::window_resize_callback(GLFWwindow *handle, int width, int
 }
 
 void arqanore::Window::window_pos_callback(GLFWwindow *handle, int x, int y) {
-    auto win = (Window *) glfwGetWindowUserPointer(handle);
+    auto win = static_cast<Window*>(glfwGetWindowUserPointer(handle));
 
     if (win->window_pos_cb != nullptr) {
         win->window_pos_cb(win, x, y);
@@ -36,7 +36,7 @@ void arqanore::Window::window_pos_callback(GLFWwindow *handle, int x, int y) {
 }
 
 void arqanore::Window::window_close_callback(GLFWwindow *handle) {
-    auto win = (Window *) glfwGetWindowUserPointer(handle);
+    auto win = static_cast<Window*>(glfwGetWindowUserPointer(handle));
 
     if (win->window_close_cb != nullptr) {
         win->window_close_cb(win);
@@ -79,20 +79,20 @@ void arqanore::Window::mouse_button_callback(GLFWwindow *handle, int button, int
 void arqanore::Window::cursor_position_callback(GLFWwindow *handle, double xpos, double ypos) {
     // This is a fix to prevent the move_x and move_y values to go out of control
     if (Mouse::prev_x == 0 && Mouse::prev_y == 0) {
-        Mouse::prev_x = (float) xpos;
-        Mouse::prev_y = (float) ypos;
+        Mouse::prev_x = static_cast<float>(xpos);
+        Mouse::prev_y = static_cast<float>(ypos);
     }
 
     Mouse::prev_x = Mouse::x;
     Mouse::prev_y = Mouse::y;
-    Mouse::x = (float) xpos;
-    Mouse::y = (float) ypos;
+    Mouse::x = static_cast<float>(xpos);
+    Mouse::y = static_cast<float>(ypos);
     Mouse::move_x = Mouse::prev_x - Mouse::x;
     Mouse::move_y = Mouse::prev_y - Mouse::y;
 }
 
 void arqanore::Window::character_callback(GLFWwindow *handle, unsigned int codepoint) {
-    auto win = (Window *) glfwGetWindowUserPointer(handle);
+    auto win = static_cast<Window*>(glfwGetWindowUserPointer(handle));
 
     if (win->window_char_cb != nullptr) {
         win->window_char_cb(win, codepoint);
@@ -100,8 +100,8 @@ void arqanore::Window::character_callback(GLFWwindow *handle, unsigned int codep
 }
 
 void arqanore::Window::scroll_callback(GLFWwindow *handle, double xoffset, double yoffset) {
-    Mouse::scroll_x = (int) xoffset;
-    Mouse::scroll_y = (int) yoffset;
+    Mouse::scroll_x = static_cast<int>(xoffset);
+    Mouse::scroll_y = static_cast<int>(yoffset);
 }
 
 int arqanore::Window::get_width() {
