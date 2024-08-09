@@ -5,18 +5,22 @@
 #include "arqanore/shaders.h"
 #include "arqanore/mathhelper.h"
 #include "arqanore/exceptions.h"
+#include "arqanore/font.h"
+#include "arqanore/model.h"
+#include "arqanore/polygon.h"
 #include "arqanore/utils.h"
 #include "arqanore/scene.h"
 
 using namespace arqanore;
 
-Shader *Renderer::shader;
-Shader *Renderer::shader_font;
-Shader *Renderer::shader_polygon;
-Shader *Renderer::shader_sprite;
-Shader *Renderer::shader_model;
+Shader* Renderer::shader;
+Shader* Renderer::shader_font;
+Shader* Renderer::shader_polygon;
+Shader* Renderer::shader_sprite;
+Shader* Renderer::shader_model;
 
-void Renderer::reset() {
+void Renderer::reset()
+{
     shader = nullptr;
     shader_font = &Shaders::font;
     shader_polygon = &Shaders::polygon;
@@ -26,7 +30,8 @@ void Renderer::reset() {
     glUseProgram(0);
 }
 
-Matrix4 Renderer::generate_model_matrix(Vector3 pos, Quaternion rot, Vector3 scl) {
+Matrix4 Renderer::generate_model_matrix(Vector3 pos, Quaternion rot, Vector3 scl)
+{
     Matrix4 mat = Matrix4::identity();
     mat = Matrix4::scale(mat, scl);
     mat = Matrix4::translate(mat, pos);
@@ -35,9 +40,10 @@ Matrix4 Renderer::generate_model_matrix(Vector3 pos, Quaternion rot, Vector3 scl
     return mat;
 }
 
-Matrix4 Renderer::generate_view_matrix(Camera &camera) {
-    Vector3 &pos = camera.position;
-    Quaternion &rot = camera.rotation;
+Matrix4 Renderer::generate_view_matrix(Camera& camera)
+{
+    Vector3& pos = camera.position;
+    Quaternion& rot = camera.rotation;
 
     Matrix4 mat = Matrix4::identity();
     mat = Matrix4::rotate(mat, rot);
@@ -46,12 +52,13 @@ Matrix4 Renderer::generate_view_matrix(Camera &camera) {
     return mat;
 }
 
-Matrix4 Renderer::generate_projection_matrix(Camera &camera, Window *window) {
-    float &fov = camera.fov;
+Matrix4 Renderer::generate_projection_matrix(Camera& camera, Window* window)
+{
+    float& fov = camera.fov;
     float width = static_cast<float>(window->get_width());
     float height = static_cast<float>(window->get_height());
-    float &near = camera.near;
-    float &far = camera.far;
+    float& near = camera.near;
+    float& far = camera.far;
 
     Matrix4 mat = Matrix4::identity();
     mat = Matrix4::perspective(mat, fov, width / height, near, far);
@@ -59,27 +66,33 @@ Matrix4 Renderer::generate_projection_matrix(Camera &camera, Window *window) {
     return mat;
 }
 
-void Renderer::set_shader(Shader *ptr, unsigned int target) {
-    if (ptr == nullptr) {
+void Renderer::set_shader(Shader* ptr, unsigned int target)
+{
+    if (ptr == nullptr)
+    {
         throw ArqanoreException("Shader cannot be null");
     }
 
-    if (target == RENDER_TARGET_FONT) {
+    if (target == RENDER_TARGET_FONT)
+    {
         shader_font = ptr;
         return;
     }
 
-    if (target == RENDER_TARGET_POLYGON) {
+    if (target == RENDER_TARGET_POLYGON)
+    {
         shader_polygon = ptr;
         return;
     }
 
-    if (target == RENDER_TARGET_SPRITE) {
+    if (target == RENDER_TARGET_SPRITE)
+    {
         shader_sprite = ptr;
         return;
     }
 
-    if (target == RENDER_TARGET_MODEL) {
+    if (target == RENDER_TARGET_MODEL)
+    {
         shader_model = ptr;
         return;
     }
@@ -87,12 +100,15 @@ void Renderer::set_shader(Shader *ptr, unsigned int target) {
     throw ArqanoreException("Unknown render3D target " + std::to_string(target));
 }
 
-bool Renderer::switch_shader(Shader *ptr) {
-    if (ptr == nullptr) {
+bool Renderer::switch_shader(Shader* ptr)
+{
+    if (ptr == nullptr)
+    {
         return false;
     }
 
-    if (shader == ptr) {
+    if (shader == ptr)
+    {
         return false;
     }
 
@@ -101,14 +117,17 @@ bool Renderer::switch_shader(Shader *ptr) {
     return true;
 }
 
-void Renderer::render_text(Window *window, Font *font, std::u16string text, Vector2 position, Vector2 scale, Color color) {
+void Renderer::render_text(Window* window, Font* font, std::u16string text, Vector2 position, Vector2 scale, Color color)
+{
     switch_shader(shader_font);
 
-    if (window == nullptr) {
+    if (window == nullptr)
+    {
         throw ArqanoreException("Window is null");
     }
 
-    if (font == nullptr) {
+    if (font == nullptr)
+    {
         throw ArqanoreException("Font is null");
     }
 
@@ -121,10 +140,12 @@ void Renderer::render_text(Window *window, Font *font, std::u16string text, Vect
 
     glBindVertexArray(font->vao);
 
-    for (unsigned int c: text) {
+    for (unsigned int c : text)
+    {
         auto glyph = font->glyph(c);
 
-        if (glyph == nullptr) {
+        if (glyph == nullptr)
+        {
             continue;
         }
 
@@ -151,14 +172,17 @@ void Renderer::render_text(Window *window, Font *font, std::u16string text, Vect
     glBindVertexArray(0);
 }
 
-void Renderer::render_text(Window *window, Font *font, std::string text, Vector2 position, Vector2 scale, Color color) {
+void Renderer::render_text(Window* window, Font* font, std::string text, Vector2 position, Vector2 scale, Color color)
+{
     switch_shader(shader_font);
 
-    if (window == nullptr) {
+    if (window == nullptr)
+    {
         throw ArqanoreException("Window is null");
     }
 
-    if (font == nullptr) {
+    if (font == nullptr)
+    {
         throw ArqanoreException("Font is null");
     }
 
@@ -171,10 +195,12 @@ void Renderer::render_text(Window *window, Font *font, std::string text, Vector2
 
     glBindVertexArray(font->vao);
 
-    for (unsigned int c: text) {
+    for (unsigned int c : text)
+    {
         auto glyph = font->glyph(c);
 
-        if (glyph == nullptr) {
+        if (glyph == nullptr)
+        {
             continue;
         }
 
@@ -201,23 +227,27 @@ void Renderer::render_text(Window *window, Font *font, std::string text, Vector2
     glBindVertexArray(0);
 }
 
-void Renderer::render_polygon(Window *window, Polygon *polygon, Texture *texture, Vector2 position, Vector2 scale, Vector2 origin, Vector2 offset, float angle, bool flip_hor, bool flip_vert, Color color) {
+void Renderer::render_polygon(Window* window, Polygon* polygon, Texture* texture, Vector2 position, Vector2 scale, Vector2 origin, Vector2 offset, float angle, bool flip_hor, bool flip_vert, Color color)
+{
     switch_shader(shader_polygon);
 
-    if (window == nullptr) {
+    if (window == nullptr)
+    {
         throw ArqanoreException("Window is null");
     }
 
-    if (polygon == nullptr) {
+    if (polygon == nullptr)
+    {
         throw ArqanoreException("Polygon is null");
     }
 
-    if (texture == nullptr && (flip_hor || flip_vert)) {
+    if (texture == nullptr && (flip_hor || flip_vert))
+    {
         throw ArqanoreException("Unable to flip texture because texture is null");
     }
 
-    float angle_cos = (float) std::cos(MathHelper::radians(angle + 90));
-    float angle_sin = (float) std::sin(MathHelper::radians(angle + 90));
+    float angle_cos = std::cos(MathHelper::radians(angle + 90));
+    float angle_sin = std::sin(MathHelper::radians(angle + 90));
 
     glBindVertexArray(polygon->vao);
     shader->set_uniform_2f("u_resolution", window->get_width(), window->get_height());
@@ -231,7 +261,8 @@ void Renderer::render_polygon(Window *window, Polygon *polygon, Texture *texture
     shader->set_uniform_rgba("u_color", color);
     shader->set_uniform_1i("u_texture_active", texture != nullptr);
 
-    if (texture != nullptr) {
+    if (texture != nullptr)
+    {
         shader->set_texture(0, texture);
     }
 
@@ -241,19 +272,22 @@ void Renderer::render_polygon(Window *window, Polygon *polygon, Texture *texture
     glBindVertexArray(0);
 }
 
-void Renderer::render_sprite(Window *window, Sprite *sprite, Vector2 position, Vector2 scale, Vector2 origin, float angle, int frame_hor, int frame_vert, bool flip_hor, bool flip_vert, Color color) {
+void Renderer::render_sprite(Window* window, Sprite* sprite, Vector2 position, Vector2 scale, Vector2 origin, float angle, int frame_hor, int frame_vert, bool flip_hor, bool flip_vert, Color color)
+{
     switch_shader(shader_sprite);
 
-    if (window == nullptr) {
+    if (window == nullptr)
+    {
         throw ArqanoreException("Window is null");
     }
 
-    if (sprite == nullptr) {
+    if (sprite == nullptr)
+    {
         throw ArqanoreException("Sprite is null");
     }
 
-    float angle_cos = (float) std::cos(MathHelper::radians(angle + 90));
-    float angle_sin = (float) std::sin(MathHelper::radians(angle + 90));
+    float angle_cos = std::cos(MathHelper::radians(angle + 90));
+    float angle_sin = std::sin(MathHelper::radians(angle + 90));
     float offset_x = (1.0f / sprite->get_frames_hor()) * frame_hor;
     float offset_y = (1.0f / sprite->get_frames_vert()) * frame_vert;
 
@@ -275,23 +309,28 @@ void Renderer::render_sprite(Window *window, Sprite *sprite, Vector2 position, V
     glBindVertexArray(0);
 }
 
-void Renderer::render_model(Window *window, Model *model, Vector3 position, Quaternion rotation, Vector3 scale, int frame) {
-    if (Scene::active_camera >= Scene::cameras.size()) {
+void Renderer::render_model(Window* window, Model* model, Vector3 position, Quaternion rotation, Vector3 scale, int frame)
+{
+    if (Scene::active_camera >= Scene::cameras.size())
+    {
         return;
     }
 
-    if (window == nullptr) {
+    if (window == nullptr)
+    {
         throw ArqanoreException("Window is null");
     }
 
-    if (model == nullptr) {
+    if (model == nullptr)
+    {
         throw ArqanoreException("Model is null");
     }
 
-    if (switch_shader(shader_model)) {
-        Camera &camera = Scene::cameras[Scene::active_camera];
+    if (switch_shader(shader_model))
+    {
+        Camera& camera = Scene::cameras[Scene::active_camera];
         Matrix4 view_matrix = generate_view_matrix(camera);
-        Vector3 &view_position = camera.position;
+        Vector3& view_position = camera.position;
         Matrix4 projection_matrix = generate_projection_matrix(camera, window);
 
         shader->set_uniform_mat4("u_projection_matrix", projection_matrix);
@@ -301,8 +340,9 @@ void Renderer::render_model(Window *window, Model *model, Vector3 position, Quat
         // Process all lights
         shader->set_uniform_1i("u_light_count", Scene::lights.size());
 
-        for (int i = 0; i < Scene::lights.size(); i++) {
-            Light &light = Scene::lights[i];
+        for (int i = 0; i < Scene::lights.size(); i++)
+        {
+            Light& light = Scene::lights[i];
             std::string index = std::to_string(i);
 
             shader->set_uniform_1i("u_light[" + index + "].type", light.type);
@@ -319,20 +359,22 @@ void Renderer::render_model(Window *window, Model *model, Vector3 position, Quat
     Vector3 mesh_scl = Vector3::ONE;
 
     // Render mesh per mesh
-    for (Mesh &mesh: model->meshes) {
-        Color &mat_color = mesh.material.color;
-        Color &mat_ambient = mesh.material.ambient;
-        Color &mat_diffuse = mesh.material.diffuse;
-        Color &mat_specular = mesh.material.specular;
-        float &mat_shininess = mesh.material.shininess;
-        Texture *mat_diffuse_map = mesh.material.diffuse_map;
-        Texture *mat_ambient_map = mesh.material.ambient_map;
-        Texture *mat_specular_map = mesh.material.specular_map;
+    for (Mesh& mesh : model->meshes)
+    {
+        Color& mat_color = mesh.material.color;
+        Color& mat_ambient = mesh.material.ambient;
+        Color& mat_diffuse = mesh.material.diffuse;
+        Color& mat_specular = mesh.material.specular;
+        float& mat_shininess = mesh.material.shininess;
+        Texture* mat_diffuse_map = mesh.material.diffuse_map;
+        Texture* mat_ambient_map = mesh.material.ambient_map;
+        Texture* mat_specular_map = mesh.material.specular_map;
 
-        if (frame >= 0 && frame < mesh.animation.frames.size()) {
-            Vector3 &anim_pos = mesh.animation.frames[frame].position;
-            Quaternion &anim_rot = mesh.animation.frames[frame].rotation;
-            Vector3 &anim_scl = mesh.animation.frames[frame].scale;
+        if (frame >= 0 && frame < mesh.animation.frames.size())
+        {
+            Vector3& anim_pos = mesh.animation.frames[frame].position;
+            Quaternion& anim_rot = mesh.animation.frames[frame].rotation;
+            Vector3& anim_scl = mesh.animation.frames[frame].scale;
 
             mesh_pos = anim_pos;
             mesh_rot = anim_rot;
@@ -353,23 +395,27 @@ void Renderer::render_model(Window *window, Model *model, Vector3 position, Quat
         shader->set_uniform_1i("u_material.ambient_map_active", mat_ambient_map != nullptr);
         shader->set_uniform_1i("u_material.specular_map_active", mat_specular_map != nullptr);
 
-        if (mat_diffuse_map != nullptr) {
+        if (mat_diffuse_map != nullptr)
+        {
             shader->set_texture(0, mat_diffuse_map);
         }
 
-        if (mat_ambient_map != nullptr) {
+        if (mat_ambient_map != nullptr)
+        {
             shader->set_texture(1, mat_ambient_map);
         }
 
-        if (mat_specular_map != nullptr) {
+        if (mat_specular_map != nullptr)
+        {
             shader->set_texture(2, mat_specular_map);
         }
 
         glBindVertexArray(mesh.vao);
-        glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, nullptr);
         glBindVertexArray(0);
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++)
+        {
             glActiveTexture(GL_TEXTURE0 + i);
             glBindTexture(GL_TEXTURE_2D, 0);
         }

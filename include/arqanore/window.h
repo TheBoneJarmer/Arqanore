@@ -97,7 +97,7 @@ namespace arqanore {
 
         void set_title(std::string value);
 
-        void set_vsync(bool vsync);
+        void set_vsync(bool value);
 
         void set_clear_color(Color value);
 

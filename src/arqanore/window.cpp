@@ -277,7 +277,7 @@ void arqanore::Window::init(bool fullscreen, bool maximized, bool resizable) {
 
     glfwMakeContextCurrent(handle);
 
-    if (!gladLoadGL((GLADloadfunc) glfwGetProcAddress)) {
+    if (!gladLoadGL(glfwGetProcAddress)) {
         throw ArqanoreException("Failed to initialize GLAD");
     }
 
@@ -290,13 +290,13 @@ void arqanore::Window::init(bool fullscreen, bool maximized, bool resizable) {
     glfwSetCursorPosCallback(handle, cursor_position_callback);
     glfwSetCharCallback(handle, character_callback);
     glfwSetScrollCallback(handle, scroll_callback);
+
+    // Fix for Windows where the resize event is not called if the window is maximized
+    glfwGetWindowSize(handle, &width, &height);
 }
 
 void arqanore::Window::loop() {
-    double new_time = 0.0;
-    double delta_time = 0.0;
     double last_time = glfwGetTime();
-    
     double fps_count = 0;
     double fps_time = 0;
 
@@ -310,8 +310,8 @@ void arqanore::Window::loop() {
     }
 
     while (!glfwWindowShouldClose(handle)) {
-        new_time = glfwGetTime();
-        delta_time = new_time - last_time;
+        double new_time = glfwGetTime();
+        double delta_time = new_time - last_time;
         last_time = new_time;
 
         // Calculate fps
