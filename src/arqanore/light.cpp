@@ -3,7 +3,7 @@
 arqanore::Light::Light()
 {
     this->source = Vector3(0.25f, -0.5f, -0.5f);
-    this->color = Color(255, 255, 255, 255);
+    this->color = Color(125, 125, 125, 255);
     this->type = 0;
     this->enabled = true;
     this->strength = 1.0f;

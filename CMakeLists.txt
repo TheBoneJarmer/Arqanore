@@ -35,7 +35,8 @@ set(ARQ_INCLUDE
         include/arqanore/light.h
         include/arqanore/camera.h
         include/arqanore/scene.h
-        include/arqanore/quaternion.h)
+        include/arqanore/quaternion.h
+        include/arqanore/shadersources.h)
 set(ARQ_SRC
         src/arqanore/glad/gl.c
         src/arqanore/arqanore.cpp
