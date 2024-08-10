@@ -83,6 +83,10 @@ vec3 calc_point_light(Light light) {
     float light_att = 1.0 / light_dist * light.strength;
     //float light_att = 1.0 / (1.0 + 0.09 * light_dist + 0.032 * (light_dist * light_dist));
 
+    if (light_att > 1.0) {
+        light_att = 1.0;
+    }
+
     if (light_dist > light.range) {
         return vec3(0, 0, 0);
     }

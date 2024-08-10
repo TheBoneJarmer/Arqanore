@@ -79,7 +79,6 @@ void on_update(Window* window, double dt)
         if (Keyboard::key_pressed(Keys::R))
         {
             sun.type = DIRECTIONAL_LIGHT;
-            sun.color = Color::WHITE;
             sun.range = 10;
             sun.strength = 1;
             sun.source = Vector3(0.25f, -0.5f, -0.5f);
