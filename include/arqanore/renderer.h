@@ -15,6 +15,9 @@
 #include "camera.h"
 #include "matrix4.h"
 #include "mesh.h"
+#include "font.h"
+#include "polygon.h"
+#include "model.h"
 
 namespace arqanore
 {
