@@ -71,22 +71,22 @@ set(ARQ_SRC
         src/arqanore/quaternion.cpp)
 
 # Generate variables for the compiler and linker
-set(ARQ_LIBRARIES glfw freetype soloudw dl -Wl,-rpath='$ORIGIN:$ORIGIN/lib')
-
 if (WIN32)
-    set(ARQ_LIBRARIES glfw3 freetyped soloudw)
-	set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS true)
-endif (WIN32)
+    if (NOT DEFINED WIN_INCLUDE_DIR)
+        set(WIN_INCLUDE_DIR "C:/Include")
+    endif ()
 
-# Configure include and link folders
-include_directories(include/)
+    if (NOT DEFINED WIN_LINK_DIR)
+        set(WIN_LINK_DIR "C:/Lib")
+    endif ()
 
-if (WIN32)
-    include_directories(arqanore PUBLIC "C:/Include")
-    link_directories(arqanore PUBLIC "C:/Lib")
-endif (WIN32)
-
-link_libraries(${ARQ_LIBRARIES})
+    include_directories(arqanore PUBLIC ${WIN_INCLUDE_DIR})
+    link_directories(arqanore PUBLIC ${WIN_LINK_DIR})
+    link_libraries(glfw3 freetype soloudw)
+else ()
+    link_libraries(glfw freetype soloudw dl -Wl,-rpath='$ORIGIN:$ORIGIN/lib')
+    include_directories(include/)
+endif ()
 
 # Configure arqanore
 add_library(arqanore ${ARQ_INCLUDE} ${ARQ_SRC})
