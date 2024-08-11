@@ -75,6 +75,7 @@ set(ARQ_LIBRARIES glfw freetype soloudw dl -Wl,-rpath='$ORIGIN:$ORIGIN/lib')
 
 if (WIN32)
     set(ARQ_LIBRARIES glfw3 freetyped soloudw)
+	set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS true)
 endif (WIN32)
 
 # Configure include and link folders
