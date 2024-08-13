@@ -36,7 +36,8 @@ set(ARQ_INCLUDE
         include/arqanore/camera.h
         include/arqanore/scene.h
         include/arqanore/quaternion.h
-        include/arqanore/shadersources.h)
+        include/arqanore/shadersources.h
+        include/arqanore/image.h)
 set(ARQ_SRC
         src/arqanore/glad/gl.c
         src/arqanore/arqanore.cpp
@@ -68,7 +69,8 @@ set(ARQ_SRC
         src/arqanore/modelparser.cpp
         src/arqanore/vector3.cpp
         src/arqanore/scene.cpp
-        src/arqanore/quaternion.cpp)
+        src/arqanore/quaternion.cpp
+        src/arqanore/image.cpp)
 
 # Generate variables for the compiler and linker
 if (WIN32)
@@ -80,12 +82,13 @@ if (WIN32)
         set(WIN_LINK_DIR "C:/Lib")
     endif ()
 
-    include_directories(arqanore PUBLIC ${WIN_INCLUDE_DIR})
-    link_directories(arqanore PUBLIC ${WIN_LINK_DIR})
+    include_directories(include/)
+    include_directories(${WIN_INCLUDE_DIR})
+    link_directories(${WIN_LINK_DIR})
     link_libraries(glfw3 freetype soloudw)
 else ()
-    link_libraries(glfw freetype soloudw dl -Wl,-rpath='$ORIGIN:$ORIGIN/lib')
     include_directories(include/)
+    link_libraries(glfw freetype soloudw dl -Wl,-rpath='$ORIGIN:$ORIGIN/lib')
 endif ()
 
 # Configure arqanore
@@ -95,9 +98,18 @@ set_target_properties(arqanore PROPERTIES OUTPUT_NAME "arqanore")
 set_target_properties(arqanore PROPERTIES VERSION ${ARQ_VERSION})
 
 # Configure arqanore examples
-add_executable(example_window ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/window/main.cpp)
-add_executable(example_sprites ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/sprites/main.cpp)
-add_executable(example_fonts ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/fonts/main.cpp)
-add_executable(example_models ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/models/main.cpp)
-add_executable(example_audio ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/audio/main.cpp)
-add_executable(example_shaders ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/shaders/main.cpp)
+if (WIN32)
+    add_executable(example_window WIN32 ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/window/main.cpp)
+    add_executable(example_sprites WIN32 ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/sprites/main.cpp)
+    add_executable(example_fonts WIN32 ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/fonts/main.cpp)
+    add_executable(example_models WIN32 ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/models/main.cpp)
+    add_executable(example_audio WIN32 ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/audio/main.cpp)
+    add_executable(example_shaders WIN32 ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/shaders/main.cpp)
+else ()
+    add_executable(example_window ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/window/main.cpp)
+    add_executable(example_sprites ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/sprites/main.cpp)
+    add_executable(example_fonts ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/fonts/main.cpp)
+    add_executable(example_models ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/models/main.cpp)
+    add_executable(example_audio ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/audio/main.cpp)
+    add_executable(example_shaders ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/shaders/main.cpp)
+endif ()

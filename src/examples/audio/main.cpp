@@ -5,6 +5,9 @@
 arqanore::Sound* sound;
 
 void on_open(arqanore::Window *window) {
+    arqanore::Image icon("assets/icon.png");
+    window->set_icon(icon);
+
     sound = new arqanore::Sound("assets/sounds/08_sea.wav");
 }
 

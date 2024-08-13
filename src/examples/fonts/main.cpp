@@ -11,6 +11,9 @@ std::u16string text2;
 
 void on_open(arqanore::Window *window) {
     try {
+        arqanore::Image icon("assets/icon.png");
+        window->set_icon(icon);
+
         font = new arqanore::Font("assets/fonts/default.ttf", 0, 16);
         text1 = u"Hello, this is a normal piece of text! This text will continue to be rendered to the right even if it leaves the screen at some point.";
         text2 = u"And this text contains Unicode characters: Ö ö ó ò Ü ü ú ù ©";

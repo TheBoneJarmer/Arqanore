@@ -15,9 +15,10 @@ double frame_time = 0;
 int direction = 2;
 
 void on_open(arqanore::Window *window) {
-    window->set_vsync(false);
-
     try {
+        arqanore::Image icon("assets/icon.png");
+        window->set_icon(icon);
+
         sprite = new arqanore::Sprite("assets/sprites/player.png", 16, 16);
 
         position = arqanore::Vector2(64, 64);

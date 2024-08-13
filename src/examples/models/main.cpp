@@ -20,6 +20,9 @@ void on_open(Window* window)
 
     try
     {
+        Image icon("assets/icon.png");
+        window->set_icon(icon);
+
         font = new Font("assets/fonts/arial.ttf", 20, 20);
 
         model = new Model("assets/models/axis.arqm");
@@ -43,8 +46,6 @@ void on_close(Window* window)
 
 void on_update(Window* window, double dt)
 {
-    auto& sun = Scene::lights[0];
-
     try
     {
         if (Keyboard::key_pressed(Keys::ESCAPE))
@@ -52,36 +53,9 @@ void on_update(Window* window, double dt)
             window->close();
         }
 
-        if (Keyboard::key_pressed(Keys::KP_1)) sun.range--;
-        if (Keyboard::key_pressed(Keys::KP_3)) sun.range++;
-        if (Keyboard::key_pressed(Keys::KP_7)) sun.strength--;
-        if (Keyboard::key_pressed(Keys::KP_9)) sun.strength++;
-
-        if (Keyboard::key_down(Keys::KP_2)) sun.source.z += dt;
-        if (Keyboard::key_down(Keys::KP_8)) sun.source.z -= dt;
-        if (Keyboard::key_down(Keys::KP_4)) sun.source.x -= dt;
-        if (Keyboard::key_down(Keys::KP_6)) sun.source.x += dt;
-        if (Keyboard::key_down(Keys::KP_SUBTRACT)) sun.source.y -= dt;
-        if (Keyboard::key_down(Keys::KP_ADD)) sun.source.y += dt;
-
-        if (Keyboard::key_pressed(Keys::KP_0))
+        if (Keyboard::key_pressed(Keys::V))
         {
-            if (sun.type == 0)
-            {
-                sun.type = 1;
-            }
-            else
-            {
-                sun.type = 0;
-            }
-        }
-
-        if (Keyboard::key_pressed(Keys::R))
-        {
-            sun.type = DIRECTIONAL_LIGHT;
-            sun.range = 10;
-            sun.strength = 1;
-            sun.source = Vector3(0.25f, -0.5f, -0.5f);
+            window->set_vsync(!window->get_vsync());
         }
 
         model_rot += dt * 10;
@@ -95,15 +69,10 @@ void on_update(Window* window, double dt)
 
 void on_render2d(Window* window)
 {
-    auto& sun = Scene::lights[0];
     auto text_scale = Vector2::ONE;
     auto text_color = Color::WHITE;
 
     Renderer::render_text(window, font, "FPS: " + std::to_string(window->get_fps()), Vector2(32, 32), text_scale, text_color);
-    Renderer::render_text(window, font, "Light.Range: " + std::to_string(sun.range), Vector2(32, 32 * 3), text_scale, text_color);
-    Renderer::render_text(window, font, "Light.Strength: " + std::to_string(sun.strength), Vector2(32, 32 * 4), text_scale, text_color);
-    Renderer::render_text(window, font, "Light.Source: " + std::to_string(sun.source.x) + "," + std::to_string(sun.source.y) + "," + std::to_string(sun.source.z), Vector2(32, 32 * 5), text_scale, text_color);
-    Renderer::render_text(window, font, "Light.Type: " + std::to_string(sun.type), Vector2(32, 32 * 6), text_scale, text_color);
 }
 
 void on_render3d(Window* window)

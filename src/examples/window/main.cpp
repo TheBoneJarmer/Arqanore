@@ -4,6 +4,9 @@
 bool closed;
 
 void on_open(arqanore::Window *window) {
+    arqanore::Image icon("assets/icon.png");
+    window->set_icon(icon);
+
     closed = false;
 }
 

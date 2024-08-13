@@ -5,7 +5,10 @@
 #include <GLFW/glfw3.h>
 #include <string>
 #include <cstdlib>
+#include <vector>
+
 #include "color.h"
+#include "image.h"
 
 namespace arqanore {
     class Window {
@@ -102,6 +105,10 @@ namespace arqanore {
         void set_clear_color(Color value);
 
         void set_closed(bool value);
+
+        void set_icon(Image images[], int count);
+
+        void set_icon(Image& image);
 
         Window();
 

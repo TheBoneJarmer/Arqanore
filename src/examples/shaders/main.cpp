@@ -17,6 +17,9 @@ int frame_time;
 
 void on_open(arqanore::Window *window) {
     try {
+        arqanore::Image icon("assets/icon.png");
+        window->set_icon(icon);
+
         shader = new arqanore::Shader();
         shader->add_vertex("assets/shaders/sprity_v.glsl", SHADER_SOURCE_TYPE_FILE);
         shader->add_fragment("assets/shaders/sprity_f.glsl", SHADER_SOURCE_TYPE_FILE);

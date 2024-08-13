@@ -15,7 +15,7 @@ arqanore::Texture::Texture(std::string filename) {
 
     if (!data) {
         std::string reason = stbi_failure_reason();
-        std::string error = "Failed to load texture '" + (std::string) filename + "'. Reason is '" + reason + "'";
+        std::string error = "Failed to load texture '" + filename + "'. Reason is '" + reason + "'";
 
         stbi_image_free(data);
         throw ArqanoreException(error);
