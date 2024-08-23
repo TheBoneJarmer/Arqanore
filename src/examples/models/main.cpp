@@ -1,6 +1,7 @@
 #include <arqanore/window.h>
 #include <arqanore/keyboard.h>
 #include <iostream>
+
 #include "arqanore/exceptions.h"
 #include "arqanore/model.h"
 #include "arqanore/font.h"
@@ -12,7 +13,6 @@ using namespace arqanore;
 
 Model* model;
 Font* font;
-Vector3 model_rot;
 
 void on_open(Window* window)
 {
@@ -25,11 +25,12 @@ void on_open(Window* window)
 
         font = new Font("assets/fonts/arial.ttf", 20, 20);
 
-        model = new Model("assets/models/axis.arqm");
+        model = new Model("assets/models/wobble.arqm");
         model->calculate_normals(false);
 
         Camera& cam = Scene::cameras[0];
         cam.position.z = -10;
+        cam.position.y = -3;
     }
     catch (ArqanoreException& ex)
     {
@@ -57,8 +58,6 @@ void on_update(Window* window, double dt)
         {
             window->set_vsync(!window->get_vsync());
         }
-
-        model_rot += dt * 10;
     }
     catch (ArqanoreException& ex)
     {
@@ -80,7 +79,7 @@ void on_render3d(Window* window)
     try
     {
         Vector3 pos(0, 0, 0);
-        Quaternion rot = Quaternion::rotate(Quaternion(), model_rot);
+        Quaternion rot = Quaternion();
         Vector3 scale(1, 1, 1);
 
         Renderer::render_model(window, model, pos, rot, scale, 0);

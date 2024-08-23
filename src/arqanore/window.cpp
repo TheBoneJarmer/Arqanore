@@ -11,7 +11,7 @@
 
 void arqanore::Window::error_callback(int error_code, const char* error_description)
 {
-    throw new GlfwException(error_code, error_description);
+    throw GlfwException(error_code, error_description);
 }
 
 void arqanore::Window::window_resize_callback(GLFWwindow* handle, int width, int height)

@@ -137,11 +137,22 @@ class ArqanoreModelParser:
             str_arqm += "END_MAT\n\n"
 
         for obj in objects:
-            faces = []
+            if obj.type == "ARMATURE":        
+                armature = obj.data
+                bones = armature.bones
+                                
+                str_arqm += "BEGIN_ARMATURE\n"
+                
+                for bone in bones:
+                    str_arqm += f"b {bone.name}\n"
+                                    
+                str_arqm += "END_ARMATURE\n"
 
             if obj.type == "MESH":
+                faces = []
                 mesh = obj.data
                 uv_layer = mesh.uv_layers.active.data
+                vertex_groups = obj.vertex_groups
 
                 for poly in mesh.polygons:
                     face = Face()
@@ -149,8 +160,11 @@ class ArqanoreModelParser:
                     face.vi = poly.vertices
 
                     faces.append(face)
-
+                    
                 str_arqm += f"BEGIN_MESH {obj.name}\n"
+                
+                for vg in vertex_groups:
+                    str_arqm += f"g {vg.index} {vg.name}\n"
 
                 if obj.active_material:
                     str_arqm += f"mat {obj.active_material.name}\n"
@@ -184,6 +198,14 @@ class ArqanoreModelParser:
                     
                     str_arqm += f"v {round(v_co[0], 2)} {round(v_co[1], 2)} {round(v_co[2], 2)}\n"
                     str_arqm += f"n {round(v_nor[0], 2)} {round(v_nor[1], 2)} {round(v_nor[2], 2)}\n"
+                    
+                    if len(v.groups) > 0:
+                        str_arqm += "vg"
+                        
+                        for vge in v.groups:                            
+                            str_arqm += f" {vge.group}"
+                            
+                        str_arqm += "\n"
 
                 for layer in uv_layer:
                     str_arqm += f"tc {round(layer.uv[0], 2)} {round(layer.uv[1], 2)}\n"
@@ -200,7 +222,7 @@ class ArqanoreModelParser:
                     str_arqm += "\n"
 
                 str_arqm += "END_MESH\n"
-
+        
         return str_arqm
 
 
@@ -237,4 +259,4 @@ if __name__ == "__main__":
     register()
 
     # for testing
-    # bpy.ops.arqanore.export('INVOKE_DEFAULT')
+    #bpy.ops.arqanore.export('INVOKE_DEFAULT')
