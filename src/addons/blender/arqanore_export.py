@@ -146,7 +146,7 @@ class ArqanoreModelParser:
                 for bone in bones:
                     str_arqm += f"b {bone.name}\n"
                                     
-                str_arqm += "END_ARMATURE\n"
+                str_arqm += "END_ARMATURE\n\n"
 
             if obj.type == "MESH":
                 faces = []
@@ -221,7 +221,7 @@ class ArqanoreModelParser:
 
                     str_arqm += "\n"
 
-                str_arqm += "END_MESH\n"
+                str_arqm += "END_MESH\n\n"
         
         return str_arqm
 
