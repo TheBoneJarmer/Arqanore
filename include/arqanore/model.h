@@ -1,22 +1,40 @@
 #pragma once
 
+#include <array>
 #include "mesh.h"
 
-namespace arqanore {
-    class Model {
-    private:
-        void generate_meshes(std::string &path);
+namespace arqanore
+{
+    struct Bone
+    {
+        std::string name;
+        Bone* parent;
+    };
 
-        void generate_buffers(Mesh &mesh);
+    struct Armature
+    {
+        std::vector<Bone> bones;
+    };
+
+    class Model
+    {
+    private:
+        void generate_meshes(std::string& path);
+
+        void generate_buffers(Mesh& mesh);
 
     public:
+        Armature* armature;
+
         std::vector<Mesh> meshes;
-        
+
         std::array<int, 3> version;
 
         Model();
 
         Model(std::string path);
+
+        ~Model();
 
         int total_vertices();
 

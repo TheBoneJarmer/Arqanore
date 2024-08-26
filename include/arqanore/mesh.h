@@ -2,7 +2,6 @@
 
 #include <vector>
 #include "vector3.h"
-#include "shader.h"
 #include "material.h"
 #include "quaternion.h"
 

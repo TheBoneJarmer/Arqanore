@@ -3,19 +3,22 @@
 #include "arqanore/modelparser.h"
 #include "arqanore/exceptions.h"
 
-void arqanore::Model::generate_meshes(std::string &path) {
+void arqanore::Model::generate_meshes(std::string& path)
+{
     ModelParser parser;
     ModelParserResult result = parser.parse(path);
 
     this->meshes = result.meshes;
     this->version = result.version;
 
-    for (Mesh &mesh: this->meshes) {
+    for (Mesh& mesh : this->meshes)
+    {
         generate_buffers(mesh);
     }
 }
 
-void arqanore::Model::generate_buffers(Mesh &mesh) {
+void arqanore::Model::generate_buffers(Mesh& mesh)
+{
     int vertex_attrib_location = 0;
     int normal_attrib_location = 1;
     int texcoord_attrib_location = 2;
@@ -50,55 +53,73 @@ void arqanore::Model::generate_buffers(Mesh &mesh) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-arqanore::Model::Model() {
-
+arqanore::Model::Model()
+{
+    armature = nullptr;
+    version = std::array<int, 3>();
 }
 
-arqanore::Model::Model(std::string path) {
-    if (!path.ends_with(".arqm")) {
+arqanore::Model::Model(std::string path) : Model()
+{
+    if (!path.ends_with(".arqm"))
+    {
         throw ArqanoreException("Invalid model format");
     }
 
     this->generate_meshes(path);
 }
 
-int arqanore::Model::total_vertices() {
+arqanore::Model::~Model()
+{
+    delete armature;
+}
+
+int arqanore::Model::total_vertices()
+{
     auto result = 0;
 
-    for (auto &mesh: meshes) {
+    for (auto& mesh : meshes)
+    {
         result += static_cast<int>(mesh.vertices.size());
     }
 
     return result;
 }
 
-int arqanore::Model::total_texcoords() {
+int arqanore::Model::total_texcoords()
+{
     auto result = 0;
 
-    for (auto &mesh: meshes) {
+    for (auto& mesh : meshes)
+    {
         result += static_cast<int>(mesh.texcoords.size());
     }
 
     return result;
 }
 
-int arqanore::Model::total_normals() {
+int arqanore::Model::total_normals()
+{
     auto result = 0;
 
-    for (auto &mesh: meshes) {
+    for (auto& mesh : meshes)
+    {
         result += static_cast<int>(mesh.normals.size());
     }
 
     return result;
 }
 
-int arqanore::Model::total_frames() {
+int arqanore::Model::total_frames()
+{
     int result = 0;
 
-    for (Mesh& mesh : meshes) {
+    for (Mesh& mesh : meshes)
+    {
         int size = mesh.animation.frames.size();
 
-        if (size > result) {
+        if (size > result)
+        {
             result = size;
         }
     }
@@ -106,8 +127,10 @@ int arqanore::Model::total_frames() {
     return result;
 }
 
-void arqanore::Model::calculate_normals(bool flip) {
-    for (Mesh &mesh: meshes) {
+void arqanore::Model::calculate_normals(bool flip)
+{
+    for (Mesh& mesh : meshes)
+    {
         mesh.calculate_normals(flip);
 
         // Update the VBO for normals because otherwise the change wont be visible

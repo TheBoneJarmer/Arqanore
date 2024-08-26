@@ -4,6 +4,11 @@
 arqanore::Mesh::Mesh() {
     this->name = "mesh";
     this->material = Material();
+    this->vao = 0;
+    this->vbo_normals = 0;
+    this->vbo_texcoords = 0;
+    this->vbo_vertices = 0;
+    this->ebo = 0;
 }
 
 arqanore::Mesh::Mesh(std::string name) : Mesh() {
