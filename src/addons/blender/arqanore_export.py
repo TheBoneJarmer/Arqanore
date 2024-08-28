@@ -134,26 +134,65 @@ class ArqanoreModelParser:
             if specular_map is not None:
                 str_arqm += f"spc_map {specular_map}\n"
 
-            str_arqm += "END_MAT\n\n"
+            str_arqm += "END_MAT\n"
 
         for obj in objects:
-            if obj.type == "ARMATURE":        
-                armature = obj.data
-                bones = armature.bones
-                                
-                str_arqm += "BEGIN_ARMATURE\n"
+            if obj.type == "ARMATURE":
+                bones = obj.pose.bones
+                                            
+                str_arqm += f"\nBEGIN_ARMATURE {obj.name}\n"
                 
                 for bone in bones:
-                    str_arqm += f"b {bone.name}\n"
+                    str_arqm += f"BEGIN_BONE {bone.name}\n"
+                    
+                    if bone.parent != None:
+                        str_arqm += f"p {bone.parent.name}\n"
+                    
+                    for i in range(scene.frame_start - 1, scene.frame_end + 1):
+                        scene.frame_set(i)
+                        
+                        loc = bone.location
+                        scl = bone.scale
+                        
+                        rot_current = bone.rotation_euler
+                        rot_new = mathutils.Euler()
+                        rot_new.x = rot_current.x
+                        rot_new.y = rot_current.z
+                        rot_new.z = -rot_current.y
+                        
+                        rot = mathutils.Quaternion()
+                        rot.rotate(rot_new)
+                                                                
+                        str_arqm += f"bf"
+                        str_arqm += f" {round(loc.x, 2)} {round(loc.z, 2)} {round(loc.y, 2)}"
+                        str_arqm += f" {round(rot.x, 2)} {round(rot.y, 2)} {round(rot.z, 2)} {round(rot.w, 2)}"
+                        str_arqm += f" {round(scl.x, 2)} {round(scl.z, 2)} {round(scl.y, 2)}"
+                        str_arqm += f"\n"
+
+                    scene.frame_set(0)
+                    
+                    str_arqm += "END_BONE\n"
                                     
-                str_arqm += "END_ARMATURE\n\n"
+                str_arqm += "END_ARMATURE"
 
             if obj.type == "MESH":
                 faces = []
                 mesh = obj.data
                 uv_layer = mesh.uv_layers.active.data
                 vertex_groups = obj.vertex_groups
-
+                
+                loc = obj.location
+                scl = obj.scale
+                
+                rot_current = obj.rotation_euler
+                rot_new = mathutils.Euler()
+                rot_new.x = rot_current.x
+                rot_new.y = rot_current.z
+                rot_new.z = -rot_current.y
+                
+                rot = mathutils.Quaternion()
+                rot.rotate(rot_new)
+                
                 for poly in mesh.polygons:
                     face = Face()
                     face.li = poly.loop_indices
@@ -161,36 +200,16 @@ class ArqanoreModelParser:
 
                     faces.append(face)
                     
-                str_arqm += f"BEGIN_MESH {obj.name}\n"
-                
+                str_arqm += f"\nBEGIN_MESH {obj.name}\n"
+                str_arqm += f"loc {round(loc.x, 2)} {round(loc.z, 2)} {round(loc.y, 2)}\n"
+                str_arqm += f"rot {round(rot.x, 2)} {round(rot.y, 2)} {round(rot.z, 2)} {round(rot.w, 2)}\n"
+                str_arqm += f"scl {round(scl.x, 2)} {round(scl.z, 2)} {round(scl.y, 2)}\n"
+                                
                 for vg in vertex_groups:
                     str_arqm += f"g {vg.index} {vg.name}\n"
 
                 if obj.active_material:
                     str_arqm += f"mat {obj.active_material.name}\n"
-
-                for i in range(scene.frame_start - 1, scene.frame_end + 1):
-                    scene.frame_set(i)
-                    
-                    loc = obj.location
-                    scl = obj.scale
-                    
-                    rot_current = obj.rotation_euler
-                    rot_new = mathutils.Euler()
-                    rot_new.x = rot_current.x
-                    rot_new.y = rot_current.z
-                    rot_new.z = -rot_current.y
-                    
-                    rot = mathutils.Quaternion()
-                    rot.rotate(rot_new)
-                                                            
-                    str_arqm += f"mf"
-                    str_arqm += f" {round(loc.x, 2)} {round(loc.z, 2)} {round(loc.y, 2)}"
-                    str_arqm += f" {round(rot.x, 2)} {round(rot.y, 2)} {round(rot.z, 2)} {round(rot.w, 2)}"
-                    str_arqm += f" {round(scl.x, 2)} {round(scl.z, 2)} {round(scl.y, 2)}"
-                    str_arqm += f"\n"
-
-                scene.frame_set(0)
 
                 for v in mesh.vertices:
                     v_co = v.co @ m
@@ -221,7 +240,7 @@ class ArqanoreModelParser:
 
                     str_arqm += "\n"
 
-                str_arqm += "END_MESH\n\n"
+                str_arqm += "END_MESH\n"
         
         return str_arqm
 

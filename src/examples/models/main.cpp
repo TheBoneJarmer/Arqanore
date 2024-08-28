@@ -6,6 +6,7 @@
 #include "arqanore/model.h"
 #include "arqanore/font.h"
 #include "arqanore/camera.h"
+#include "arqanore/mathhelper.h"
 #include "arqanore/scene.h"
 #include "arqanore/renderer.h"
 
@@ -93,13 +94,26 @@ void on_render3d(Window* window)
 
 int main()
 {
-    auto window = Window(1440, 768, "Arqanore");
-    window.on_open(on_open);
-    window.on_close(on_close);
-    window.on_update(on_update);
-    window.on_render2d(on_render2d);
-    window.on_render3d(on_render3d);
-    window.open(false, true, true);
+    try
+    {
+        auto window = Window(1440, 768, "Arqanore");
+        window.on_open(on_open);
+        window.on_close(on_close);
+        window.on_update(on_update);
+        window.on_render2d(on_render2d);
+        window.on_render3d(on_render3d);
+        window.open(false, true, true);
+    }
+    catch (ArqanoreException& ex)
+    {
+        std::cerr << ex.what() << std::endl;
+        return 1;
+    }
+    catch (...)
+    {
+        std::cerr << "Unknown error occurred" << std::endl;
+        return 2;
+    }
 
     return 0;
 }

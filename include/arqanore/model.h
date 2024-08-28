@@ -42,8 +42,6 @@ namespace arqanore
 
         int total_normals();
 
-        int total_frames();
-
         void calculate_normals(bool flip);
     };
 }

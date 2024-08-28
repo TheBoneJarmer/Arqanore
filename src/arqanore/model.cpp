@@ -110,23 +110,6 @@ int arqanore::Model::total_normals()
     return result;
 }
 
-int arqanore::Model::total_frames()
-{
-    int result = 0;
-
-    for (Mesh& mesh : meshes)
-    {
-        int size = mesh.animation.frames.size();
-
-        if (size > result)
-        {
-            result = size;
-        }
-    }
-
-    return result;
-}
-
 void arqanore::Model::calculate_normals(bool flip)
 {
     for (Mesh& mesh : meshes)

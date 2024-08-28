@@ -354,10 +354,6 @@ void Renderer::render_model(Window* window, Model* model, Vector3 position, Quat
         }
     }
 
-    Vector3 mesh_pos = Vector3::ZERO;
-    Quaternion mesh_rot = Quaternion();
-    Vector3 mesh_scl = Vector3::ONE;
-
     // Render mesh per mesh
     for (Mesh& mesh : model->meshes)
     {
@@ -369,19 +365,7 @@ void Renderer::render_model(Window* window, Model* model, Vector3 position, Quat
         Texture* mat_diffuse_map = mesh.material.diffuse_map;
         Texture* mat_ambient_map = mesh.material.ambient_map;
         Texture* mat_specular_map = mesh.material.specular_map;
-
-        if (frame >= 0 && frame < mesh.animation.frames.size())
-        {
-            Vector3& anim_pos = mesh.animation.frames[frame].position;
-            Quaternion& anim_rot = mesh.animation.frames[frame].rotation;
-            Vector3& anim_scl = mesh.animation.frames[frame].scale;
-
-            mesh_pos = anim_pos;
-            mesh_rot = anim_rot;
-            mesh_scl = anim_scl;
-        }
-
-        Matrix4 mesh_matrix = generate_model_matrix(mesh_pos, mesh_rot, mesh_scl);
+        Matrix4 mesh_matrix = generate_model_matrix(mesh.location, mesh.rotation, mesh.scale);
         Matrix4 model_matrix = generate_model_matrix(position, rotation, scale);
 
         shader->set_uniform_mat4("u_model_matrix", model_matrix);

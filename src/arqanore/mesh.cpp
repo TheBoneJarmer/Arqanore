@@ -1,7 +1,8 @@
-#include <iostream>
 #include "arqanore/mesh.h"
+#include "arqanore/vector3.h"
 
-arqanore::Mesh::Mesh() {
+arqanore::Mesh::Mesh()
+{
     this->name = "mesh";
     this->material = Material();
     this->vao = 0;
@@ -9,17 +10,23 @@ arqanore::Mesh::Mesh() {
     this->vbo_texcoords = 0;
     this->vbo_vertices = 0;
     this->ebo = 0;
+    this->location = Vector3(0, 0, 0);
+    this->rotation = Quaternion(0, 0, 0, 1);
+    this->scale = Vector3(1, 1, 1);
 }
 
-arqanore::Mesh::Mesh(std::string name) : Mesh() {
+arqanore::Mesh::Mesh(std::string name) : Mesh()
+{
     this->name = name;
 }
 
-void arqanore::Mesh::calculate_normals(bool flip) {
+void arqanore::Mesh::calculate_normals(bool flip)
+{
     std::vector<Vector3> v_vertices;
     std::vector<Vector3> v_normals;
 
-    for (int i = 0; i < vertices.size(); i += 3) {
+    for (int i = 0; i < vertices.size(); i += 3)
+    {
         Vector3 v;
         v.x = vertices[i];
         v.y = vertices[i + 1];
@@ -28,13 +35,15 @@ void arqanore::Mesh::calculate_normals(bool flip) {
         v_vertices.push_back(v);
     }
 
-    for (int i = 0; i < v_vertices.size(); i += 3) {
-        Vector3& v1  = v_vertices[i];
+    for (int i = 0; i < v_vertices.size(); i += 3)
+    {
+        Vector3& v1 = v_vertices[i];
         Vector3& v2 = v_vertices[i + 1];
         Vector3& v3 = v_vertices[i + 2];
         Vector3 n = Vector3::cross(v2 - v1, v3 - v1);
 
-        if (flip) {
+        if (flip)
+        {
             n = Vector3::cross(v3 - v1, v2 - v1);
         }
 
@@ -47,7 +56,8 @@ void arqanore::Mesh::calculate_normals(bool flip) {
 
     normals.clear();
 
-    for (Vector3& n : v_normals) {
+    for (Vector3& n : v_normals)
+    {
         normals.push_back(n.x);
         normals.push_back(n.y);
         normals.push_back(n.z);

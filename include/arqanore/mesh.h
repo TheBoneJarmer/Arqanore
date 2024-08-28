@@ -1,22 +1,11 @@
 #pragma once
 
 #include <vector>
-#include "vector3.h"
 #include "material.h"
 #include "quaternion.h"
+#include "vector3.h"
 
 namespace arqanore {
-    struct MeshFrame {
-        int index;
-        Vector3 position;
-        Quaternion rotation;
-        Vector3 scale;
-    };
-
-    struct MeshAnimation {
-        std::vector<MeshFrame> frames;
-    };
-
     class Mesh {
         friend class Model;
 
@@ -38,8 +27,10 @@ namespace arqanore {
         std::vector<int> indices;
         std::string name;
 
-        MeshAnimation animation;
         Material material;
+        Vector3 location;
+        Quaternion rotation;
+        Vector3 scale;
 
         Mesh();
 
