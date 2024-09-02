@@ -71,7 +71,8 @@ set(ARQ_SRC
         src/arqanore/vector3.cpp
         src/arqanore/scene.cpp
         src/arqanore/quaternion.cpp
-        src/arqanore/image.cpp)
+        src/arqanore/image.cpp
+        src/arqanore/bone.cpp)
 
 # Generate variables for the compiler and linker
 if (WIN32)

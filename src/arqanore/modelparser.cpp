@@ -53,7 +53,7 @@ arqanore::Quaternion arqanore::ModelParser::parse_quaternion(std::string& value)
     return quat;
 }
 
-void arqanore::ModelParser::parse_line(std::string& key, std::string& value, Mesh* mesh, Material* material, Bone* bone, std::string& path)
+void arqanore::ModelParser::parse_line(std::string& key, std::string& value, Mesh* & mesh, Material* & material, Bone* & bone, std::string& path)
 {
     if (key == "VERSION")
     {
@@ -89,6 +89,12 @@ void arqanore::ModelParser::parse_line(std::string& key, std::string& value, Mes
     if (bone == nullptr && key == "BEGIN_BONE")
     {
         bone = new Bone();
+    }
+
+    if (bone != nullptr && key == "END_BONE")
+    {
+        bones.push_back(*bone);
+        bone = nullptr;
     }
 
     if (mesh != nullptr)
@@ -283,6 +289,43 @@ void arqanore::ModelParser::parse_material_specular_map(std::string& value, Mate
     auto full_path = parent_path.string() + "/" + value;
 
     material->specular_map = new Texture(full_path);
+}
+
+void arqanore::ModelParser::parse_bone(std::string& key, std::string& value, Bone* bone)
+{
+    if (key == "name") parse_bone_name(value, bone);
+    if (key == "bf") parse_bone_frame(value, bone);
+    if (key == "p") parse_bone_parent(value, bone);
+}
+
+void arqanore::ModelParser::parse_bone_name(std::string& value, Bone* bone)
+{
+    bone->name = value;
+}
+
+void arqanore::ModelParser::parse_bone_parent(std::string& value, Bone* bone)
+{
+    for (Bone& child : bones)
+    {
+        if (child.name == value)
+        {
+            bone->parent = &child;
+            return;
+        }
+    }
+
+    throw ArqanoreException("No bone parent found with name '" + value + "'");
+}
+
+void arqanore::ModelParser::parse_bone_frame(std::string& value, Bone* bone)
+{
+    auto values = string_split(value, ' ');
+    auto frame = BoneFrame();
+    frame.location = Vector3(stof(values[0]), stof(values[1]), stof(values[2]));
+    frame.rotation = Quaternion(stof(values[3]), stof(values[4]), stof(values[5]), stof(values[6]));
+    frame.scale = Vector3(stof(values[7]), stof(values[8]), stof(values[9]));
+
+    bone->frames.push_back(frame);
 }
 
 arqanore::ModelParser::ModelParser()

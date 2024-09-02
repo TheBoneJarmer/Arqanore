@@ -15,6 +15,10 @@ using namespace arqanore;
 Model* model;
 Font* font;
 
+int max_frames = 0;
+int frame = 0;
+double frame_timer = 0;
+
 void on_open(Window* window)
 {
     window->set_vsync(false);
@@ -32,6 +36,15 @@ void on_open(Window* window)
         Camera& cam = Scene::cameras[0];
         cam.position.z = -10;
         cam.position.y = -3;
+
+        for (const Bone& bone : model->bones)
+        {
+            if (bone.frames.size() > max_frames)
+            {
+                max_frames = bone.frames.size();
+                break;
+            }
+        }
     }
     catch (ArqanoreException& ex)
     {
@@ -50,6 +63,21 @@ void on_update(Window* window, double dt)
 {
     try
     {
+        if (frame_timer < 10)
+        {
+            frame_timer += dt;
+        }
+        else
+        {
+            frame_timer = 0;
+            frame++;
+        }
+
+        if (frame == max_frames)
+        {
+            frame = 0;
+        }
+
         if (Keyboard::key_pressed(Keys::ESCAPE))
         {
             window->close();
@@ -83,7 +111,7 @@ void on_render3d(Window* window)
         Quaternion rot = Quaternion();
         Vector3 scale(1, 1, 1);
 
-        Renderer::render_model(window, model, pos, rot, scale, 0);
+        Renderer::render_model(window, model, pos, rot, scale, frame);
     }
     catch (ArqanoreException& ex)
     {

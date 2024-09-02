@@ -33,7 +33,7 @@ namespace arqanore
         Vector2 parse_vector2(std::string& value);
         Color parse_color(std::string& value);
         Quaternion parse_quaternion(std::string& value);
-        void parse_line(std::string& key, std::string& value, Mesh* mesh, Material* material, Bone* bone, std::string& path);
+        void parse_line(std::string& key, std::string& value, Mesh* & mesh, Material* & material, Bone* & bone, std::string& path);
         void parse_version(std::string& value);
         void parse_mesh(std::string& key, std::string& value, Mesh* mesh);
         void parse_mesh_material(std::string& value, Mesh* mesh);
@@ -53,6 +53,10 @@ namespace arqanore
         void parse_material_diffuse_map(std::string& value, Material* material, std::string& path);
         void parse_material_ambient_map(std::string& value, Material* material, std::string& path);
         void parse_material_specular_map(std::string& value, Material* material, std::string& path);
+        void parse_bone(std::string& key, std::string& value, Bone* bone);
+        void parse_bone_name(std::string& value, Bone* bone);
+        void parse_bone_parent(std::string& value, Bone* bone);
+        void parse_bone_frame(std::string& value, Bone* bone);
 
     public:
         ModelParser();
