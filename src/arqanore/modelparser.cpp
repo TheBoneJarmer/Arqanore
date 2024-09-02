@@ -53,7 +53,7 @@ arqanore::Quaternion arqanore::ModelParser::parse_quaternion(std::string& value)
     return quat;
 }
 
-void arqanore::ModelParser::parse_line(std::string& key, std::string& value, Mesh*& mesh, Material*& material, std::string& path)
+void arqanore::ModelParser::parse_line(std::string& key, std::string& value, Mesh* mesh, Material* material, Bone* bone, std::string& path)
 {
     if (key == "VERSION")
     {
@@ -84,6 +84,11 @@ void arqanore::ModelParser::parse_line(std::string& key, std::string& value, Mes
     {
         materials.push_back(*material);
         material = nullptr;
+    }
+
+    if (bone == nullptr && key == "BEGIN_BONE")
+    {
+        bone = new Bone();
     }
 
     if (mesh != nullptr)
@@ -118,9 +123,12 @@ void arqanore::ModelParser::parse_mesh(std::string& key, std::string& value, Mes
     if (key == "scl") parse_mesh_scale(value, mesh);
 }
 
-void arqanore::ModelParser::parse_mesh_material(std::string &value, Mesh *mesh) {
-    for (Material &mat: materials) {
-        if (mat.name == value) {
+void arqanore::ModelParser::parse_mesh_material(std::string& value, Mesh* mesh)
+{
+    for (Material& mat : materials)
+    {
+        if (mat.name == value)
+        {
             mesh->material = mat;
         }
     }
@@ -297,6 +305,7 @@ arqanore::ModelParserResult arqanore::ModelParser::parse(std::string& path)
     {
         Mesh* mesh = nullptr;
         Material* material = nullptr;
+        Bone* bone = nullptr;
 
         for (std::string& line : lines)
         {
@@ -317,11 +326,12 @@ arqanore::ModelParserResult arqanore::ModelParser::parse(std::string& path)
             std::string key = string_split(line, ' ')[0];
             std::string value = string_replace(line, key + " ", "");
 
-            parse_line(key, value, mesh, material, path);
+            parse_line(key, value, mesh, material, bone, path);
         }
 
         delete mesh;
         delete material;
+        delete bone;
     }
     catch (ArqanoreException& ex)
     {
@@ -335,6 +345,7 @@ arqanore::ModelParserResult arqanore::ModelParser::parse(std::string& path)
     }
 
     return {
+        this->bones,
         this->materials,
         this->meshes,
         this->version

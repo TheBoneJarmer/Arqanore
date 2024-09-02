@@ -3,6 +3,17 @@
 #include "arqanore/modelparser.h"
 #include "arqanore/exceptions.h"
 
+arqanore::Bone::Bone()
+{
+    parent = nullptr;
+    name = "Bone";
+}
+
+arqanore::Bone::Bone(std::string name) : Bone()
+{
+    this->name = name;
+}
+
 void arqanore::Model::generate_meshes(std::string& path)
 {
     ModelParser parser;
@@ -55,7 +66,6 @@ void arqanore::Model::generate_buffers(Mesh& mesh)
 
 arqanore::Model::Model()
 {
-    armature = nullptr;
     version = std::array<int, 3>();
 }
 
@@ -67,11 +77,6 @@ arqanore::Model::Model(std::string path) : Model()
     }
 
     this->generate_meshes(path);
-}
-
-arqanore::Model::~Model()
-{
-    delete armature;
 }
 
 int arqanore::Model::total_vertices()

@@ -12,6 +12,7 @@ namespace arqanore
 {
     struct ModelParserResult
     {
+        std::vector<Bone> bones;
         std::vector<Material> materials;
         std::vector<Mesh> meshes;
         std::array<int, 3> version;
@@ -25,16 +26,17 @@ namespace arqanore
         std::vector<Vector3> normals;
         std::vector<Vector2> texcoords;
         std::vector<Mesh> meshes;
+        std::vector<Bone> bones;
         std::array<int, 3> version;
 
         Vector3 parse_vector3(std::string& value);
         Vector2 parse_vector2(std::string& value);
         Color parse_color(std::string& value);
         Quaternion parse_quaternion(std::string& value);
-        void parse_line(std::string& key, std::string& value, Mesh*& mesh, Material*& material, std::string& path);
+        void parse_line(std::string& key, std::string& value, Mesh* mesh, Material* material, Bone* bone, std::string& path);
         void parse_version(std::string& value);
         void parse_mesh(std::string& key, std::string& value, Mesh* mesh);
-        void parse_mesh_material(std::string &value, Mesh *mesh);
+        void parse_mesh_material(std::string& value, Mesh* mesh);
         void parse_mesh_location(std::string& value, Mesh* mesh);
         void parse_mesh_rotation(std::string& value, Mesh* mesh);
         void parse_mesh_scale(std::string& value, Mesh* mesh);

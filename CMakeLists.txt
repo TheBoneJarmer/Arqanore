@@ -37,7 +37,8 @@ set(ARQ_INCLUDE
         include/arqanore/scene.h
         include/arqanore/quaternion.h
         include/arqanore/shadersources.h
-        include/arqanore/image.h)
+        include/arqanore/image.h
+        include/arqanore/bone.h)
 set(ARQ_SRC
         src/arqanore/glad/gl.c
         src/arqanore/arqanore.cpp
