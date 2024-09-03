@@ -6,6 +6,12 @@
 #include "vector3.h"
 
 namespace arqanore {
+    struct VertexGroup
+    {
+        int index;
+        std::string name;
+    };
+
     class Mesh {
         friend class Model;
 
@@ -21,10 +27,12 @@ namespace arqanore {
         unsigned int ebo;
 
     public:
+        std::vector<VertexGroup> vertex_groups;
         std::vector<float> vertices;
         std::vector<float> normals;
         std::vector<float> texcoords;
         std::vector<int> indices;
+        std::vector<int> groups;
         std::string name;
 
         Material material;

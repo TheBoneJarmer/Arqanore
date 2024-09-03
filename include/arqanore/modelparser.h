@@ -43,6 +43,8 @@ namespace arqanore
         void parse_mesh_vertex(std::string& value, Mesh* mesh);
         void parse_mesh_normal(std::string& value, Mesh* mesh);
         void parse_mesh_texcoord(std::string& value, Mesh* mesh);
+        void parse_mesh_group(std::string& value, Mesh* mesh);
+        void parse_mesh_vertex_group(std::string& value, Mesh* mesh);
         void parse_mesh_face(std::string& value, Mesh* mesh);
         void parse_material(std::string& key, std::string& value, Material* material, std::string& path);
         void parse_material_color(std::string& value, Material* material);
@@ -54,7 +56,6 @@ namespace arqanore
         void parse_material_ambient_map(std::string& value, Material* material, std::string& path);
         void parse_material_specular_map(std::string& value, Material* material, std::string& path);
         void parse_bone(std::string& key, std::string& value, Bone* bone);
-        void parse_bone_name(std::string& value, Bone* bone);
         void parse_bone_parent(std::string& value, Bone* bone);
         void parse_bone_frame(std::string& value, Bone* bone);
 

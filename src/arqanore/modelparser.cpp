@@ -89,6 +89,7 @@ void arqanore::ModelParser::parse_line(std::string& key, std::string& value, Mes
     if (bone == nullptr && key == "BEGIN_BONE")
     {
         bone = new Bone();
+        bone->name = value;
     }
 
     if (bone != nullptr && key == "END_BONE")
@@ -105,6 +106,11 @@ void arqanore::ModelParser::parse_line(std::string& key, std::string& value, Mes
     if (material != nullptr)
     {
         parse_material(key, value, material, path);
+    }
+
+    if (bone != nullptr)
+    {
+        parse_bone(key, value, bone);
     }
 }
 
@@ -127,6 +133,8 @@ void arqanore::ModelParser::parse_mesh(std::string& key, std::string& value, Mes
     if (key == "loc") parse_mesh_location(value, mesh);
     if (key == "rot") parse_mesh_rotation(value, mesh);
     if (key == "scl") parse_mesh_scale(value, mesh);
+    if (key == "vg") parse_mesh_vertex_group(value, mesh);
+    if (key == "g") parse_mesh_group(value, mesh);
 }
 
 void arqanore::ModelParser::parse_mesh_material(std::string& value, Mesh* mesh)
@@ -173,6 +181,34 @@ void arqanore::ModelParser::parse_mesh_texcoord(std::string& value, Mesh* mesh)
     vector.y *= -1;
 
     texcoords.push_back(vector);
+}
+
+void arqanore::ModelParser::parse_mesh_group(std::string& value, Mesh* mesh)
+{
+    auto values = string_split(value, ' ');
+    auto values_length = values.size();
+
+    for (int i = 0; i < 4; i++)
+    {
+        int index = 0;
+
+        if (i < values_length)
+        {
+            index = std::stoi(values[i]);
+        }
+
+        mesh->groups.push_back(index);
+    }
+}
+
+void arqanore::ModelParser::parse_mesh_vertex_group(std::string& value, Mesh* mesh)
+{
+    auto values = string_split(value, ' ');
+    auto obj = VertexGroup();
+    obj.index = std::stoi(values[0]);
+    obj.name = values[1];
+
+    mesh->vertex_groups.push_back(obj);
 }
 
 void arqanore::ModelParser::parse_mesh_face(std::string& value, Mesh* mesh)
@@ -293,14 +329,8 @@ void arqanore::ModelParser::parse_material_specular_map(std::string& value, Mate
 
 void arqanore::ModelParser::parse_bone(std::string& key, std::string& value, Bone* bone)
 {
-    if (key == "name") parse_bone_name(value, bone);
     if (key == "bf") parse_bone_frame(value, bone);
     if (key == "p") parse_bone_parent(value, bone);
-}
-
-void arqanore::ModelParser::parse_bone_name(std::string& value, Bone* bone)
-{
-    bone->name = value;
 }
 
 void arqanore::ModelParser::parse_bone_parent(std::string& value, Bone* bone)
