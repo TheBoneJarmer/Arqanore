@@ -24,6 +24,7 @@ namespace arqanore {
         unsigned int vbo_vertices;
         unsigned int vbo_normals;
         unsigned int vbo_texcoords;
+        unsigned int vbo_groups;
         unsigned int ebo;
 
     public:

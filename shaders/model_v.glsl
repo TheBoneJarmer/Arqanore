@@ -2,6 +2,11 @@
 layout (location = 0) in vec3 a_vertex;
 layout (location = 1) in vec3 a_normal;
 layout (location = 2) in vec2 a_texcoord;
+layout (location = 3) in ivec4 a_groups;
+
+struct VertexGroup {
+    int index;
+};
 
 uniform mat4 u_model_matrix;
 uniform mat4 u_mesh_matrix;
