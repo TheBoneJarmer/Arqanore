@@ -15,6 +15,8 @@ using namespace arqanore;
 Model* model;
 Font* font;
 
+Vector3 model_rot;
+
 int max_frames = 0;
 int frame = 0;
 double frame_timer = 0;
@@ -87,6 +89,11 @@ void on_update(Window* window, double dt)
         {
             window->set_vsync(!window->get_vsync());
         }
+
+        if (Keyboard::key_down(Keys::UP)) model_rot.x -= dt * 100;
+        if (Keyboard::key_down(Keys::DOWN)) model_rot.x += dt * 100;
+        if (Keyboard::key_down(Keys::LEFT)) model_rot.y -= dt * 100;
+        if (Keyboard::key_down(Keys::RIGHT)) model_rot.y += dt * 100;
     }
     catch (ArqanoreException& ex)
     {
@@ -108,7 +115,7 @@ void on_render3d(Window* window)
     try
     {
         Vector3 pos(0, 0, 0);
-        Quaternion rot = Quaternion();
+        Quaternion rot = Quaternion::rotate(Quaternion(), model_rot);
         Vector3 scale(1, 1, 1);
 
         Renderer::render_model(window, model, pos, rot, scale, frame);

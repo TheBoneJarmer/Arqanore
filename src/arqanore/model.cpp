@@ -46,9 +46,9 @@ void arqanore::Model::generate_buffers(Mesh& mesh)
     glVertexAttribPointer(texcoord_attrib_location, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
     glEnableVertexAttribArray(texcoord_attrib_location);
 
-    glGenBuffers(1, &mesh.vbo_groups);
-    glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo_groups);
-    glBufferData(GL_ARRAY_BUFFER, mesh.groups.size() * sizeof(int), mesh.groups.data(), GL_STATIC_DRAW);
+    glGenBuffers(1, &mesh.vbo_bones);
+    glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo_bones);
+    glBufferData(GL_ARRAY_BUFFER, mesh.bones.size() * sizeof(int), mesh.bones.data(), GL_STATIC_DRAW);
     glVertexAttribPointer(groups_attrib_location, 4, GL_INT, GL_FALSE, 4 * sizeof(int), nullptr);
     glEnableVertexAttribArray(groups_attrib_location);
 

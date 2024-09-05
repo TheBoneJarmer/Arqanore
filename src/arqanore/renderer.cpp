@@ -354,6 +354,24 @@ void Renderer::render_model(Window* window, Model* model, Vector3 position, Quat
         }
     }
 
+    // Apply bone transformations
+    for (int i=0; i<model->bones.size(); i++)
+    {
+        Bone& bone = model->bones[i];
+
+        if (frame < bone.frames.size())
+        {
+            Vector3& bone_loc = bone.frames[frame].location;
+            Quaternion& bone_rot = bone.frames[frame].rotation;
+            Vector3& bone_scl = bone.frames[frame].scale;
+            Matrix4 bone_mat = generate_model_matrix(bone_loc, bone_rot, bone_scl);
+
+            shader->set_uniform_mat4("u_bone[" + std::to_string(frame) + "]", bone_mat);
+        }
+
+        shader->set_uniform_1i("u_bone_count", model->bones.size());
+    }
+
     // Render mesh per mesh
     for (Mesh& mesh : model->meshes)
     {

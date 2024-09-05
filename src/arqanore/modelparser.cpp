@@ -133,8 +133,7 @@ void arqanore::ModelParser::parse_mesh(std::string& key, std::string& value, Mes
     if (key == "loc") parse_mesh_location(value, mesh);
     if (key == "rot") parse_mesh_rotation(value, mesh);
     if (key == "scl") parse_mesh_scale(value, mesh);
-    if (key == "vg") parse_mesh_vertex_group(value, mesh);
-    if (key == "g") parse_mesh_group(value, mesh);
+    if (key == "b") parse_mesh_bone(value, mesh);
 }
 
 void arqanore::ModelParser::parse_mesh_material(std::string& value, Mesh* mesh)
@@ -183,32 +182,22 @@ void arqanore::ModelParser::parse_mesh_texcoord(std::string& value, Mesh* mesh)
     texcoords.push_back(vector);
 }
 
-void arqanore::ModelParser::parse_mesh_group(std::string& value, Mesh* mesh)
+void arqanore::ModelParser::parse_mesh_bone(std::string& value, Mesh* mesh)
 {
     auto values = string_split(value, ' ');
     auto values_length = values.size();
 
     for (int i = 0; i < 4; i++)
     {
-        int index = 0;
+        int index = -1;
 
         if (i < values_length)
         {
             index = std::stoi(values[i]);
         }
 
-        mesh->groups.push_back(index);
+        mesh->bones.push_back(index);
     }
-}
-
-void arqanore::ModelParser::parse_mesh_vertex_group(std::string& value, Mesh* mesh)
-{
-    auto values = string_split(value, ' ');
-    auto obj = VertexGroup();
-    obj.index = std::stoi(values[0]);
-    obj.name = values[1];
-
-    mesh->vertex_groups.push_back(obj);
 }
 
 void arqanore::ModelParser::parse_mesh_face(std::string& value, Mesh* mesh)

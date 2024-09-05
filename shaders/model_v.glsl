@@ -2,16 +2,14 @@
 layout (location = 0) in vec3 a_vertex;
 layout (location = 1) in vec3 a_normal;
 layout (location = 2) in vec2 a_texcoord;
-layout (location = 3) in ivec4 a_groups;
-
-struct Bone {
-    mat4 matrix;
-}
+layout (location = 3) in ivec4 a_bones;
 
 uniform mat4 u_model_matrix;
 uniform mat4 u_mesh_matrix;
 uniform mat4 u_view_matrix;
 uniform mat4 u_projection_matrix;
+uniform mat4 u_bone[99];
+uniform int u_bone_count;
 
 out vec3 frag_pos;
 out vec3 vertex;
@@ -27,6 +25,6 @@ void main() {
     vertex = (u_view_matrix * mat_model * vec4(a_vertex, 1.0)).xyz;
     normal = mat_normal * a_normal;
     texcoord = a_texcoord;
-    
+
     gl_Position =  mat_mvp * vec4(a_vertex, 1.0);
 }
