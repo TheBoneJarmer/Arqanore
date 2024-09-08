@@ -355,20 +355,23 @@ void Renderer::render_model(Window* window, Model* model, Vector3 position, Quat
     }
 
     // Apply bone transformations
-    for (int i=0; i<model->bones.size(); i++)
+    for (int i = 0; i < model->bones.size(); i++)
     {
         Bone& bone = model->bones[i];
+        Vector3 bone_loc(0, 0, 0);
+        Quaternion bone_rot(0, 0, 0, 1);
+        Vector3 bone_scl(1, 1, 1);
 
         if (frame < bone.frames.size())
         {
-            Vector3& bone_loc = bone.frames[frame].location;
-            Quaternion& bone_rot = bone.frames[frame].rotation;
-            Vector3& bone_scl = bone.frames[frame].scale;
-            Matrix4 bone_mat = generate_model_matrix(bone_loc, bone_rot, bone_scl);
-
-            shader->set_uniform_mat4("u_bone[" + std::to_string(frame) + "]", bone_mat);
+            bone_loc = bone.frames[frame].location;
+            bone_rot = bone.frames[frame].rotation;
+            bone_scl = bone.frames[frame].scale;
         }
 
+        Matrix4 bone_mat = generate_model_matrix(bone_loc, bone_rot, bone_scl);
+
+        shader->set_uniform_mat4("u_bone[" + std::to_string(i) + "]", bone_mat);
         shader->set_uniform_1i("u_bone_count", model->bones.size());
     }
 
@@ -383,6 +386,7 @@ void Renderer::render_model(Window* window, Model* model, Vector3 position, Quat
         Texture* mat_diffuse_map = mesh.material.diffuse_map;
         Texture* mat_ambient_map = mesh.material.ambient_map;
         Texture* mat_specular_map = mesh.material.specular_map;
+
         Matrix4 mesh_matrix = generate_model_matrix(mesh.location, mesh.rotation, mesh.scale);
         Matrix4 model_matrix = generate_model_matrix(position, rotation, scale);
 

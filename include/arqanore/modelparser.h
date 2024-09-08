@@ -7,6 +7,7 @@
 #include "material.h"
 #include "model.h"
 #include "quaternion.h"
+#include "vector4.h"
 
 namespace arqanore
 {
@@ -27,6 +28,7 @@ namespace arqanore
         std::vector<Vector2> texcoords;
         std::vector<Mesh> meshes;
         std::vector<Bone> bones;
+        std::vector<Vector4> groups;
         std::array<int, 3> version;
 
         Vector3 parse_vector3(std::string& value);
@@ -43,7 +45,7 @@ namespace arqanore
         void parse_mesh_vertex(std::string& value, Mesh* mesh);
         void parse_mesh_normal(std::string& value, Mesh* mesh);
         void parse_mesh_texcoord(std::string& value, Mesh* mesh);
-        void parse_mesh_bone(std::string& value, Mesh* mesh);
+        void parse_mesh_group(std::string& value, Mesh* mesh);
         void parse_mesh_face(std::string& value, Mesh* mesh);
         void parse_material(std::string& key, std::string& value, Material* material, std::string& path);
         void parse_material_color(std::string& value, Material* material);

@@ -38,7 +38,8 @@ set(ARQ_INCLUDE
         include/arqanore/quaternion.h
         include/arqanore/shadersources.h
         include/arqanore/image.h
-        include/arqanore/bone.h)
+        include/arqanore/bone.h
+        include/arqanore/vector4.h)
 set(ARQ_SRC
         src/arqanore/glad/gl.c
         src/arqanore/arqanore.cpp
@@ -72,7 +73,8 @@ set(ARQ_SRC
         src/arqanore/scene.cpp
         src/arqanore/quaternion.cpp
         src/arqanore/image.cpp
-        src/arqanore/bone.cpp)
+        src/arqanore/bone.cpp
+        src/arqanore/vector4.cpp)
 
 # Generate variables for the compiler and linker
 if (WIN32)

@@ -292,6 +292,17 @@ void arqanore::Shader::set_uniform_vec3(std::string name, Vector3 v) {
     glUniform3f(uniform, v.x, v.y, v.z);
 }
 
+void arqanore::Shader::set_uniform_vec4(std::string name, Vector4 v)
+{
+    int uniform = get_uniform_location(name);
+
+    if (uniform == -1) {
+        return;
+    }
+
+    glUniform4f(uniform, v.x, v.y, v.z, v.w);
+}
+
 void arqanore::Shader::set_uniform_mat3(std::string name, Matrix3 m) {
     int uniform = get_uniform_location(name);
     float *values = Matrix3::array(m.values);

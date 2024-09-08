@@ -37,6 +37,7 @@ in vec3 frag_pos;
 in vec3 vertex;
 in vec3 normal;
 in vec2 texcoord;
+in vec4 bone;
 
 vec3 calc_dir_light(Light light) {
     vec3 light_normal = normalize(normal);
@@ -123,11 +124,20 @@ void main() {
         }
 
         if (u_light[i].type == DIRECTIONAL_LIGHT) {
-            result.xyz += calc_dir_light(u_light[i]);
+            //result.xyz += calc_dir_light(u_light[i]);
         }
 
         if (u_light[i].type == POINT_LIGHT) {
-            result.xyz += calc_point_light(u_light[i]);
+            //result.xyz += calc_point_light(u_light[i]);
+        }
+    }
+
+    for (int i=0; i<3; i++) {
+        for (int j=0; j<3; j++) {
+            if (bone[i] == j) {
+                result[i] = 1;
+                break;
+            }
         }
     }
 

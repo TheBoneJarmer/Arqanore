@@ -18,7 +18,7 @@ namespace arqanore {
         unsigned int vbo_vertices;
         unsigned int vbo_normals;
         unsigned int vbo_texcoords;
-        unsigned int vbo_bones;
+        unsigned int vbo_groups;
         unsigned int ebo;
 
     public:
@@ -26,7 +26,7 @@ namespace arqanore {
         std::vector<float> normals;
         std::vector<float> texcoords;
         std::vector<int> indices;
-        std::vector<int> bones;
+        std::vector<int> groups;
         std::string name;
 
         Material material;

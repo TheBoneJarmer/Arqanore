@@ -23,7 +23,7 @@ void arqanore::Model::generate_buffers(Mesh& mesh)
     int vertex_attrib_location = 0;
     int normal_attrib_location = 1;
     int texcoord_attrib_location = 2;
-    int groups_attrib_location = 3;
+    int bones_attrib_location = 3;
 
     glGenVertexArrays(1, &mesh.vao);
     glBindVertexArray(mesh.vao);
@@ -46,11 +46,11 @@ void arqanore::Model::generate_buffers(Mesh& mesh)
     glVertexAttribPointer(texcoord_attrib_location, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
     glEnableVertexAttribArray(texcoord_attrib_location);
 
-    glGenBuffers(1, &mesh.vbo_bones);
-    glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo_bones);
-    glBufferData(GL_ARRAY_BUFFER, mesh.bones.size() * sizeof(int), mesh.bones.data(), GL_STATIC_DRAW);
-    glVertexAttribPointer(groups_attrib_location, 4, GL_INT, GL_FALSE, 4 * sizeof(int), nullptr);
-    glEnableVertexAttribArray(groups_attrib_location);
+    glGenBuffers(1, &mesh.vbo_groups);
+    glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo_groups);
+    glBufferData(GL_ARRAY_BUFFER, mesh.groups.size() * sizeof(int), mesh.groups.data(), GL_STATIC_DRAW);
+    glVertexAttribIPointer(bones_attrib_location, 4, GL_INT, 4 * sizeof(int), nullptr);
+    glEnableVertexAttribArray(bones_attrib_location);
 
     glGenBuffers(1, &mesh.ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ebo);

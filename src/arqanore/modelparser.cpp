@@ -133,7 +133,7 @@ void arqanore::ModelParser::parse_mesh(std::string& key, std::string& value, Mes
     if (key == "loc") parse_mesh_location(value, mesh);
     if (key == "rot") parse_mesh_rotation(value, mesh);
     if (key == "scl") parse_mesh_scale(value, mesh);
-    if (key == "b") parse_mesh_bone(value, mesh);
+    if (key == "g") parse_mesh_group(value, mesh);
 }
 
 void arqanore::ModelParser::parse_mesh_material(std::string& value, Mesh* mesh)
@@ -182,10 +182,11 @@ void arqanore::ModelParser::parse_mesh_texcoord(std::string& value, Mesh* mesh)
     texcoords.push_back(vector);
 }
 
-void arqanore::ModelParser::parse_mesh_bone(std::string& value, Mesh* mesh)
+void arqanore::ModelParser::parse_mesh_group(std::string& value, Mesh* mesh)
 {
-    auto values = string_split(value, ' ');
-    auto values_length = values.size();
+    std::vector<std::string> values = string_split(value, ' ');
+    int values_length = values.size();
+    Vector4 group;
 
     for (int i = 0; i < 4; i++)
     {
@@ -196,13 +197,18 @@ void arqanore::ModelParser::parse_mesh_bone(std::string& value, Mesh* mesh)
             index = std::stoi(values[i]);
         }
 
-        mesh->bones.push_back(index);
+        if (i == 0) group.x = index;
+        if (i == 1) group.y = index;
+        if (i == 2) group.z = index;
+        if (i == 3) group.w = index;
     }
+
+    groups.push_back(group);
 }
 
 void arqanore::ModelParser::parse_mesh_face(std::string& value, Mesh* mesh)
 {
-    auto values = string_split(value, ' ');
+    std::vector<std::string> values = string_split(value, ' ');
 
     if (values.size() > 3)
     {
@@ -211,21 +217,27 @@ void arqanore::ModelParser::parse_mesh_face(std::string& value, Mesh* mesh)
 
     for (int i = 0; i < 3; i++)
     {
-        auto indices = string_split(values[i], '/');
-        auto vertex_index = stoi(indices[0]);
-        auto texcoord_index = stoi(indices[1]);
+        std::vector<std::string> indices = string_split(values[i], '/');
+        int vertex_index = stoi(indices[0]);
+        int texcoord_index = stoi(indices[1]);
 
         if (vertex_index != -1)
         {
-            auto vertex = vertices[vertex_index];
+            Vector3 vertex = vertices[vertex_index];
             mesh->vertices.push_back(vertex.x);
             mesh->vertices.push_back(vertex.y);
             mesh->vertices.push_back(vertex.z);
 
-            auto normal = normals[vertex_index];
+            Vector3 normal = normals[vertex_index];
             mesh->normals.push_back(normal.x);
             mesh->normals.push_back(normal.y);
             mesh->normals.push_back(normal.z);
+
+            Vector4 group = groups[vertex_index];
+            mesh->groups.push_back(group.x);
+            mesh->groups.push_back(group.y);
+            mesh->groups.push_back(group.z);
+            mesh->groups.push_back(group.w);
         }
         else
         {
@@ -236,11 +248,16 @@ void arqanore::ModelParser::parse_mesh_face(std::string& value, Mesh* mesh)
             mesh->normals.push_back(0);
             mesh->normals.push_back(0);
             mesh->normals.push_back(0);
+
+            mesh->groups.push_back(-1);
+            mesh->groups.push_back(-1);
+            mesh->groups.push_back(-1);
+            mesh->groups.push_back(-1);
         }
 
         if (texcoord_index != -1 && texcoord_index < texcoords.size())
         {
-            auto texcoord = texcoords[texcoord_index];
+            Vector2 texcoord = texcoords[texcoord_index];
             mesh->texcoords.push_back(texcoord.x);
             mesh->texcoords.push_back(texcoord.y);
         }
@@ -250,7 +267,7 @@ void arqanore::ModelParser::parse_mesh_face(std::string& value, Mesh* mesh)
             mesh->texcoords.push_back(0);
         }
 
-        auto index = mesh->indices.size();
+        int index = mesh->indices.size();
         mesh->indices.push_back(index);
     }
 }
