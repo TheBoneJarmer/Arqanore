@@ -187,23 +187,48 @@ void arqanore::ModelParser::parse_mesh_group(std::string& value, Mesh* mesh)
     std::vector<std::string> values = string_split(value, ' ');
     int values_length = values.size();
     Vector4 group;
+    Vector4 weight;
 
     for (int i = 0; i < 4; i++)
     {
-        int index = -1;
+        int group_value = -1;
+        float weight_value = 0;
 
         if (i < values_length)
         {
-            index = std::stoi(values[i]);
+            std::vector<std::string> boneweights = string_split(values[i], '/');
+
+            group_value = std::stoi(boneweights[0]);
+            weight_value = std::stof(boneweights[1]);
         }
 
-        if (i == 0) group.x = index;
-        if (i == 1) group.y = index;
-        if (i == 2) group.z = index;
-        if (i == 3) group.w = index;
+        if (i == 0)
+        {
+            group.x = group_value;
+            weight.x = weight_value;
+        }
+
+        if (i == 1)
+        {
+            group.y = group_value;
+            weight.y = weight_value;
+        }
+
+        if (i == 2)
+        {
+            group.z = group_value;
+            weight.z = weight_value;
+        }
+
+        if (i == 3)
+        {
+            group.w = group_value;
+            weight.w = weight_value;
+        }
     }
 
     groups.push_back(group);
+    weights.push_back(weight);
 }
 
 void arqanore::ModelParser::parse_mesh_face(std::string& value, Mesh* mesh)
@@ -238,6 +263,12 @@ void arqanore::ModelParser::parse_mesh_face(std::string& value, Mesh* mesh)
             mesh->groups.push_back(group.y);
             mesh->groups.push_back(group.z);
             mesh->groups.push_back(group.w);
+
+            Vector4 weight = weights[vertex_index];
+            mesh->weights.push_back(weight.x);
+            mesh->weights.push_back(weight.y);
+            mesh->weights.push_back(weight.z);
+            mesh->weights.push_back(weight.w);
         }
         else
         {

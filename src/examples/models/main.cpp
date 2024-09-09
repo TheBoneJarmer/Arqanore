@@ -34,7 +34,7 @@ void on_open(Window* window)
 
         font = new Font("assets/fonts/arial.ttf", 20, 20);
 
-        model = new Model("assets/models/cube.arqm");
+        model = new Model("assets/models/wobble.arqm");
         model->calculate_normals(false);
 
         Camera& cam = Scene::cameras[0];

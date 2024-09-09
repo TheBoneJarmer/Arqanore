@@ -23,7 +23,8 @@ void arqanore::Model::generate_buffers(Mesh& mesh)
     int vertex_attrib_location = 0;
     int normal_attrib_location = 1;
     int texcoord_attrib_location = 2;
-    int bones_attrib_location = 3;
+    int bone_attrib_location = 3;
+    int weight_attrib_location = 4;
 
     glGenVertexArrays(1, &mesh.vao);
     glBindVertexArray(mesh.vao);
@@ -48,9 +49,15 @@ void arqanore::Model::generate_buffers(Mesh& mesh)
 
     glGenBuffers(1, &mesh.vbo_groups);
     glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo_groups);
-    glBufferData(GL_ARRAY_BUFFER, mesh.groups.size() * sizeof(int), mesh.groups.data(), GL_STATIC_DRAW);
-    glVertexAttribIPointer(bones_attrib_location, 4, GL_INT, 4 * sizeof(int), nullptr);
-    glEnableVertexAttribArray(bones_attrib_location);
+    glBufferData(GL_ARRAY_BUFFER, mesh.groups.size() * sizeof(float), mesh.groups.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer(bone_attrib_location, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+    glEnableVertexAttribArray(bone_attrib_location);
+
+    glGenBuffers(1, &mesh.vbo_weights);
+    glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo_weights);
+    glBufferData(GL_ARRAY_BUFFER, mesh.weights.size() * sizeof(float), mesh.weights.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer(weight_attrib_location, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+    glEnableVertexAttribArray(weight_attrib_location);
 
     glGenBuffers(1, &mesh.ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ebo);

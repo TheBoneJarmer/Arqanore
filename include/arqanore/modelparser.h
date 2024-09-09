@@ -29,6 +29,7 @@ namespace arqanore
         std::vector<Mesh> meshes;
         std::vector<Bone> bones;
         std::vector<Vector4> groups;
+        std::vector<Vector4> weights;
         std::array<int, 3> version;
 
         Vector3 parse_vector3(std::string& value);

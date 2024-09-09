@@ -34,7 +34,6 @@ uniform int u_light_count;
 uniform Light u_light[99];
 
 in vec3 frag_pos;
-in vec3 vertex;
 in vec3 normal;
 in vec2 texcoord;
 in vec4 bone;
@@ -124,20 +123,11 @@ void main() {
         }
 
         if (u_light[i].type == DIRECTIONAL_LIGHT) {
-            //result.xyz += calc_dir_light(u_light[i]);
+            result.xyz += calc_dir_light(u_light[i]);
         }
 
         if (u_light[i].type == POINT_LIGHT) {
-            //result.xyz += calc_point_light(u_light[i]);
-        }
-    }
-
-    for (int i=0; i<3; i++) {
-        for (int j=0; j<3; j++) {
-            if (bone[i] == j) {
-                result[i] = 1;
-                break;
-            }
+            result.xyz += calc_point_light(u_light[i]);
         }
     }
 
