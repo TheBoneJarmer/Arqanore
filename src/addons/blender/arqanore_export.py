@@ -218,7 +218,7 @@ class ArqanoreModelParser:
 
                         for vge in v.groups:
                             vg = vertex_groups[vge.group]
-                            str_arqm += f" {vg.index}"
+                            str_arqm += f" {vg.index}/{vge.weight}"
 
                         str_arqm += "\n"
 
@@ -277,4 +277,5 @@ if __name__ == "__main__":
     register()
 
     # for testing
-    # bpy.ops.arqanore.export('INVOKE_DEFAULT')
+    #bpy.ops.arqanore.export('INVOKE_DEFAULT')
+    #unregister()
