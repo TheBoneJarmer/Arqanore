@@ -26,15 +26,15 @@ mat4 get_bone_matrix() {
     );
 
     if (a_bone.x >= 0) {
-        result += u_bone[int(a_bone.x)] * a_weight.x;
+        result *= u_bone[int(a_bone.x)] * a_weight.x;
     }
 
     if (a_bone.y >= 0) {
-        result += u_bone[int(a_bone.y)] * a_weight.y;
+        result *= u_bone[int(a_bone.y)] * a_weight.y;
     }
 
     if (a_bone.z >= 0) {
-        result += u_bone[int(a_bone.z)] * a_weight.z;
+        result *= u_bone[int(a_bone.z)] * a_weight.z;
     }
 
     if (a_bone.w >= 0) {

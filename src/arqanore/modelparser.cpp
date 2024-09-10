@@ -246,59 +246,46 @@ void arqanore::ModelParser::parse_mesh_face(std::string& value, Mesh* mesh)
         int vertex_index = stoi(indices[0]);
         int texcoord_index = stoi(indices[1]);
 
+        Vector3 vertex(0, 0, 0);
+        Vector3 normal(0, 0, 0);
+        Vector2 texcoord(0, 0);
+        Vector4 group(-1, -1, -1, -1);
+        Vector4 weight(0, 0, 0, 0);
+        int index = mesh->indices.size();
+
         if (vertex_index != -1)
         {
-            Vector3 vertex = vertices[vertex_index];
-            mesh->vertices.push_back(vertex.x);
-            mesh->vertices.push_back(vertex.y);
-            mesh->vertices.push_back(vertex.z);
+            vertex = vertices[vertex_index];
+            normal = normals[vertex_index];
 
-            Vector3 normal = normals[vertex_index];
-            mesh->normals.push_back(normal.x);
-            mesh->normals.push_back(normal.y);
-            mesh->normals.push_back(normal.z);
-
-            Vector4 group = groups[vertex_index];
-            mesh->groups.push_back(group.x);
-            mesh->groups.push_back(group.y);
-            mesh->groups.push_back(group.z);
-            mesh->groups.push_back(group.w);
-
-            Vector4 weight = weights[vertex_index];
-            mesh->weights.push_back(weight.x);
-            mesh->weights.push_back(weight.y);
-            mesh->weights.push_back(weight.z);
-            mesh->weights.push_back(weight.w);
-        }
-        else
-        {
-            mesh->vertices.push_back(0);
-            mesh->vertices.push_back(0);
-            mesh->vertices.push_back(0);
-
-            mesh->normals.push_back(0);
-            mesh->normals.push_back(0);
-            mesh->normals.push_back(0);
-
-            mesh->groups.push_back(-1);
-            mesh->groups.push_back(-1);
-            mesh->groups.push_back(-1);
-            mesh->groups.push_back(-1);
+            if (vertex_index < groups.size())
+            {
+                group = groups[vertex_index];
+                weight = weights[vertex_index];
+            }
         }
 
         if (texcoord_index != -1 && texcoord_index < texcoords.size())
         {
-            Vector2 texcoord = texcoords[texcoord_index];
-            mesh->texcoords.push_back(texcoord.x);
-            mesh->texcoords.push_back(texcoord.y);
-        }
-        else
-        {
-            mesh->texcoords.push_back(0);
-            mesh->texcoords.push_back(0);
+            texcoord = texcoords[texcoord_index];
         }
 
-        int index = mesh->indices.size();
+        mesh->texcoords.push_back(texcoord.x);
+        mesh->texcoords.push_back(texcoord.y);
+        mesh->vertices.push_back(vertex.x);
+        mesh->vertices.push_back(vertex.y);
+        mesh->vertices.push_back(vertex.z);
+        mesh->normals.push_back(normal.x);
+        mesh->normals.push_back(normal.y);
+        mesh->normals.push_back(normal.z);
+        mesh->groups.push_back(group.x);
+        mesh->groups.push_back(group.y);
+        mesh->groups.push_back(group.z);
+        mesh->groups.push_back(group.w);
+        mesh->weights.push_back(weight.x);
+        mesh->weights.push_back(weight.y);
+        mesh->weights.push_back(weight.z);
+        mesh->weights.push_back(weight.w);
         mesh->indices.push_back(index);
     }
 }
