@@ -26,8 +26,8 @@ set(ARQ_INCLUDE
         include/arqanore/vector2.h
         include/arqanore/sprite.h
         include/arqanore/vector3.h
-        include/arqanore/modelparser.h
         include/arqanore/model.h
+        include/arqanore/modelparser.h
         include/arqanore/mesh.h
         include/arqanore/matrix4.h
         include/arqanore/matrix3.h
@@ -100,6 +100,26 @@ add_library(arqanore ${ARQ_INCLUDE} ${ARQ_SRC})
 set_target_properties(arqanore PROPERTIES POSITION_INDEPENDENT_CODE ON)
 set_target_properties(arqanore PROPERTIES OUTPUT_NAME "arqanore")
 set_target_properties(arqanore PROPERTIES VERSION ${ARQ_VERSION})
+
+# Configure arqanore tools
+if (WIN32)
+    add_executable(model_converter WIN32 ${ARQ_INCLUDE} ${ARQ_SRC} src/tools/model-converter/main.cpp
+            src/tools/model-converter/model-exporter.h
+            src/tools/model-converter/model-exporter.cpp)
+    set_target_properties(model_converter PROPERTIES OUTPUT_NAME "arq-mc")
+    set_target_properties(model_converter PROPERTIES VERSION ${ARQ_VERSION})
+    target_link_libraries(model_converter PUBLIC assimp)
+else ()
+    add_executable(model_converter ${ARQ_INCLUDE} ${ARQ_SRC}
+            src/tools/model-converter/main.cpp
+            src/tools/model-converter/model-importer.cpp
+            src/tools/model-converter/model-importer.h
+            src/tools/model-converter/model-exporter.h
+            src/tools/model-converter/model-exporter.cpp)
+    set_target_properties(model_converter PROPERTIES OUTPUT_NAME "arq-mc")
+    set_target_properties(model_converter PROPERTIES VERSION ${ARQ_VERSION})
+    target_link_libraries(model_converter PUBLIC assimp)
+endif ()
 
 # Configure arqanore examples
 if (WIN32)
