@@ -13,8 +13,7 @@
 
 using namespace arqanore;
 
-Model* model_animated;
-Model* model_axis;
+Model* model;
 Font* font;
 
 int max_frames = 0;
@@ -37,13 +36,15 @@ void on_open(Window* window)
 
         font = new Font("assets/fonts/arial.ttf", 20, 20);
 
-        model_animated = new Model("assets/models/cube.arqm");
-        model_animated->calculate_normals(false);
+        model = new Model("assets/models/cube.arqm");
+        model->calculate_normals(false);
 
-        model_axis = new Model("assets/models/axis.arqm");
-        model_axis->calculate_normals(false);
+        for (auto& mesh : model->meshes)
+        {
+            mesh.material.ambient = Color(200, 200, 200);
+        }
 
-        for (const Bone& bone : model_animated->bones)
+        for (const Bone& bone : model->bones)
         {
             if (bone.frames.size() > max_frames)
             {
@@ -63,8 +64,7 @@ void on_open(Window* window)
 
 void on_close(Window* window)
 {
-    delete model_animated;
-    delete model_axis;
+    delete model;
     delete font;
 }
 
@@ -184,15 +184,11 @@ void on_render3d(Window* window)
 {
     try
     {
-        Vector3 pos_anim(0, 0, 0);
-        Vector3 pos_axis(-20, 0, 0);
-        Quaternion rot_anim = Quaternion(0, 0, 0, 1);
-        Quaternion rot_axis = Quaternion(0, 0, 0, 1);
-        Vector3 scale_anim(1, 1, 1);
-        Vector3 scale_axis(0.25f, 0.25f, 0.25f);
+        Vector3 pos(0, 0, 0);
+        Quaternion rot = Quaternion(0, 0, 0, 1);
+        Vector3 scale(1, 1, 1);
 
-        Renderer::render_model(window, model_animated, pos_anim, rot_anim, scale_anim, frame);
-        Renderer::render_model(window, model_axis, pos_axis, rot_axis, scale_axis, frame);
+        Renderer::render_model(window, model, pos, rot, scale, frame);
     }
     catch (ArqanoreException& ex)
     {

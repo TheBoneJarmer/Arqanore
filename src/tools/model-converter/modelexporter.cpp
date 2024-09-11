@@ -23,6 +23,35 @@ void arqanore::ModelExporter::save(ModelImporterResult result, std::string path)
         file << "END_MAT\n";
     }
 
+    for (auto& mesh : result.meshes)
+    {
+        file << "BEGIN_MESH " << mesh.name << "\n";
+        file << "mat " << mesh.material.name << "\n";
+
+        for (int i = 0; i < mesh.vertices.size(); i += 3)
+        {
+            file << "v " << mesh.vertices[i] << " " << mesh.vertices[i + 1] << " " << mesh.vertices[i + 2] << "\n";
+            file << "n " << mesh.normals[i] << " " << mesh.normals[i + 1] << " " << mesh.normals[i + 2] << "\n";
+            file << "g -1/0\n";
+        }
+
+        for (int i = 0; i < mesh.texcoords.size(); i++)
+        {
+            file << "tc " << mesh.texcoords[i] << " " << mesh.texcoords[i + 1] << "\n";
+        }
+
+        for (int i = 0; i < mesh.indices.size(); i += 3)
+        {
+            file << "f";
+            file << " " << mesh.indices[i] << "/" << mesh.indices[i];
+            file << " " << mesh.indices[i + 1] << "/" << mesh.indices[i + 1];
+            file << " " << mesh.indices[i + 2] << "/" << mesh.indices[i + 2];
+            file << "\n";
+        }
+
+        file << "END_MESH";
+    }
+
     // Close fd
     file.close();
 }

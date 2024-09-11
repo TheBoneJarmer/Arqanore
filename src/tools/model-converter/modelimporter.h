@@ -1,6 +1,7 @@
 #pragma once
 #include <assimp/Importer.hpp>
 #include <assimp/material.h>
+#include <assimp/scene.h>
 
 #include "arqanore/model.h"
 #include "arqanore/mesh.h"
@@ -38,7 +39,10 @@ namespace arqanore
         std::string get_material_string(aiMaterial* material, const char* key);
         float get_material_float(aiMaterial* material, const char* key);
         Color get_material_color(aiMaterial* material, const char* key);
-        void load_material(aiMaterial* material);
+
+        void parse_material(aiMaterial* material);
+        void parse_mesh(aiMesh* mesh, const aiScene* scene);
+        void parse_node(aiNode* node, const aiScene* scene);
 
     public:
         ModelImporter();
