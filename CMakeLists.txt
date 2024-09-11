@@ -27,7 +27,7 @@ set(ARQ_INCLUDE
         include/arqanore/sprite.h
         include/arqanore/vector3.h
         include/arqanore/model.h
-        include/arqanore/modelparser.h
+        include/arqanore/modelloader.h
         include/arqanore/mesh.h
         include/arqanore/matrix4.h
         include/arqanore/matrix3.h
@@ -68,7 +68,7 @@ set(ARQ_SRC
         src/arqanore/matrix4.cpp
         src/arqanore/mesh.cpp
         src/arqanore/model.cpp
-        src/arqanore/modelparser.cpp
+        src/arqanore/modelloader.cpp
         src/arqanore/vector3.cpp
         src/arqanore/scene.cpp
         src/arqanore/quaternion.cpp
@@ -103,19 +103,22 @@ set_target_properties(arqanore PROPERTIES VERSION ${ARQ_VERSION})
 
 # Configure arqanore tools
 if (WIN32)
-    add_executable(model_converter WIN32 ${ARQ_INCLUDE} ${ARQ_SRC} src/tools/model-converter/main.cpp
-            src/tools/model-converter/model-exporter.h
-            src/tools/model-converter/model-exporter.cpp)
+    add_executable(model_converter WIN32 ${ARQ_INCLUDE} ${ARQ_SRC}
+            src/tools/model-converter/main.cpp
+            src/tools/model-converter/modelexporter.cpp
+            src/tools/model-converter/modelexporter.h
+    )
     set_target_properties(model_converter PROPERTIES OUTPUT_NAME "arq-mc")
     set_target_properties(model_converter PROPERTIES VERSION ${ARQ_VERSION})
     target_link_libraries(model_converter PUBLIC assimp)
 else ()
     add_executable(model_converter ${ARQ_INCLUDE} ${ARQ_SRC}
             src/tools/model-converter/main.cpp
-            src/tools/model-converter/model-importer.cpp
-            src/tools/model-converter/model-importer.h
-            src/tools/model-converter/model-exporter.h
-            src/tools/model-converter/model-exporter.cpp)
+            src/tools/model-converter/modelimporter.cpp
+            src/tools/model-converter/modelimporter.h
+            src/tools/model-converter/modelexporter.cpp
+            src/tools/model-converter/modelexporter.h
+    )
     set_target_properties(model_converter PROPERTIES OUTPUT_NAME "arq-mc")
     set_target_properties(model_converter PROPERTIES VERSION ${ARQ_VERSION})
     target_link_libraries(model_converter PUBLIC assimp)

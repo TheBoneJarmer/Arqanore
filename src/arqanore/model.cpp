@@ -1,12 +1,12 @@
 #include "glad/gl.h"
 #include "arqanore/model.h"
-#include "arqanore/modelparser.h"
+#include "arqanore/modelloader.h"
 #include "arqanore/exceptions.h"
 
 void arqanore::Model::generate_meshes(std::string& path)
 {
-    ModelParser parser;
-    ModelParserResult result = parser.parse(path);
+    ModelLoader parser;
+    ModelLoaderResult result = parser.load(path);
 
     this->bones = result.bones;
     this->meshes = result.meshes;

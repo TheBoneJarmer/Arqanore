@@ -9,7 +9,7 @@ namespace arqanore {
     class Mesh {
         friend class Model;
 
-        friend class ModelParser;
+        friend class ModelLoader;
 
         friend class Renderer;
 

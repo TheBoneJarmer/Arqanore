@@ -11,7 +11,7 @@
 
 namespace arqanore
 {
-    struct ModelParserResult
+    struct ModelLoaderResult
     {
         std::vector<Bone> bones;
         std::vector<Material> materials;
@@ -19,7 +19,7 @@ namespace arqanore
         std::array<int, 3> version;
     };
 
-    class ModelParser
+    class ModelLoader
     {
     private:
         std::vector<Material> materials;
@@ -64,8 +64,8 @@ namespace arqanore
         void parse_bone_frame(std::string& value, Bone* bone);
 
     public:
-        ModelParser();
+        ModelLoader();
 
-        ModelParserResult parse(std::string& path);
+        ModelLoaderResult load(std::string& path);
     };
 }

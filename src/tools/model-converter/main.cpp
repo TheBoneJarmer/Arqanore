@@ -1,7 +1,8 @@
 #include <iostream>
 
-#include "model-exporter.h"
-#include "model-importer.h"
+#include "modelexporter.h"
+#include "modelimporter.h"
+#include "arqanore/exceptions.h"
 
 struct ConverterOptions
 {
@@ -88,11 +89,22 @@ bool validate_options(ConverterOptions* options)
 
 bool run(ConverterOptions* options)
 {
-    ModelImporter importer;
-    ModelExporter exporter;
-
-    if (!importer.load(options->src))
+    try
     {
+        arqanore::ModelImporter importer;
+        arqanore::ModelExporter exporter;
+
+        auto result = importer.load(options->src);
+        exporter.save(result, options->dest);
+    }
+    catch (arqanore::AssimpException& ex)
+    {
+        std::cerr << ex.what() << std::endl;
+        return false;
+    }
+    catch (arqanore::ArqanoreException& ex)
+    {
+        std::cerr << ex.what() << std::endl;
         return false;
     }
 
