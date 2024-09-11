@@ -10,7 +10,6 @@ uniform mat4 u_mesh_matrix;
 uniform mat4 u_view_matrix;
 uniform mat4 u_projection_matrix;
 uniform mat4 u_bone[10];
-uniform int u_bone_count;
 
 out vec3 frag_pos;
 out vec3 normal;
@@ -45,8 +44,9 @@ mat4 get_bone_matrix() {
 }
 
 void main() {
-    vec4 vertex = get_bone_matrix() * vec4(a_vertex, 1.0);
-    mat4 mat_model = u_model_matrix * u_mesh_matrix;
+    vec4 vertex = vec4(a_vertex, 1.0);
+    mat4 bone_mat = get_bone_matrix();
+    mat4 mat_model = u_model_matrix * u_mesh_matrix * bone_mat;
     mat4 mat_mvp = u_projection_matrix * u_view_matrix * mat_model;
     mat3 mat_normal = mat3(transpose(inverse(mat_model)));
 

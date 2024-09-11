@@ -355,6 +355,8 @@ void arqanore::ModelParser::parse_bone(std::string& key, std::string& value, Bon
 {
     if (key == "bf") parse_bone_frame(value, bone);
     if (key == "p") parse_bone_parent(value, bone);
+    if (key == "h") parse_bone_head(value, bone);
+    if (key == "t") parse_bone_tail(value, bone);
 }
 
 void arqanore::ModelParser::parse_bone_parent(std::string& value, Bone* bone)
@@ -369,6 +371,16 @@ void arqanore::ModelParser::parse_bone_parent(std::string& value, Bone* bone)
     }
 
     throw ArqanoreException("No bone parent found with name '" + value + "'");
+}
+
+void arqanore::ModelParser::parse_bone_head(std::string& value, Bone* bone)
+{
+    bone->head = parse_vector3(value);
+}
+
+void arqanore::ModelParser::parse_bone_tail(std::string& value, Bone* bone)
+{
+    bone->tail = parse_vector3(value);
 }
 
 void arqanore::ModelParser::parse_bone_frame(std::string& value, Bone* bone)

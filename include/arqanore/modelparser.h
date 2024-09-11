@@ -59,6 +59,8 @@ namespace arqanore
         void parse_material_specular_map(std::string& value, Material* material, std::string& path);
         void parse_bone(std::string& key, std::string& value, Bone* bone);
         void parse_bone_parent(std::string& value, Bone* bone);
+        void parse_bone_head(std::string& value, Bone* bone);
+        void parse_bone_tail(std::string& value, Bone* bone);
         void parse_bone_frame(std::string& value, Bone* bone);
 
     public:

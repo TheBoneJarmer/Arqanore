@@ -20,6 +20,8 @@ namespace arqanore
         std::vector<BoneFrame> frames;
         std::string name;
         Bone* parent;
+        Vector3 head;
+        Vector3 tail;
 
         Bone();
         Bone(std::string name);

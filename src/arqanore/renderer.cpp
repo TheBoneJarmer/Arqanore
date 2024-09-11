@@ -40,6 +40,17 @@ Matrix4 Renderer::generate_model_matrix(Vector3 pos, Quaternion rot, Vector3 scl
     return mat;
 }
 
+Matrix4 Renderer::generate_bone_matrix(Vector3 pos, Quaternion rot, Vector3 scl, Vector3 head, Vector3 tail)
+{
+    Matrix4 mat = Matrix4::identity();
+    mat = Matrix4::scale(mat, scl);
+    mat = Matrix4::translate(mat, pos);
+    mat = Matrix4::rotate(mat, rot);
+    mat = Matrix4::translate(mat, head);
+
+    return mat;
+}
+
 Matrix4 Renderer::generate_view_matrix(Camera& camera)
 {
     Vector3& pos = camera.position;
@@ -97,7 +108,7 @@ void Renderer::set_shader(Shader* ptr, unsigned int target)
         return;
     }
 
-    throw ArqanoreException("Unknown render3D target " + std::to_string(target));
+    throw ArqanoreException("Unknown render target " + std::to_string(target));
 }
 
 bool Renderer::switch_shader(Shader* ptr)
@@ -328,15 +339,6 @@ void Renderer::render_model(Window* window, Model* model, Vector3 position, Quat
 
     if (switch_shader(shader_model))
     {
-        Camera& camera = Scene::cameras[Scene::active_camera];
-        Matrix4 view_matrix = generate_view_matrix(camera);
-        Vector3& view_position = camera.position;
-        Matrix4 projection_matrix = generate_projection_matrix(camera, window);
-
-        shader->set_uniform_mat4("u_projection_matrix", projection_matrix);
-        shader->set_uniform_mat4("u_view_matrix", view_matrix);
-        shader->set_uniform_vec3("u_view_pos", view_position);
-
         // Process all lights
         shader->set_uniform_1i("u_light_count", Scene::lights.size());
 
@@ -354,6 +356,15 @@ void Renderer::render_model(Window* window, Model* model, Vector3 position, Quat
         }
     }
 
+    Camera& camera = Scene::cameras[Scene::active_camera];
+    Vector3& view_position = camera.position;
+    Matrix4 view_matrix = generate_view_matrix(camera);
+    Matrix4 projection_matrix = generate_projection_matrix(camera, window);
+
+    shader->set_uniform_mat4("u_projection_matrix", projection_matrix);
+    shader->set_uniform_mat4("u_view_matrix", view_matrix);
+    shader->set_uniform_vec3("u_view_pos", view_position);
+
     // Apply bone transformations
     for (int i = 0; i < model->bones.size(); i++)
     {
@@ -369,10 +380,9 @@ void Renderer::render_model(Window* window, Model* model, Vector3 position, Quat
             bone_scl = bone.frames[frame].scale;
         }
 
-        Matrix4 bone_mat = generate_model_matrix(bone_loc, bone_rot, bone_scl);
+        Matrix4 bone_mat = generate_bone_matrix(bone_loc, bone_rot, bone_scl, bone.head, bone.tail);
 
         shader->set_uniform_mat4("u_bone[" + std::to_string(i) + "]", bone_mat);
-        shader->set_uniform_1i("u_bone_count", model->bones.size());
     }
 
     // Render mesh per mesh

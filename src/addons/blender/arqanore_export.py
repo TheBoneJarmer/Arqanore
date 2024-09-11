@@ -151,6 +151,8 @@ class ArqanoreModelParser:
             if obj.type == "ARMATURE":
                 for bone in obj.pose.bones:
                     str_arqm += f"\nBEGIN_BONE {bone.name}\n"
+                    str_arqm += f"h {bone.head.x} {bone.head.y} {bone.head.z}\n"
+                    str_arqm += f"t {bone.tail.x} {bone.tail.y} {bone.tail.z}\n"
 
                     if bone.parent != None:
                         str_arqm += f"p {bone.parent.name}\n"
@@ -164,8 +166,8 @@ class ArqanoreModelParser:
                         rot_current = bone.rotation_euler
                         rot_new = mathutils.Euler()
                         rot_new.x = rot_current.x
-                        rot_new.y = rot_current.z
-                        rot_new.z = -rot_current.y
+                        rot_new.y = rot_current.y
+                        rot_new.z = rot_current.z
 
                         rot = mathutils.Quaternion()
                         rot.rotate(rot_new)

@@ -1,3 +1,4 @@
+#include <cmath>
 #include <arqanore/window.h>
 #include <arqanore/keyboard.h>
 #include <iostream>
@@ -12,15 +13,17 @@
 
 using namespace arqanore;
 
-Model* model;
+Model* model_animated;
+Model* model_axis;
 Font* font;
-
-Vector3 model_rot;
 
 int max_frames = 0;
 int frame = 0;
 double frame_timer = 0;
 bool play = false;
+
+Vector3 camera_rot;
+Vector3 camera_pos;
 
 void on_open(Window* window)
 {
@@ -34,14 +37,13 @@ void on_open(Window* window)
 
         font = new Font("assets/fonts/arial.ttf", 20, 20);
 
-        model = new Model("assets/models/cube.arqm");
-        model->calculate_normals(false);
+        model_animated = new Model("assets/models/cube.arqm");
+        model_animated->calculate_normals(false);
 
-        Camera& cam = Scene::cameras[0];
-        cam.position.z = -10;
-        //cam.position.y = -3;
+        model_axis = new Model("assets/models/axis.arqm");
+        model_axis->calculate_normals(false);
 
-        for (const Bone& bone : model->bones)
+        for (const Bone& bone : model_animated->bones)
         {
             if (bone.frames.size() > max_frames)
             {
@@ -49,6 +51,8 @@ void on_open(Window* window)
                 break;
             }
         }
+
+        camera_pos = Vector3(0, 0, -10);
     }
     catch (ArqanoreException& ex)
     {
@@ -59,7 +63,8 @@ void on_open(Window* window)
 
 void on_close(Window* window)
 {
-    delete model;
+    delete model_animated;
+    delete model_axis;
     delete font;
 }
 
@@ -67,6 +72,8 @@ void on_update(Window* window, double dt)
 {
     try
     {
+        Camera& camera = Scene::cameras[0];
+
         if (Keyboard::key_pressed(Keys::ESCAPE))
         {
             window->close();
@@ -79,11 +86,12 @@ void on_update(Window* window, double dt)
 
         if (Keyboard::key_pressed(Keys::R))
         {
-            model_rot = Vector3(0, 0, 0);
             frame = 0;
+            frame_timer = 0;
+            play = false;
         }
 
-        if (Keyboard::key_pressed(Keys::P))
+        if (Keyboard::key_pressed(Keys::SPACE))
         {
             play = !play;
         }
@@ -106,10 +114,52 @@ void on_update(Window* window, double dt)
             }
         }
 
-        if (Keyboard::key_down(Keys::UP)) model_rot.x -= dt * 100;
-        if (Keyboard::key_down(Keys::DOWN)) model_rot.x += dt * 100;
-        if (Keyboard::key_down(Keys::LEFT)) model_rot.y -= dt * 100;
-        if (Keyboard::key_down(Keys::RIGHT)) model_rot.y += dt * 100;
+        if (Keyboard::key_down(Keys::W))
+        {
+            camera_pos.z += std::cos(MathHelper::radians(camera_rot.y)) * dt * 4;
+            camera_pos.x -= std::sin(MathHelper::radians(camera_rot.y)) * dt * 4;
+        }
+
+        if (Keyboard::key_down(Keys::S))
+        {
+            camera_pos.z -= std::cos(MathHelper::radians(camera_rot.y)) * dt * 4;
+            camera_pos.x += std::sin(MathHelper::radians(camera_rot.y)) * dt * 4;
+        }
+
+        if (Keyboard::key_down(Keys::A))
+        {
+            camera_pos.z += std::cos(MathHelper::radians(camera_rot.y - 90)) * dt * 4;
+            camera_pos.x -= std::sin(MathHelper::radians(camera_rot.y - 90)) * dt * 4;
+        }
+
+        if (Keyboard::key_down(Keys::D))
+        {
+            camera_pos.z += std::cos(MathHelper::radians(camera_rot.y + 90)) * dt * 4;
+            camera_pos.x -= std::sin(MathHelper::radians(camera_rot.y + 90)) * dt * 4;
+        }
+
+        if (Keyboard::key_down(Keys::LEFT))
+        {
+            camera_rot.y -= dt * 100;
+        }
+
+        if (Keyboard::key_down(Keys::RIGHT))
+        {
+            camera_rot.y += dt * 100;
+        }
+
+        if (Keyboard::key_down(Keys::UP))
+        {
+            camera_rot.x -= dt * 100;
+        }
+
+        if (Keyboard::key_down(Keys::DOWN))
+        {
+            camera_rot.x += dt * 100;
+        }
+
+        camera.rotation = Quaternion::rotate(Quaternion(), camera_rot);
+        camera.position = camera_pos;
 
         if (frame == max_frames) frame = 0;
         if (frame == -1) frame = max_frames;
@@ -123,8 +173,8 @@ void on_update(Window* window, double dt)
 
 void on_render2d(Window* window)
 {
-    auto text_scale = Vector2::ONE;
-    auto text_color = Color::WHITE;
+    Vector2 text_scale = Vector2::ONE;
+    Color text_color = Color::WHITE;
 
     Renderer::render_text(window, font, "FPS: " + std::to_string(window->get_fps()), Vector2(32, 32), text_scale, text_color);
     Renderer::render_text(window, font, "Frame: " + std::to_string(frame), Vector2(32, 64), text_scale, text_color);
@@ -134,11 +184,15 @@ void on_render3d(Window* window)
 {
     try
     {
-        Vector3 pos(0, 0, 0);
-        Quaternion rot = Quaternion::rotate(Quaternion(), model_rot);
-        Vector3 scale(1, 1, 1);
+        Vector3 pos_anim(0, 0, 0);
+        Vector3 pos_axis(-20, 0, 0);
+        Quaternion rot_anim = Quaternion(0, 0, 0, 1);
+        Quaternion rot_axis = Quaternion(0, 0, 0, 1);
+        Vector3 scale_anim(1, 1, 1);
+        Vector3 scale_axis(0.25f, 0.25f, 0.25f);
 
-        Renderer::render_model(window, model, pos, rot, scale, frame);
+        Renderer::render_model(window, model_animated, pos_anim, rot_anim, scale_anim, frame);
+        Renderer::render_model(window, model_axis, pos_axis, rot_axis, scale_axis, frame);
     }
     catch (ArqanoreException& ex)
     {
