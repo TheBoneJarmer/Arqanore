@@ -1,5 +1,4 @@
 #include "modelimporter.h"
-#include "arqanore/exceptions.h"
 #include <fstream>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
