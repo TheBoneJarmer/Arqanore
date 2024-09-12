@@ -82,7 +82,7 @@ void on_update(arqanore::Window *window, double dt) {
     }
 }
 
-void on_render_2d(arqanore::Window *window) {
+void on_render(arqanore::Window *window) {
     try {
         arqanore::Renderer::render_sprite(window, sprite, position, scale, arqanore::Vector2::ZERO, 0, frame_hor, frame_vert, false, false, arqanore::Color::WHITE);
     } catch (arqanore::ArqanoreException &ex) {
@@ -96,7 +96,7 @@ int main() {
     window.on_open(on_open);
     window.on_close(on_close);
     window.on_update(on_update);
-    window.on_render(on_render_2d);
+    window.on_render(on_render);
     window.open(false, true, true);
 
     return 0;

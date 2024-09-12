@@ -59,7 +59,7 @@ void on_update(arqanore::Window *window, double at) {
     }
 }
 
-void on_render2d(arqanore::Window *window) {
+void on_render(arqanore::Window *window) {
     try {
         arqanore::Renderer::set_shader(shader, RENDER_TARGET_SPRITE);
         arqanore::Renderer::render_sprite(window, sprite, position, scale, arqanore::Vector2::ZERO, 0, frame_hor, frame_vert, false, false, arqanore::Color::WHITE);
@@ -69,17 +69,12 @@ void on_render2d(arqanore::Window *window) {
     }
 }
 
-void on_render3d(arqanore::Window *window) {
-
-}
-
 int main() {
     auto window = arqanore::Window(1440, 768, "Arqanore");
     window.on_open(on_open);
     window.on_close(on_close);
     window.on_update(on_update);
-    window.on_render(on_render2d);
-    window.on_render3d(on_render3d);
+    window.on_render(on_render);
     window.open(false, false, true);
 
     return 0;

@@ -34,7 +34,7 @@ void on_update(arqanore::Window *window, double at) {
     }
 }
 
-void on_render_2d(arqanore::Window *window) {
+void on_render(arqanore::Window *window) {
     try {
         arqanore::Renderer::render_text(window, font, text1, arqanore::Vector2(32, 32), arqanore::Vector2::ONE, arqanore::Color::WHITE);
         arqanore::Renderer::render_text(window, font, text2, arqanore::Vector2(32, 64), arqanore::Vector2::ONE, arqanore::Color::WHITE);
@@ -53,7 +53,7 @@ int main() {
         window.on_open(on_open);
         window.on_close(on_close);
         window.on_update(on_update);
-        window.on_render(on_render_2d);
+        window.on_render(on_render);
         window.open(false, true, true);
     } catch (arqanore::ArqanoreException &ex) {
         std::cerr << ex.what() << std::endl;
