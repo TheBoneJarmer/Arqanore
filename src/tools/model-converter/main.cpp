@@ -97,11 +97,6 @@ bool run(ConverterOptions* options)
         auto result = importer.load(options->src);
         exporter.save(result, options->dest);
     }
-    catch (arqanore::AssimpException& ex)
-    {
-        std::cerr << ex.what() << std::endl;
-        return false;
-    }
     catch (arqanore::ArqanoreException& ex)
     {
         std::cerr << ex.what() << std::endl;

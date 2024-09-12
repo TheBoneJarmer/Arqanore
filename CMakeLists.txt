@@ -39,7 +39,8 @@ set(ARQ_INCLUDE
         include/arqanore/shadersources.h
         include/arqanore/image.h
         include/arqanore/bone.h
-        include/arqanore/vector4.h)
+        include/arqanore/vector4.h
+        src/tools/model-converter/importers/objimporter.h)
 set(ARQ_SRC
         src/arqanore/glad/gl.c
         src/arqanore/arqanore.cpp
@@ -105,12 +106,13 @@ set_target_properties(arqanore PROPERTIES VERSION ${ARQ_VERSION})
 if (WIN32)
     add_executable(model_converter WIN32 ${ARQ_INCLUDE} ${ARQ_SRC}
             src/tools/model-converter/main.cpp
+            src/tools/model-converter/modelimporter.cpp
+            src/tools/model-converter/modelimporter.h
             src/tools/model-converter/modelexporter.cpp
             src/tools/model-converter/modelexporter.h
     )
     set_target_properties(model_converter PROPERTIES OUTPUT_NAME "arq-mc")
     set_target_properties(model_converter PROPERTIES VERSION ${ARQ_VERSION})
-    target_link_libraries(model_converter PUBLIC assimp)
 else ()
     add_executable(model_converter ${ARQ_INCLUDE} ${ARQ_SRC}
             src/tools/model-converter/main.cpp
@@ -121,7 +123,6 @@ else ()
     )
     set_target_properties(model_converter PROPERTIES OUTPUT_NAME "arq-mc")
     set_target_properties(model_converter PROPERTIES VERSION ${ARQ_VERSION})
-    target_link_libraries(model_converter PUBLIC assimp)
 endif ()
 
 # Configure arqanore examples
