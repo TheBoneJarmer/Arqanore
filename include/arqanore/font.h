@@ -1,8 +1,6 @@
 #pragma once
 
-#include <cstdlib>
 #include "shader.h"
-#include "window.h"
 
 namespace arqanore {
     struct Glyph {

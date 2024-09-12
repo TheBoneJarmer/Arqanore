@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cstdlib>
-
 namespace arqanore {
     class Keyboard {
         friend class Window;

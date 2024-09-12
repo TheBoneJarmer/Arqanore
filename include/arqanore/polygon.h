@@ -1,9 +1,6 @@
 #pragma once
 
-#include <array>
-#include <cstdlib>
-#include "shader.h"
-#include "window.h"
+#include <vector>
 
 namespace arqanore {
     class Polygon {

@@ -22,25 +22,13 @@ set(ARQ_INCLUDE
         include/arqanore/sound.h
         include/arqanore/utils.h
         include/arqanore/window.h
-        include/arqanore/texture.h
         include/arqanore/vector2.h
         include/arqanore/sprite.h
-        include/arqanore/vector3.h
-        include/arqanore/model.h
-        include/arqanore/modelloader.h
-        include/arqanore/mesh.h
-        include/arqanore/matrix4.h
-        include/arqanore/matrix3.h
-        include/arqanore/material.h
-        include/arqanore/light.h
-        include/arqanore/camera.h
-        include/arqanore/scene.h
-        include/arqanore/quaternion.h
         include/arqanore/shadersources.h
         include/arqanore/image.h
-        include/arqanore/bone.h
-        include/arqanore/vector4.h
-        src/tools/model-converter/importers/objimporter.h)
+        include/arqanore/texture.h
+)
+
 set(ARQ_SRC
         src/arqanore/glad/gl.c
         src/arqanore/arqanore.cpp
@@ -59,23 +47,11 @@ set(ARQ_SRC
         src/arqanore/polygon.cpp
         src/arqanore/shaders.cpp
         src/arqanore/renderer.cpp
-        src/arqanore/texture.cpp
         src/arqanore/vector2.cpp
         src/arqanore/sprite.cpp
-        src/arqanore/camera.cpp
-        src/arqanore/light.cpp
-        src/arqanore/material.cpp
-        src/arqanore/matrix3.cpp
-        src/arqanore/matrix4.cpp
-        src/arqanore/mesh.cpp
-        src/arqanore/model.cpp
-        src/arqanore/modelloader.cpp
-        src/arqanore/vector3.cpp
-        src/arqanore/scene.cpp
-        src/arqanore/quaternion.cpp
         src/arqanore/image.cpp
-        src/arqanore/bone.cpp
-        src/arqanore/vector4.cpp)
+        src/arqanore/texture.cpp
+)
 
 # Generate variables for the compiler and linker
 if (WIN32)
@@ -102,42 +78,17 @@ set_target_properties(arqanore PROPERTIES POSITION_INDEPENDENT_CODE ON)
 set_target_properties(arqanore PROPERTIES OUTPUT_NAME "arqanore")
 set_target_properties(arqanore PROPERTIES VERSION ${ARQ_VERSION})
 
-# Configure arqanore tools
-if (WIN32)
-    add_executable(model_converter WIN32 ${ARQ_INCLUDE} ${ARQ_SRC}
-            src/tools/model-converter/main.cpp
-            src/tools/model-converter/modelimporter.cpp
-            src/tools/model-converter/modelimporter.h
-            src/tools/model-converter/modelexporter.cpp
-            src/tools/model-converter/modelexporter.h
-    )
-    set_target_properties(model_converter PROPERTIES OUTPUT_NAME "arq-mc")
-    set_target_properties(model_converter PROPERTIES VERSION ${ARQ_VERSION})
-else ()
-    add_executable(model_converter ${ARQ_INCLUDE} ${ARQ_SRC}
-            src/tools/model-converter/main.cpp
-            src/tools/model-converter/modelimporter.cpp
-            src/tools/model-converter/modelimporter.h
-            src/tools/model-converter/modelexporter.cpp
-            src/tools/model-converter/modelexporter.h
-    )
-    set_target_properties(model_converter PROPERTIES OUTPUT_NAME "arq-mc")
-    set_target_properties(model_converter PROPERTIES VERSION ${ARQ_VERSION})
-endif ()
-
 # Configure arqanore examples
 if (WIN32)
     add_executable(example_window WIN32 ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/window/main.cpp)
     add_executable(example_sprites WIN32 ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/sprites/main.cpp)
     add_executable(example_fonts WIN32 ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/fonts/main.cpp)
-    add_executable(example_models WIN32 ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/models/main.cpp)
     add_executable(example_audio WIN32 ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/audio/main.cpp)
     add_executable(example_shaders WIN32 ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/shaders/main.cpp)
 else ()
     add_executable(example_window ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/window/main.cpp)
     add_executable(example_sprites ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/sprites/main.cpp)
     add_executable(example_fonts ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/fonts/main.cpp)
-    add_executable(example_models ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/models/main.cpp)
     add_executable(example_audio ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/audio/main.cpp)
     add_executable(example_shaders ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/shaders/main.cpp)
 endif ()

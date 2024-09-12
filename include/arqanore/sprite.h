@@ -1,8 +1,6 @@
 #pragma once
 
-#include <vector>
 #include <string>
-#include <cstdlib>
 
 namespace arqanore {
     class Sprite {

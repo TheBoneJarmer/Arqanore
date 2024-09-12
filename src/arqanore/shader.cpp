@@ -282,49 +282,6 @@ void arqanore::Shader::set_uniform_vec2(std::string name, Vector2 v) {
     glUniform2f(uniform, v.x, v.y);
 }
 
-void arqanore::Shader::set_uniform_vec3(std::string name, Vector3 v) {
-    int uniform = get_uniform_location(name);
-
-    if (uniform == -1) {
-        return;
-    }
-
-    glUniform3f(uniform, v.x, v.y, v.z);
-}
-
-void arqanore::Shader::set_uniform_vec4(std::string name, Vector4 v)
-{
-    int uniform = get_uniform_location(name);
-
-    if (uniform == -1) {
-        return;
-    }
-
-    glUniform4f(uniform, v.x, v.y, v.z, v.w);
-}
-
-void arqanore::Shader::set_uniform_mat3(std::string name, Matrix3 m) {
-    int uniform = get_uniform_location(name);
-    float *values = Matrix3::array(m.values);
-
-    if (uniform != -1) {
-        glUniformMatrix3fv(uniform, 1, GL_FALSE, values);
-    }
-
-    delete values;
-}
-
-void arqanore::Shader::set_uniform_mat4(std::string name, Matrix4 m) {
-    int uniform = get_uniform_location(name);
-    float *values = Matrix4::array(m.values);
-
-    if (uniform != -1) {
-        glUniformMatrix4fv(uniform, 1, GL_FALSE, values);
-    }
-
-    delete values;
-}
-
 void arqanore::Shader::set_uniform_rgba(std::string name, Color c) {
     int uniform = get_uniform_location(name);
 

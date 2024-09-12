@@ -4,8 +4,6 @@
 
 #include <GLFW/glfw3.h>
 #include <string>
-#include <cstdlib>
-#include <vector>
 
 #include "color.h"
 #include "image.h"

@@ -1,9 +1,5 @@
 #pragma once
 
-#include "matrix3.h"
-#include "matrix4.h"
-#include "vector3.h"
-
 namespace arqanore {
     class MathHelper {
     public:

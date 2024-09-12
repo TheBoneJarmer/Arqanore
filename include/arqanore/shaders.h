@@ -13,6 +13,5 @@ namespace arqanore {
         static Shader polygon;
         static Shader font;
         static Shader sprite;
-        static Shader model;
     };
 }

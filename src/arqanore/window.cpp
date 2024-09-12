@@ -7,7 +7,6 @@
 #include "arqanore/exceptions.h"
 #include "arqanore/shaders.h"
 #include "arqanore/renderer.h"
-#include "arqanore/scene.h"
 
 void arqanore::Window::error_callback(int error_code, const char* error_description)
 {
@@ -388,7 +387,6 @@ void arqanore::Window::loop()
     Audio::init();
     Shaders::init();
     Renderer::reset();
-    Scene::reset();
 
     if (window_open_cb != nullptr)
     {

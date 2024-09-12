@@ -1,6 +1,6 @@
 # Arqanore
 ## About
-Arqanore is a 2D and 3D OpenGL game library written in C++ for Windows and Linux desktop.
+Arqanore is a 2D OpenGL game library written in C++ for Windows and Linux desktop.
 
 ## Requirements
 ### 3rd party libs
@@ -38,7 +38,6 @@ cmake --build .
 * [Window](./src/examples/window/main.cpp)
 * [Sprites](./src/examples/sprites/main.cpp)
 * [Fonts](./src/examples/fonts/main.cpp)
-* [Models](./src/examples/models/main.cpp)
 * [Audio](./src/examples/audio/main.cpp)
 * [Shaders](./src/examples/shaders/main.cpp)
 

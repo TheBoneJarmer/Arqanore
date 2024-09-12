@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cstdlib>
 #include "window.h"
 
 namespace arqanore {

@@ -6,14 +6,10 @@
 #include <string>
 #include <vector>
 
-#include <cstdlib>
 #include "texture.h"
 #include "vector2.h"
-#include "vector3.h"
-#include "matrix3.h"
 #include "color.h"
 #include "sprite.h"
-#include "vector4.h"
 
 namespace arqanore
 {
@@ -61,10 +57,6 @@ namespace arqanore
         void set_uniform_3d(std::string name, double d1, double d2, double d3);
         void set_uniform_4d(std::string name, double d1, double d2, double d3, double d4);
         void set_uniform_vec2(std::string name, Vector2 v);
-        void set_uniform_vec3(std::string name, Vector3 v);
-        void set_uniform_vec4(std::string name, Vector4 v);
-        void set_uniform_mat3(std::string name, Matrix3 m);
-        void set_uniform_mat4(std::string name, Matrix4 m);
         void set_uniform_rgba(std::string name, Color c);
         void set_uniform_rgb(std::string name, Color c);
         void set_texture(unsigned int index, Texture& tex);

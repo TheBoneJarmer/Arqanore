@@ -1,4 +1,7 @@
 #include "arqanore/sprite.h"
+
+#include <vector>
+
 #include "glad/gl.h"
 #include "stb/stb_image.h"
 #include "arqanore/exceptions.h"

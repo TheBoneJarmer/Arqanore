@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include "soloudw/soloud.h"
 #include "soloudw/soloud_wav.h"
 
 namespace arqanore {

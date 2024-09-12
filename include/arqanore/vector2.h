@@ -17,14 +17,6 @@ namespace arqanore {
 
         static float angle(Vector2 v1, Vector2 v2);
 
-        static float cross(Vector2 v1, Vector2 v2);
-
-        static float dot(Vector2 v1, Vector2 v2);
-
-        static Vector2 normalized(Vector2 v);
-
-        static Vector2 lerp(Vector2 v1, Vector2 v2, float by);
-
         Vector2 &operator+(Vector2 &v);
 
         Vector2 &operator+(float f);

@@ -2,7 +2,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 #include <string>
-#include <cstdlib>
 
 namespace arqanore {
     class Texture {
