@@ -35,9 +35,7 @@ namespace arqanore {
 
         void (*window_update_cb)(Window *window, double);
 
-        void (*window_render2d_cb)(Window *window);
-
-        void (*window_render3d_cb)(Window *window);
+        void (*window_render_cb)(Window *window);
 
         void (*window_resize_cb)(Window *window, int, int);
 
@@ -130,9 +128,7 @@ namespace arqanore {
 
         void on_update(void (*cb)(Window *, double));
 
-        void on_render2d(void (*cb)(Window *));
-
-        void on_render3d(void (*cb)(Window *));
+        void on_render(void (*cb)(Window *));
 
         void on_close(void (*cb)(Window *));
 

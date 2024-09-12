@@ -40,7 +40,7 @@ int main() {
     window.on_open(on_open);
     window.on_close(on_close);
     window.on_update(on_update);
-    window.on_render2d(on_render2d);
+    window.on_render(on_render2d);
     window.on_render3d(on_render3d);
     window.open(false, true, true);
 

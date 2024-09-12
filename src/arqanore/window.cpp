@@ -276,8 +276,7 @@ arqanore::Window::Window()
 
     this->window_open_cb = nullptr;
     this->window_update_cb = nullptr;
-    this->window_render2d_cb = nullptr;
-    this->window_render3d_cb = nullptr;
+    this->window_render_cb = nullptr;
     this->window_close_cb = nullptr;
     this->window_resize_cb = nullptr;
     this->window_pos_cb = nullptr;
@@ -419,25 +418,14 @@ void arqanore::Window::loop()
         Mouse::update();
 
         glEnable(GL_BLEND);
-        glEnable(GL_CULL_FACE);
-        glEnable(GL_DEPTH_TEST);
-        glCullFace(GL_BACK);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glViewport(0, 0, width, height);
         glClearColor(this->clear_color.r / 255.0, this->clear_color.g / 255.0, this->clear_color.b / 255.0, this->clear_color.a / 255.0);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-        if (window_render3d_cb != nullptr)
+        if (window_render_cb != nullptr)
         {
-            window_render3d_cb(this);
-        }
-
-        if (window_render2d_cb != nullptr)
-        {
-            glDisable(GL_CULL_FACE);
-            glDisable(GL_DEPTH_TEST);
-
-            window_render2d_cb(this);
+            window_render_cb(this);
         }
 
         Renderer::reset();
@@ -467,14 +455,9 @@ void arqanore::Window::on_update(void (*cb)(Window*, double))
     window_update_cb = cb;
 }
 
-void arqanore::Window::on_render2d(void (*cb)(Window*))
+void arqanore::Window::on_render(void (*cb)(Window*))
 {
-    window_render2d_cb = cb;
-}
-
-void arqanore::Window::on_render3d(void (*cb)(Window*))
-{
-    window_render3d_cb = cb;
+    window_render_cb = cb;
 }
 
 void arqanore::Window::on_close(void (*cb)(Window*))
