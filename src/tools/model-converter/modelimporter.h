@@ -43,6 +43,7 @@ namespace arqanore
         void parse_material(aiMaterial* material);
         void parse_mesh(aiMesh* mesh, const aiScene* scene);
         void parse_node(aiNode* node, const aiScene* scene);
+        void parse_skeleton(aiSkeleton* skeleton, const aiScene* scene);
 
     public:
         ModelImporter();

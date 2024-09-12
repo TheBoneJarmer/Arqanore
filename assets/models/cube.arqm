@@ -5,7 +5,7 @@ amb 0 0 0
 spc 0 0 0
 shn 0
 END_MAT
-BEGIN_MAT Material
+BEGIN_MAT Material_1
 dif 255 255 255
 amb 0 0 0
 spc 0 0 0
@@ -132,7 +132,7 @@ tc 0.25 0.625
 tc 0.625 0.25
 tc 0.25 0.625
 tc 0.625 0.5
-tc 0.5 -7.52954e+21
+tc 0.5 1.57171e+13
 f 0/0 1/1 2/2
 f 3/3 4/4 5/5
 f 6/6 7/7 8/8
