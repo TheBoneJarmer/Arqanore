@@ -1,0 +1,9 @@
+[submodule "lib/glfw"]
+	path = lib/glfw
+	url = git@github.com:thebonejarmer/glfw
+[submodule "lib/freetype"]
+	path = lib/freetype
+	url = git@github.com:thebonejarmer/freetype
+[submodule "lib/soloudw"]
+	path = lib/soloudw
+	url = git@github.com:thebonejarmer/soloudw
