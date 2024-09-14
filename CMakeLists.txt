@@ -53,24 +53,18 @@ set(ARQ_SRC
         src/arqanore/texture.cpp
 )
 
-# Generate variables for the compiler and linker
+# Configure dependencies
+add_subdirectory(lib/glfw EXCLUDE_FROM_ALL)
+add_subdirectory(lib/soloudw EXCLUDE_FROM_ALL)
+add_subdirectory(lib/freetype EXCLUDE_FROM_ALL)
+
 if (WIN32)
-    if (NOT DEFINED WIN_INCLUDE_DIR)
-        set(WIN_INCLUDE_DIR "C:/Include")
-    endif ()
-
-    if (NOT DEFINED WIN_LINK_DIR)
-        set(WIN_LINK_DIR "C:/Lib")
-    endif ()
-
-    include_directories(include/)
-    include_directories(${WIN_INCLUDE_DIR})
-    link_directories(${WIN_LINK_DIR})
     link_libraries(glfw3 freetype soloudw)
 else ()
-    include_directories(include/)
     link_libraries(glfw freetype soloudw dl -Wl,-rpath='$ORIGIN:$ORIGIN/lib')
 endif ()
+
+include_directories(include/)
 
 # Configure arqanore
 add_library(arqanore ${ARQ_INCLUDE} ${ARQ_SRC})
