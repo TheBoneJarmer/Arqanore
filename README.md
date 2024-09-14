@@ -24,7 +24,6 @@ cmake --build .
 
 ### Windows
 > I use MinGW as compiler on Windows. You can pull the latest version from [winlibs](https://winlibs.com/).
-> For local development I installed the dll and header files in `C:\Lib` and `C:\Include` respectively. These are the defaults. To change this you need to set the `WIN_LINK_DIR` and `WIN_INCLUDE_DIR` respectively.
 
 ```powershell
 mkdir build
