@@ -64,7 +64,10 @@ else ()
     link_libraries(glfw freetype soloudw dl -Wl,-rpath='$ORIGIN:$ORIGIN/lib')
 endif ()
 
-include_directories(include/)
+include_directories("include/")
+include_directories("lib/glfw/include/")
+include_directories("lib/soloudw/include/")
+include_directories("lib/freetype/include/")
 
 # Configure arqanore
 add_library(arqanore ${ARQ_INCLUDE} ${ARQ_SRC})
