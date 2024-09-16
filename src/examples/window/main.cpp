@@ -1,3 +1,4 @@
+#include <iostream>
 #include <arqanore/window.h>
 #include <arqanore/keyboard.h>
 
@@ -36,6 +37,7 @@ void on_render(arqanore::Window *window) {
 }
 
 int main() {
+	std::cout << "Start program" << std::endl;
     auto window = arqanore::Window(1440, 768, "Arqanore");
     window.on_open(on_open);
     window.on_close(on_close);

@@ -54,12 +54,15 @@ set(ARQ_SRC
 )
 
 # Configure dependencies
-add_subdirectory(lib/glfw EXCLUDE_FROM_ALL)
-add_subdirectory(lib/soloudw EXCLUDE_FROM_ALL)
-add_subdirectory(lib/freetype EXCLUDE_FROM_ALL)
+set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}")
+set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}")
+
+add_subdirectory(lib/glfw)
+add_subdirectory(lib/soloudw)
+add_subdirectory(lib/freetype)
 
 if (WIN32)
-    link_libraries(glfw3 freetype soloudw)
+    link_libraries(glfw freetype soloudw)
 else ()
     link_libraries(glfw freetype soloudw dl -Wl,-rpath='$ORIGIN:$ORIGIN/lib')
 endif ()
@@ -71,6 +74,7 @@ include_directories("lib/freetype/include/")
 
 # Configure arqanore
 add_library(arqanore ${ARQ_INCLUDE} ${ARQ_SRC})
+add_dependencies(arqanore glfw soloudw freetype)
 set_target_properties(arqanore PROPERTIES POSITION_INDEPENDENT_CODE ON)
 set_target_properties(arqanore PROPERTIES OUTPUT_NAME "arqanore")
 set_target_properties(arqanore PROPERTIES VERSION ${ARQ_VERSION})
@@ -78,6 +82,7 @@ set_target_properties(arqanore PROPERTIES VERSION ${ARQ_VERSION})
 # Configure arqanore examples
 if (WIN32)
     add_executable(example_window WIN32 ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/window/main.cpp)
+	add_dependencies(example_window arqanore)
     add_executable(example_sprites WIN32 ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/sprites/main.cpp)
     add_executable(example_fonts WIN32 ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/fonts/main.cpp)
     add_executable(example_audio WIN32 ${ARQ_INCLUDE} ${ARQ_SRC} src/examples/audio/main.cpp)
