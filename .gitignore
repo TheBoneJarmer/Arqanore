@@ -2,5 +2,10 @@
 .vscode/
 .vs/
 
+# Build folders
 cmake-build-*/
 build/
+
+# Generated docs
+docs/html/
+docs/latex/
