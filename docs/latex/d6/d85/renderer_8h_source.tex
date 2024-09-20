@@ -1,0 +1,42 @@
+\doxysection{renderer.\+h}
+\hypertarget{renderer_8h_source}{}\label{renderer_8h_source}\index{/mnt/PROJECTS/personal/arqanore/include/arqanore/renderer.h@{/mnt/PROJECTS/personal/arqanore/include/arqanore/renderer.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#define\ RENDER\_TARGET\_FONT\ 0}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#define\ RENDER\_TARGET\_POLYGON\ 1}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#define\ RENDER\_TARGET\_SPRITE\ 2}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}shader.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}window.h"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}vector2.h"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}sprite.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}font.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}polygon.h"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }arqanore}
+\DoxyCodeLine{00015\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classarqanore_1_1Renderer}{Renderer}}}
+\DoxyCodeLine{00017\ \ \ \ \ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classarqanore_1_1Window}{Window}};}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classarqanore_1_1Shader}{Shader}}*\ shader;}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classarqanore_1_1Shader}{Shader}}*\ shader\_font;}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classarqanore_1_1Shader}{Shader}}*\ shader\_polygon;}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classarqanore_1_1Shader}{Shader}}*\ shader\_sprite;}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ reset();}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ set\_shader(\mbox{\hyperlink{classarqanore_1_1Shader}{Shader}}*\ ptr,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ target);}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ switch\_shader(\mbox{\hyperlink{classarqanore_1_1Shader}{Shader}}*\ ptr);}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ render\_text(\mbox{\hyperlink{classarqanore_1_1Window}{Window}}*\ window,\ \mbox{\hyperlink{classarqanore_1_1Font}{Font}}*\ font,\ std::u16string\ text,\ \mbox{\hyperlink{classarqanore_1_1Vector2}{Vector2}}\ position,\ \mbox{\hyperlink{classarqanore_1_1Vector2}{Vector2}}\ scale,\ \mbox{\hyperlink{classarqanore_1_1Color}{Color}}\ color);}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ render\_text(\mbox{\hyperlink{classarqanore_1_1Window}{Window}}*\ window,\ \mbox{\hyperlink{classarqanore_1_1Font}{Font}}*\ font,\ std::string\ text,\ \mbox{\hyperlink{classarqanore_1_1Vector2}{Vector2}}\ position,\ \mbox{\hyperlink{classarqanore_1_1Vector2}{Vector2}}\ scale,\ \mbox{\hyperlink{classarqanore_1_1Color}{Color}}\ color);}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ render\_polygon(\mbox{\hyperlink{classarqanore_1_1Window}{Window}}*\ window,\ \mbox{\hyperlink{classarqanore_1_1Polygon}{Polygon}}*\ polygon,\ \mbox{\hyperlink{classarqanore_1_1Texture}{Texture}}*\ texture,\ \mbox{\hyperlink{classarqanore_1_1Vector2}{Vector2}}\ position,\ \mbox{\hyperlink{classarqanore_1_1Vector2}{Vector2}}\ scale,\ \mbox{\hyperlink{classarqanore_1_1Vector2}{Vector2}}\ origin,\ \mbox{\hyperlink{classarqanore_1_1Vector2}{Vector2}}\ offset,\ \textcolor{keywordtype}{float}\ angle,\ \textcolor{keywordtype}{bool}\ flip\_hor,\ \textcolor{keywordtype}{bool}\ flip\_vert,\ \mbox{\hyperlink{classarqanore_1_1Color}{Color}}\ color);}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ render\_sprite(\mbox{\hyperlink{classarqanore_1_1Window}{Window}}*\ window,\ \mbox{\hyperlink{classarqanore_1_1Sprite}{Sprite}}*\ sprite,\ \mbox{\hyperlink{classarqanore_1_1Vector2}{Vector2}}\ position,\ \mbox{\hyperlink{classarqanore_1_1Vector2}{Vector2}}\ scale,\ \mbox{\hyperlink{classarqanore_1_1Vector2}{Vector2}}\ origin,\ \textcolor{keywordtype}{float}\ angle,\ \textcolor{keywordtype}{int}\ frame\_hor,\ \textcolor{keywordtype}{int}\ frame\_vert,\ \textcolor{keywordtype}{bool}\ flip\_hor,\ \textcolor{keywordtype}{bool}\ flip\_vert,\ \mbox{\hyperlink{classarqanore_1_1Color}{Color}}\ color);}
+\DoxyCodeLine{00035\ \ \ \ \ \};}
+\DoxyCodeLine{00036\ \}}
+
+\end{DoxyCode}
