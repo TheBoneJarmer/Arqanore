@@ -1,6 +1,7 @@
 .idea/
 .vscode/
 .vs/
+.cache/
 
 # Build folders
 cmake-build-*/

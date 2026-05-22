@@ -16,21 +16,16 @@ On my Linux Mint machine I installed them like any other library. I placed the i
 ## Building
 ### Linux
 ```bash
-mkdir build
-cd build
-cmake -S .. -DBUILD_SHARED_LIBS=ON
-cmake --build .
+cmake -B ./build -S . -DBUILD_SHARED_LIBS=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=1
+cmake --build ./build
 ```
 
 ### Windows
 > I use MinGW as compiler on Windows. You can pull the latest version from [winlibs](https://winlibs.com/).
 
 ```powershell
-mkdir build
-cd build
-
-cmake -DBUILD_SHARED_LIBS=ON -S .. -G "MinGW Makefiles"
-cmake --build .
+cmake -DBUILD_SHARED_LIBS=ON -S . -B build -G "MinGW Makefiles"
+cmake --build build
 ```
 
 ## Examples
