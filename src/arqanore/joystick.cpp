@@ -1,4 +1,3 @@
-#include <stdexcept>
 #include <GLFW/glfw3.h>
 #include "arqanore/joystick.h"
 #include "arqanore/exceptions.h"

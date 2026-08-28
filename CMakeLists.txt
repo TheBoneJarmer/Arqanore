@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 file(STRINGS "VERSION" ARQ_VERSION)
-project(arqanore VERSION ${ARQ_VERSION} DESCRIPTION "Arqanore is a 2D and 3D OpenGL game library")
+project(arqanore VERSION ${ARQ_VERSION} DESCRIPTION "Arqanore is a 2D OpenGL game library")
 add_compile_definitions(VERSION="${ARQ_VERSION}")
 
 set(CMAKE_CXX_STANDARD 23)

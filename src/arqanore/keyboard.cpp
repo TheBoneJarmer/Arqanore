@@ -1,7 +1,6 @@
-#include "arqanore/keyboard.h"
-
 #include <string>
 
+#include "arqanore/keyboard.h"
 #include "arqanore/exceptions.h"
 
 /* KEYS */

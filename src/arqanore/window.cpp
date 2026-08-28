@@ -1,5 +1,5 @@
-#include <iostream>
 #include "glad/gl.h"
+
 #include "arqanore/window.h"
 #include "arqanore/keyboard.h"
 #include "arqanore/mouse.h"

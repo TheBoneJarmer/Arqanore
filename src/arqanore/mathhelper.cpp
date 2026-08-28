@@ -1,6 +1,6 @@
-#include "arqanore/mathhelper.h"
-
 #include <numbers>
+
+#include "arqanore/mathhelper.h"
 
 /* DEFINITIONS */
 float arqanore::MathHelper::radians(float deg)
