@@ -5,6 +5,10 @@ project(arqanore VERSION ${ARQ_VERSION} DESCRIPTION "Arqanore is a 2D OpenGL gam
 add_compile_definitions(VERSION="${ARQ_VERSION}")
 
 set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(BUILD_SHARED_LIBS ON)
+
 set(ARQ_INCLUDE
         include/arqanore/arqanore.h
         include/arqanore/audio.h

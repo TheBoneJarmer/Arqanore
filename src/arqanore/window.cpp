@@ -1,21 +1,21 @@
 #include "glad/gl.h"
 
-#include "arqanore/window.h"
-#include "arqanore/keyboard.h"
-#include "arqanore/mouse.h"
 #include "arqanore/audio.h"
 #include "arqanore/exceptions.h"
-#include "arqanore/shaders.h"
+#include "arqanore/keyboard.h"
+#include "arqanore/mouse.h"
 #include "arqanore/renderer.h"
+#include "arqanore/shaders.h"
+#include "arqanore/window.h"
 
-void arqanore::Window::error_callback(int error_code, const char* error_description)
+void arqanore::Window::error_callback(int error_code, const char *error_description)
 {
     throw GlfwException(error_code, error_description);
 }
 
-void arqanore::Window::window_resize_callback(GLFWwindow* handle, int width, int height)
+void arqanore::Window::window_resize_callback(GLFWwindow *handle, int width, int height)
 {
-    auto win = static_cast<Window*>(glfwGetWindowUserPointer(handle));
+    auto win = static_cast<Window *>(glfwGetWindowUserPointer(handle));
 
     if (win->window_resize_cb != nullptr)
     {
@@ -26,9 +26,9 @@ void arqanore::Window::window_resize_callback(GLFWwindow* handle, int width, int
     win->height = height;
 }
 
-void arqanore::Window::window_pos_callback(GLFWwindow* handle, int x, int y)
+void arqanore::Window::window_pos_callback(GLFWwindow *handle, int x, int y)
 {
-    auto win = static_cast<Window*>(glfwGetWindowUserPointer(handle));
+    auto win = static_cast<Window *>(glfwGetWindowUserPointer(handle));
 
     if (win->window_pos_cb != nullptr)
     {
@@ -39,9 +39,9 @@ void arqanore::Window::window_pos_callback(GLFWwindow* handle, int x, int y)
     win->y = y;
 }
 
-void arqanore::Window::window_close_callback(GLFWwindow* handle)
+void arqanore::Window::window_close_callback(GLFWwindow *handle)
 {
-    auto win = static_cast<Window*>(glfwGetWindowUserPointer(handle));
+    auto win = static_cast<Window *>(glfwGetWindowUserPointer(handle));
 
     if (win->window_close_cb != nullptr)
     {
@@ -50,7 +50,7 @@ void arqanore::Window::window_close_callback(GLFWwindow* handle)
     }
 }
 
-void arqanore::Window::key_callback(GLFWwindow* handle, int key, int scancode, int action, int mods)
+void arqanore::Window::key_callback(GLFWwindow *handle, int key, int scancode, int action, int mods)
 {
     if (key == -1)
     {
@@ -73,7 +73,7 @@ void arqanore::Window::key_callback(GLFWwindow* handle, int key, int scancode, i
     }
 }
 
-void arqanore::Window::mouse_button_callback(GLFWwindow* handle, int button, int action, int mods)
+void arqanore::Window::mouse_button_callback(GLFWwindow *handle, int button, int action, int mods)
 {
     if (button == -1)
     {
@@ -91,7 +91,7 @@ void arqanore::Window::mouse_button_callback(GLFWwindow* handle, int button, int
     }
 }
 
-void arqanore::Window::cursor_position_callback(GLFWwindow* handle, double xpos, double ypos)
+void arqanore::Window::cursor_position_callback(GLFWwindow *handle, double xpos, double ypos)
 {
     // This is a fix to prevent the move_x and move_y values to go out of control
     if (Mouse::prev_x == 0 && Mouse::prev_y == 0)
@@ -108,9 +108,9 @@ void arqanore::Window::cursor_position_callback(GLFWwindow* handle, double xpos,
     Mouse::move_y = Mouse::prev_y - Mouse::y;
 }
 
-void arqanore::Window::character_callback(GLFWwindow* handle, unsigned int codepoint)
+void arqanore::Window::character_callback(GLFWwindow *handle, unsigned int codepoint)
 {
-    auto win = static_cast<Window*>(glfwGetWindowUserPointer(handle));
+    auto win = static_cast<Window *>(glfwGetWindowUserPointer(handle));
 
     if (win->window_char_cb != nullptr)
     {
@@ -118,7 +118,7 @@ void arqanore::Window::character_callback(GLFWwindow* handle, unsigned int codep
     }
 }
 
-void arqanore::Window::scroll_callback(GLFWwindow* handle, double xoffset, double yoffset)
+void arqanore::Window::scroll_callback(GLFWwindow *handle, double xoffset, double yoffset)
 {
     Mouse::scroll_x = static_cast<int>(xoffset);
     Mouse::scroll_y = static_cast<int>(yoffset);
@@ -242,7 +242,7 @@ void arqanore::Window::set_icon(Image images[], int count)
 {
     GLFWimage icons[count];
 
-    for (int i=0; i<count; i++)
+    for (int i = 0; i < count; i++)
     {
         icons[i].pixels = images[i].data;
         icons[i].width = images[i].width;
@@ -252,7 +252,7 @@ void arqanore::Window::set_icon(Image images[], int count)
     glfwSetWindowIcon(handle, count, icons);
 }
 
-void arqanore::Window::set_icon(Image& image)
+void arqanore::Window::set_icon(Image &image)
 {
     GLFWimage icons[1];
     icons[0].pixels = image.data;
@@ -445,37 +445,37 @@ void arqanore::Window::loop()
     glfwTerminate();
 }
 
-void arqanore::Window::on_open(void (*cb)(Window*))
+void arqanore::Window::on_open(void (*cb)(Window *))
 {
     window_open_cb = cb;
 }
 
-void arqanore::Window::on_update(void (*cb)(Window*, double))
+void arqanore::Window::on_update(void (*cb)(Window *, double))
 {
     window_update_cb = cb;
 }
 
-void arqanore::Window::on_render(void (*cb)(Window*))
+void arqanore::Window::on_render(void (*cb)(Window *))
 {
     window_render_cb = cb;
 }
 
-void arqanore::Window::on_close(void (*cb)(Window*))
+void arqanore::Window::on_close(void (*cb)(Window *))
 {
     window_close_cb = cb;
 }
 
-void arqanore::Window::on_resize(void (*cb)(Window*, int, int))
+void arqanore::Window::on_resize(void (*cb)(Window *, int, int))
 {
     window_resize_cb = cb;
 }
 
-void arqanore::Window::on_position(void (*cb)(Window*, int, int))
+void arqanore::Window::on_position(void (*cb)(Window *, int, int))
 {
     window_pos_cb = cb;
 }
 
-void arqanore::Window::on_char(void (*cb)(Window*, unsigned int))
+void arqanore::Window::on_char(void (*cb)(Window *, unsigned int))
 {
     window_char_cb = cb;
 }

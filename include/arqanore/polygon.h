@@ -19,5 +19,9 @@ namespace arqanore {
         Polygon();
 
         Polygon(std::vector<float> vertices, std::vector<float> texcoords);
+
+        static Polygon square(float size);
+
+        static Polygon rectangle(float width, float height);
     };
 }

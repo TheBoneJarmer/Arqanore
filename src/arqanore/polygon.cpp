@@ -1,9 +1,9 @@
 #include "arqanore/polygon.h"
-#include "arqanore/shaders.h"
 #include "arqanore/exceptions.h"
 #include "glad/gl.h"
 
-void arqanore::Polygon::generate_buffers() {
+void arqanore::Polygon::generate_buffers()
+{
     glGenBuffers(1, &this->vbo_vertices);
     glGenBuffers(1, &this->vbo_texcoords);
 
@@ -24,13 +24,15 @@ void arqanore::Polygon::generate_buffers() {
     glBindVertexArray(0);
 }
 
-arqanore::Polygon::Polygon() {
+arqanore::Polygon::Polygon()
+{
     this->vbo_texcoords = 0;
     this->vbo_vertices = 0;
     this->vao = 0;
 }
 
-arqanore::Polygon::Polygon(std::vector<float> vertices, std::vector<float> texcoords) : Polygon() {
+arqanore::Polygon::Polygon(std::vector<float> vertices, std::vector<float> texcoords) : Polygon()
+{
     if (vertices.size() < 4) {
         throw ArqanoreException("Polygon requires a minimum of 3 vertices");
     }
@@ -46,4 +48,16 @@ arqanore::Polygon::Polygon(std::vector<float> vertices, std::vector<float> texco
     this->vertices = vertices;
     this->texcoords = texcoords;
     this->generate_buffers();
+}
+
+arqanore::Polygon arqanore::Polygon::square(float size) {
+    return Polygon::rectangle(size, size);
+}
+
+arqanore::Polygon arqanore::Polygon::rectangle(float width, float height)
+{
+    std::vector<float> vertices = {0, 0, width, 0, 0, height, width, 0, 0, height, width, height};
+    std::vector<float> uvs = {0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1};
+
+    return Polygon(vertices, uvs);
 }
