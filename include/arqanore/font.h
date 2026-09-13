@@ -1,6 +1,5 @@
 #pragma once
-
-#include "shader.h"
+#include <string>
 
 namespace arqanore {
     struct Glyph {

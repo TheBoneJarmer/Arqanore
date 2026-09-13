@@ -25,15 +25,11 @@ namespace arqanore
 
     private:
         unsigned int id;
-
         std::vector<std::string> vertex_sources;
-
         std::vector<std::string> fragment_sources;
-
+        
         unsigned int compile_program(const std::vector<unsigned int>& vertex_shaders, const std::vector<unsigned int>& fragment_shaders);
-
         unsigned int compile_shader(const char* source, unsigned int type);
-
         int get_uniform_location(std::string& name);
 
     public:

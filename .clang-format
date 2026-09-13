@@ -1,6 +1,8 @@
 BasedOnStyle: LLVM
 IndentWidth: 4
 TabWidth: 4
-UseTab: Never
+UseTab: Always
+NamespaceIndentation: All
+AccessModifierOffset: -4
 ColumnLimit: 0
 BreakBeforeBraces: Allman

@@ -1,6 +1,6 @@
 #pragma once
-
-#include <stdexcept>
+#include <string>
+#include <exception>
 
 namespace arqanore {
     class GlfwException : public std::exception {
@@ -12,7 +12,6 @@ namespace arqanore {
         int get_code();
 
         GlfwException();
-
         GlfwException(int code, const char *message);
 
         const char *what();
@@ -24,7 +23,6 @@ namespace arqanore {
 
     public:
         ArqanoreException();
-
         ArqanoreException(const std::string& message);
 
         const char *what();
