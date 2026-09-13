@@ -106,8 +106,8 @@ void arqanore::Renderer::render_text(Window* window, Font* font, std::u16string 
         float glyph_height = font->pixel_height * scale.y;
         long glyph_advance = glyph->advance * scale.x;
 
-        float text_x = position.x + glyph_left + advance;
-        float text_y = position.y - glyph_top + glyph_height;
+        float text_x = std::round(position.x + glyph_left + advance);
+        float text_y = std::round(position.y - glyph_top + glyph_height);
 
         shader->set_uniform_2f("u_translation", text_x, text_y);
 
