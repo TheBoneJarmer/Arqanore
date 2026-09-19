@@ -6,7 +6,6 @@
 #include "arqanore/exceptions.h"
 #include "arqanore/font.h"
 #include "arqanore/polygon.h"
-#include "arqanore/utils.h"
 #include "arqanore/shader.h"
 
 arqanore::Shader* arqanore::Renderer::shader;
