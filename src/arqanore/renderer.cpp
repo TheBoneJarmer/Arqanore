@@ -93,7 +93,7 @@ void arqanore::Renderer::render_text(Window* window, Font* font, std::u16string 
 
     for (unsigned int c : text)
     {
-        auto glyph = font->glyph(c);
+        auto glyph = font->get_glyph(c);
 
         if (glyph == nullptr)
         {
@@ -148,7 +148,7 @@ void arqanore::Renderer::render_text(Window* window, Font* font, std::string tex
 
     for (unsigned int c : text)
     {
-        auto glyph = font->glyph(c);
+        auto glyph = font->get_glyph(c);
 
         if (glyph == nullptr)
         {

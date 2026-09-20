@@ -68,8 +68,8 @@ namespace arqanore
 		void set_vsync(bool value);
 		void set_clear_color(Color value);
 		void set_closed(bool value);
-		void set_icon(Image images[], int count);
 		void set_icon(Image &image);
+        void set_icon(Image *image);
 
 		Window();
 		Window(int width, int height, std::string title);

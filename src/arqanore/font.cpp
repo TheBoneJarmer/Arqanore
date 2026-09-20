@@ -130,7 +130,7 @@ void arqanore::Font::generate_buffers()
     glBindVertexArray(0);
 }
 
-arqanore::Glyph* arqanore::Font::glyph(unsigned int code)
+arqanore::Glyph* arqanore::Font::get_glyph(unsigned int code)
 {
     if (code > glyphs_length)
     {
@@ -159,7 +159,27 @@ float arqanore::Font::measure(const std::u16string& text, float scale)
 
     for (unsigned int c : text)
     {
-        Glyph* glyph = this->glyph(c);
+        Glyph* glyph = this->get_glyph(c);
+
+        if (glyph == nullptr)
+        {
+            continue;
+        }
+
+        long glyph_advance = glyph->advance * scale;
+        result += glyph_advance >> 6;
+    }
+
+    return result;
+}
+
+float arqanore::Font::measure(const std::string& text, float scale)
+{
+    float result = 0;
+
+    for (unsigned int c : text)
+    {
+        Glyph* glyph = this->get_glyph(c);
 
         if (glyph == nullptr)
         {

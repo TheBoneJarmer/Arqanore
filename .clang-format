@@ -6,3 +6,4 @@ NamespaceIndentation: All
 AccessModifierOffset: -4
 ColumnLimit: 0
 BreakBeforeBraces: Allman
+SortIncludes: Never

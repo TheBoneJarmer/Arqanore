@@ -25,16 +25,15 @@ namespace arqanore {
         unsigned int pixel_height;
 
         void generate_glyphs(std::string &path);
-
         void generate_buffers();
 
     public:
-        Glyph* glyph(unsigned int code);
+        Glyph* get_glyph(unsigned int code);
 
         Font();
-
         Font(std::string path, unsigned int width, unsigned int height);
 
         float measure(const std::u16string& text, float scale);
+        float measure(const std::string& text, float scale);
     };
 }
