@@ -68,7 +68,7 @@ bool arqanore::Renderer::switch_shader(Shader* ptr)
     return true;
 }
 
-void arqanore::Renderer::render_text(Window* window, Font* font, std::u16string text, Vector2 position, Vector2 scale, Color color)
+void arqanore::Renderer::render_text(Window* window, Font* font, std::u16string text, Vector2 position, Vector2 scale, Color color, float spacing)
 {
     switch_shader(shader_font);
 
@@ -116,6 +116,7 @@ void arqanore::Renderer::render_text(Window* window, Font* font, std::u16string 
         glBindTexture(GL_TEXTURE_2D, 0);
 
         advance += glyph_advance >> 6;
+        advance += spacing;
     }
 
     glActiveTexture(GL_TEXTURE0);
@@ -123,7 +124,7 @@ void arqanore::Renderer::render_text(Window* window, Font* font, std::u16string 
     glBindVertexArray(0);
 }
 
-void arqanore::Renderer::render_text(Window* window, Font* font, std::string text, Vector2 position, Vector2 scale, Color color)
+void arqanore::Renderer::render_text(Window* window, Font* font, std::string text, Vector2 position, Vector2 scale, Color color, float spacing)
 {
     switch_shader(shader_font);
 
@@ -171,6 +172,7 @@ void arqanore::Renderer::render_text(Window* window, Font* font, std::string tex
         glBindTexture(GL_TEXTURE_2D, 0);
 
         advance += glyph_advance >> 6;
+        advance += spacing;
     }
 
     glActiveTexture(GL_TEXTURE0);

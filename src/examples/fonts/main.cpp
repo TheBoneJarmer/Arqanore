@@ -8,6 +8,7 @@
 arqanore::Font *font;
 std::u16string text1;
 std::u16string text2;
+std::u16string text3;
 
 void on_open(arqanore::Window *window) {
     try {
@@ -17,6 +18,7 @@ void on_open(arqanore::Window *window) {
         font = new arqanore::Font("assets/fonts/default.ttf", 0, 16);
         text1 = u"Hello, this is a normal piece of text! This text will continue to be rendered to the right even if it leaves the screen at some point.";
         text2 = u"And this text contains Unicode characters: Ö ö ó ò Ü ü ú ù ©";
+        text3 = u"And this text has spacing between its characters!";
     } catch (arqanore::ArqanoreException &ex) {
         std::cerr << ex.what() << std::endl;
     } catch (...) {
@@ -38,6 +40,7 @@ void on_render(arqanore::Window *window) {
     try {
         arqanore::Renderer::render_text(window, font, text1, arqanore::Vector2(32, 32), arqanore::Vector2::ONE, arqanore::Color::WHITE);
         arqanore::Renderer::render_text(window, font, text2, arqanore::Vector2(32, 64), arqanore::Vector2::ONE, arqanore::Color::WHITE);
+        arqanore::Renderer::render_text(window, font, text3, arqanore::Vector2(32, 96), arqanore::Vector2::ONE, arqanore::Color::WHITE, 8);
     } catch (arqanore::ArqanoreException &ex) {
         std::cerr << ex.what() << std::endl;
         window->set_closed(true);
