@@ -153,7 +153,7 @@ arqanore::Font::Font(std::string path, unsigned int width, unsigned int height)
     generate_buffers();
 }
 
-float arqanore::Font::measure(const std::u16string& text, float scale)
+float arqanore::Font::measure(const std::u16string& text, float scale, float spacing)
 {
     float result = 0;
 
@@ -168,12 +168,13 @@ float arqanore::Font::measure(const std::u16string& text, float scale)
 
         long glyph_advance = glyph->advance * scale;
         result += glyph_advance >> 6;
+        result += spacing;
     }
 
     return result;
 }
 
-float arqanore::Font::measure(const std::string& text, float scale)
+float arqanore::Font::measure(const std::string& text, float scale, float spacing)
 {
     float result = 0;
 
@@ -188,6 +189,7 @@ float arqanore::Font::measure(const std::string& text, float scale)
 
         long glyph_advance = glyph->advance * scale;
         result += glyph_advance >> 6;
+        result += spacing;
     }
 
     return result;

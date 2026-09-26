@@ -33,7 +33,7 @@ namespace arqanore {
         Font();
         Font(std::string path, unsigned int width, unsigned int height);
 
-        float measure(const std::u16string& text, float scale);
-        float measure(const std::string& text, float scale);
+        float measure(const std::u16string& text, float scale, float spacing = 0.0f);
+        float measure(const std::string& text, float scale, float spacing = 0.0f);
     };
 }
